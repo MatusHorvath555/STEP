@@ -1,0 +1,56 @@
+/* Prototyp – len základné štýly, dizajn doriešime neskôr */
+body {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 16px;
+  font-family: Arial, sans-serif;
+}
+
+/* Hlavička: logo vľavo, menu vpravo; na mobile sa menu zalomí pod logo */
+.hlavicka {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo img {
+  height: 40px;
+}
+
+nav a {
+  margin-right: 10px;
+}
+
+/* Odkaz na aktuálnu stránku */
+nav a.active {
+  font-weight: bold;
+}
+
+/* Karty (misia, tím) vedľa seba */
+.karty {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.karta {
+  flex: 1 1 200px;
+}
+
+.karta img {
+  width: 100%;
+}
+
+/* Tabuľky */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 6px;
+  border: 1px solid #999;
+  text-align: left;
+}
