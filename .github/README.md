@@ -8,16 +8,20 @@ Stránka je napísaná len v čistom HTML a CSS.
 
 ## Štruktúra súborov
 
+V hlavnom adresári sú podľa zadania iba dva súbory – `index.html` a `logo.png`.
+Všetko ostatné je v podpriečinkoch.
+
 ```
-index.html            úvodná stránka (vízia, misia, náš tím)
-motivacny-list.html   motivačný list
-zapisnica.html        zápisnice zo stretnutí
-harmonogram.html      harmonogram projektu
-o-aplikacii.html      popis aplikácie STEP
-css/style.css         spoločný CSS súbor pre všetky stránky
-img/                  logo a fotky členov tímu
-dokumenty/            PDF dokumenty (motivačný list)
-README.md             tento súbor
+index.html                    úvodná stránka (vízia, misia, náš tím)
+logo.png                      logo projektu
+stranky/motivacny-list.html   motivačný list
+stranky/zapisnica.html        zápisnice zo stretnutí
+stranky/harmonogram.html      harmonogram projektu
+stranky/o-aplikacii.html      popis aplikácie STEP
+css/style.css                 spoločný CSS súbor pre všetky stránky
+img/                          fotky členov tímu
+dokumenty/                    PDF dokumenty (motivačný list)
+.github/README.md             tento súbor (GitHub ho zobrazí aj odtiaľto)
 ```
 
 ## Ako stránku otvoriť
@@ -30,7 +34,7 @@ Všetky odkazy sú relatívne, takže stránka funguje všade bez úprav.
 
 ## Čo treba doplniť
 
-- `img/logo.png` – logo tímu
+- `logo.png` – logo projektu (v hlavnom adresári)
 - `img/clen1.jpg` až `img/clen4.jpg` – fotky členov tímu (v poradí kariet na úvodnej stránke)
 - `dokumenty/motivacny-list.pdf` – PDF verzia motivačného listu
 - všetky miesta označené textom `[DOPLNIŤ]`
