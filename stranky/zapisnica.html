@@ -12,147 +12,108 @@
   <header class="hlavicka">
     <a href="../index.html" class="logo">
       <img src="../logo.png" alt="">
-      STEP
     </a>
-    <nav>
+    <nav class="navbar">
       <a href="motivacny-list.html">Motivačný list</a>
-      <a href="zapisnica.html" class="active">Zápisnica z 1. stretnutia</a>
+      <a href="zapisnica.html">Zápisnica</a>
       <a href="harmonogram.html">Harmonogram</a>
       <a href="o-aplikacii.html">O aplikácii</a>
     </nav>
+    <div class="nav-divider"></div>
   </header>
 
   <main>
     <h1>Zápisnice zo stretnutí</h1>
 
-    <!-- Jedna zápisnica = jeden <article>.
-         Ďalšiu zápisnicu pridaj tak, že skopíruješ celý <article> a vložíš ho pod tento. -->
-    <article>
+    <!-- Jedna zápisnica = jeden <article> -->
+    <article
+      style="background: #ffffff; padding: 24px; border-radius: 16px; border: 1px solid rgba(217, 119, 6, 0.12); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03); margin-bottom: 30px;">
       <h2>Zápisnica z 1. stretnutia</h2>
-      <p>
-        <strong>Projekt:</strong> STEP – Step Towards an Effective Project<br>
-        <strong>Dátum:</strong> 20. 10. 2026, 20:00<br>
-        <strong>Miesto:</strong> online (MS Teams)<br>
-        <strong>Dĺžka:</strong> plánovaná 30 min, skutočná 25 min<br>
-        <strong>Prítomní:</strong> Dorota Pelánová, Matúš Horváth, Dagmar Achsová, Marianna Čápeková (všetci prítomní)
+      <p style="margin-bottom: 20px;">
+        <strong>Dátum:</strong> 20. 10. 2026<br>
+        <strong>Miesto:</strong> online<br>
+        <strong>Prítomní:</strong> Dorota, Matúš, Daška, Marianka (všetci prítomní)
       </p>
 
       <h3>Prebrané body</h3>
-      <ol>
-        <li>Názov projektu – schválený názov STEP (Spolupráca · Tím · Efektivita · Prehľadnosť) aj anglický ekvivalent Step Towards an Effective Project.</li>
-        <li>Logo – schválená vizualizácia; upraví sa iba farebnosť, aby sa logo odlíšilo od nástrojov Jira a Trello.</li>
-        <li>Štruktúra webu – z úvodnej stránky (cieľ projektu, o čo ide) sa bude smerovať na samostatné podstránky: Náš tím (fotka + 3–4 vety o každom členovi, rola v tíme), Motivačný dokument, Zápisnice zo stretnutí, Harmonogram projektu a O aplikácii (čo je STEP, odkaz na prototyp a grafická šablóna – farby, písmo a štýl, aby web a aplikácia vyzerali konzistentne).</li>
+      <ol style="margin-left: 20px; margin-bottom: 20px; color: #334155;">
+        <li style="margin-bottom: 8px;">Požiadavky na odovzdanie do 28. 10. 2026</li>
+        <li style="margin-bottom: 8px;">Rozdelenie úloh</li>
+        <li style="margin-bottom: 8px;">Termíny</li>
+        <li style="margin-bottom: 8px;">Nástroje a pracovné prostredie</li>
+        <li style="margin-bottom: 8px;">Pravidlá komunikácie tímu</li>
       </ol>
-
-      <p>
-        <strong>Požiadavky na odovzdanie do 28. 10. 2026:</strong><br>
-        finálne logo projektu; webová stránka so všetkými podstránkami (HTML + CSS);
-        grafická šablóna webu; motivačný dokument (PDF); prezentácia softvérového
-        diela (PDF); riešiteľský tím – foto každého člena, spoločná fotka a rola
-        v tíme; zápisnice zo stretnutí, ktoré stihneme.
-      </p>
 
       <h3>Dohodnuté úlohy</h3>
       <table>
-        <tr>
-          <th>Kto</th>
-          <th>Čo</th>
-          <th>Do kedy</th>
-        </tr>
-        <tr>
-          <td>Matúš Horváth</td>
-          <td>GitHub repozitár + základná HTML štruktúra</td>
-          <td>20. 10. 2026</td>
-        </tr>
-        <tr>
-          <td>Marianna Čápeková</td>
-          <td>HTML + CSS statického webu</td>
-          <td>28.10.2026</td>
-        </tr>
-        <tr>
-          <td>Dagmar Achsová</td>
-          <td>Databáza + prihlasovanie (backend aplikácie)</td>
-          <td>november</td>
-        </tr>
-        <tr>
-          <td>Dorota Pelánová</td>
-          <td>Texty na web, zápisnice, motivačný dokument, prezentácia, koordinácia tímu</td>
-          <td>28.10.2026</td>
-        </tr>
-        <tr>
-          <td>Každý</td>
-          <td>Každý člen sa podieľa minimálne na jednej podstránke webu</td>
-          <td>28.10.2026</td>
-        </tr>
+        <thead>
+          <tr>
+            <th>KTO?</th>
+            <th>ČO?</th>
+            <th>Termín</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Matúš</td>
+            <td>GitHub repozitár + základná HTML štruktúra</td>
+            <td>28.10.2026</td>
+
+          </tr>
+          <tr>
+            <td>Marianka</td>
+            <td>HTML + CSS statického webu</td>
+            <td>28.10.2026</td>
+          </tr>
+          <tr>
+            <td>Daška </td>
+            <td>Databáza + prihlasovanie (backend aplikácie)</td>
+            <td>28.10.2026</td>
+          </tr>
+
+          <tr>
+            <td>Dorota </td>
+            <td>Texty na web, zápisnice, motivačný dokument, prezentácia, koordinácia tímu</td>
+            <td>28.10.2026</td>
+          </tr>
+          <tr>
+            <td>Každý </td>
+            <td>TKaždý člen sa podieľa minimálne na jednej podstránke webu</td>
+            <td>28.10.2026</td>
+          </tr>
+
+        </tbody>
+
       </table>
 
-      <p>
-        <strong>Termíny:</strong><br>
-        23. 10. 2026 (13:00) – druhé stretnutie tímu (online, cca 15 min)<br>
-        24. 10. 2026 (12:00) – tretie stretnutie tímu, offline v UCM, spoločné fotenie<br>
-        28. 10. 2026 – odovzdanie webu so všetkými požiadavkami
-      </p>
+      <h3>Schválené rozhodnutia</h3>
+      Názov projektu – schválený názov STEP - Spolupráca · Tím · Efektivita · Prehľadnosť, aj
+      anglický ekvivalent Step Towards an Effective Project.<br>
+      Logo – schválená vizualizácia. Navrhnutá úprava iba farebnosti, aby sa logo odlíšilo od nástrojov
+      Jira a Trello.<br>
+      Štruktúra webu – web bude mať z Úvodnej stránky index.html (cieľ projektu, o čo ide)
+      smerovanie na samostatné podstránky<br>
+      • Náš tím (fotka + 3–4 vety o každom členovi, rola v tíme) - nas-tim-html<br>
+      • Motivačný dokument - motivacny-list.html<br>
+      • Zápisnice zo stretnutí - zapisnica.html<br>
+      • Harmonogram projektu - harmonogram.html<br>
+      • O aplikácii (čo je STEP) + odkaz na prototyp +Grafická šablóna – definuje vizuálnu
+      identitu: farby, písmo, štýl — aby web a aplikácia vyzerali konzistentne. - o-aplikacii.html<br>
 
-      <p>
-        <strong>Nástroje a pracovné prostredie:</strong><br>
-        GitHub – zdieľané úložisko kódu (správca: Matúš)<br>
-        Jira – správa úloh (správca: Dorota)<br>
-        MS Teams – tímová komunikácia a zdieľanie súborov<br>
-        Canva / NotebookLM – prezentácia a grafické materiály
-      </p>
-
-      <p>
-        <strong>Pravidlá komunikácie tímu (navrhla Dorota, schválené tímom):</strong><br>
-        1. Pred stretnutím odošle Dorota program stretnutia.<br>
-        2. Stretnutia sú krátke a efektívne.<br>
-        3. Každému členovi sa odporúča pred stretnutím napísať do chatu témy alebo
-        otázky, ktoré chce prebrať, aby sa tím mohol pripraviť vopred.
-      </p>
-
-      <p><strong>Termín ďalšieho stretnutia:</strong> 23. 10. 2026 o 13:00, online (cca 15 min)</p>
-
-      <p>
-        <strong>Zápisnicu spracovala:</strong> Dorota Pelánová<br>
-        <strong>Dátum spracovania:</strong> 21. 10. 2026
-      </p>
     </article>
+
+    <p style="margin-top: 20px;"><strong>Termín ďalšieho stretnutia:</strong> 23. 10. 2026 (13:00) - Druhé stretnutie
+      tímu (online, ~15 min) </p>
+    </article>
+
 
     <article>
-      <h2>Zápisnica z 2. stretnutia</h2>
-      <p>
-        <strong>Dátum:</strong> 23. 10. 2026, 13:00<br>
-        <strong>Miesto:</strong> online<br>
-        <strong>Prítomní:</strong> [DOPLNIŤ]
-      </p>
+      <h2>Zápisnica z 1. stretnutia (PDF)</h2>
+      <p>Tu si môžeš pozrieť oficiálny zápis z nášho stretnutia:</p>
 
-      <h3>Prebrané body</h3>
-      <ol>
-        <li>[DOPLNIŤ]</li>
-        <li>[DOPLNIŤ]</li>
-        <li>[DOPLNIŤ]</li>
-      </ol>
-
-      <h3>Dohodnuté úlohy</h3>
-      <table>
-        <tr>
-          <th>Kto</th>
-          <th>Čo</th>
-          <th>Do kedy</th>
-        </tr>
-        <tr>
-          <td>[DOPLNIŤ]</td>
-          <td>[DOPLNIŤ]</td>
-          <td>[DOPLNIŤ]</td>
-        </tr>
-        <tr>
-          <td>[DOPLNIŤ]</td>
-          <td>[DOPLNIŤ]</td>
-          <td>[DOPLNIŤ]</td>
-        </tr>
-      </table>
-
-      <p><strong>Termín ďalšieho stretnutia:</strong> 24. 10. 2026 o 12:00, offline v UCM</p>
-    </article>
+      <!-- Priame zobrazenie PDF na stránke -->
+      <embed src="../dokumenty/STEP_zapisnica_1.pdf" type="application/pdf" width="100%" height="600px"
+        style="border-radius: 12px; border: 1px solid rgba(217, 119, 6, 0.12);" />
 
   </main>
 

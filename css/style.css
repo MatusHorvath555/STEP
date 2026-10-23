@@ -1,56 +1,374 @@
-/* Prototyp – len základné štýly, dizajn doriešime neskôr */
-body {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 16px;
-  font-family: Arial, sans-serif;
+/* Základné nastavenia */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Hlavička: logo vľavo, menu vpravo; na mobile sa menu zalomí pod logo */
+/* tmavy okraj obrazvky */
+html {
+  background-color: #0a0f1d;
+  /* Hlboká tmavomodrá pre celé okolie */
+  min-height: 100vh;
+}
+
+/* telo stranky- v strede */
+body {
+  max-width: 1080px;
+  margin: 40px auto;
+  /* Odsadenie zhora a zdola, vycentrované v strede */
+  padding: 30px 45px 50px 45px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Svetly stred */
+  background-color: #f8fafc;
+  color: #1e293b;
+  line-height: 1.6;
+
+  /* 3D oramovanie*/
+  border-radius: 24px;
+  border: 1px solid rgba(217, 119, 6, 0.25);
+  /* Zlatisté jemné ohraničenie */
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(5, 150, 105, 0.15);
+  /* Zelenkavé podsvietenie okolo panela */
+}
+
+/* Hlavicka*/
 .hlavicka {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  background: transparent;
+  padding: 20px 0 25px 0;
+  margin-bottom: 40px;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .logo img {
-  height: 40px;
+  height: 150px;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+/* navigacia*/
+nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 nav a {
-  margin-right: 10px;
+  text-decoration: none;
+  color: #475569;
+  font-weight: 600;
+  font-size: 20px;
+  padding: 10px 18px;
+  border-radius: 30px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Odkaz na aktuálnu stránku */
+nav a:hover {
+  color: #059669;
+  background-color: rgba(5, 150, 105, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Aktívna záložka v menu */
 nav a.active {
-  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(135deg, #1e3a8a 0%, #059669 50%, #d97706 100%);
+  box-shadow: 0 6px 20px rgba(30, 58, 138, 0.25);
 }
 
-/* Karty (misia, tím) vedľa seba */
+.nav-divider {
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg,
+      #7138F5 0%,
+      #4978F5 50%,
+      #22C8E8 100%);
+}
+
+/* Nadpisy */
+h1,
+h2,
+h3 {
+  margin-bottom: 14px;
+}
+
+main h1 {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
+h1 {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #059669 50%, #d97706 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h2 {
+  font-size: 26px;
+  color: #1e3a8a;
+  margin-top: 35px;
+}
+
+h3 {
+  font-size: 18px;
+  color: #059669;
+  margin-top: 20px;
+}
+
+.centrovane {
+  text-align: center;
+}
+
+.centrovane .karty {
+  text-align: left;
+}
+
+/* karty */
 .karty {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 22px;
+  margin-top: 20px;
+  margin-bottom: 35px;
 }
 
-.karta {
-  flex: 1 1 200px;
+.karta,
+article {
+  flex: 1 1 220px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 26px;
+  border: 1px solid rgba(30, 58, 138, 0.08);
+  box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.05);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.karta:hover,
+article:hover {
+  transform: translateY(-5px);
+  border-color: #059669;
+  box-shadow: 0 18px 35px -8px rgba(5, 150, 105, 0.18);
 }
 
 .karta img {
   width: 100%;
+  border-radius: 12px;
+  margin-bottom: 14px;
 }
 
-/* Tabuľky */
+.karta h3 {
+  color: #1e3a8a;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* tabulky*/
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.05);
+  margin-top: 20px;
+  margin-bottom: 35px;
+  border: 1px solid rgba(30, 58, 138, 0.08);
 }
 
-th,
-td {
-  padding: 6px;
-  border: 1px solid #999;
+th {
+  background: linear-gradient(135deg, #1e3a8a 0%, #059669 100%);
+  color: #ffffff;
+  padding: 15px 18px;
+  font-weight: 700;
   text-align: left;
+  border: none;
+}
+
+td {
+  padding: 15px 18px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+tr:hover {
+  background-color: rgba(5, 150, 105, 0.04);
+}
+
+/* tlacidla */
+.btn-pro {
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #059669 100%);
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.25);
+  transition: all 0.3s ease;
+}
+
+.btn-pro:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 58, 138, 0.35);
+}
+
+/* Pätička */
+footer {
+  text-align: center;
+  padding: 25px 0 5px 0;
+  color: #64748b;
+  font-size: 14px;
+  border-top: 1px solid rgba(30, 58, 138, 0.1);
+  margin-top: 40px;
+}
+
+/* responzivita- tablety*/
+
+@media (max-width: 768px) {
+  body {
+    width: calc(100% - 24px);
+    margin: 20px auto;
+    padding: 24px 22px 35px;
+  }
+
+  .hlavicka {
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+  }
+
+  .logo img {
+    max-width: 100%;
+    height: auto;
+    max-height: 110px;
+  }
+
+  nav {
+    justify-content: center;
+    width: 100%;
+  }
+
+  nav a {
+    font-size: 16px;
+    padding: 9px 13px;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 23px;
+  }
+
+  .karty {
+    gap: 16px;
+  }
+
+  .karta,
+  article {
+    min-width: 0;
+    padding: 22px;
+  }
+
+  table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+/* Responzivita*/
+
+@media (max-width: 480px) {
+  body {
+    width: calc(100% - 16px);
+    margin: 8px auto;
+    padding: 18px 14px 28px;
+    border-radius: 16px;
+  }
+
+  .hlavicka {
+    padding-top: 10px;
+    margin-bottom: 24px;
+  }
+
+  .logo img {
+    max-height: 80px;
+  }
+
+  nav {
+    gap: 5px;
+  }
+
+  nav a {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .nav-divider {
+    height: 3px;
+  }
+
+  h1 {
+    font-size: 27px;
+    letter-spacing: -0.5px;
+  }
+
+  h2 {
+    font-size: 21px;
+    margin-top: 26px;
+  }
+
+  h3 {
+    font-size: 17px;
+  }
+
+  .karty {
+    gap: 14px;
+  }
+
+  .karta,
+  article {
+    flex-basis: 100%;
+    padding: 18px;
+  }
+
+  th,
+  td {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .btn-pro {
+    max-width: 100%;
+    padding: 11px 18px;
+  }
+
+  footer {
+    font-size: 13px;
+  }
 }
