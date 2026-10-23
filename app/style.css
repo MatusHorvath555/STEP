@@ -1,0 +1,49 @@
+body{
+    font-family: 'arial';
+    padding: 50px;
+}
+
+/* ===== Kanban nástenka ===== */
+/* 3 stĺpce vedľa seba */
+.stlpce {
+    display: flex;
+    gap: 16px;
+}
+
+.stlpec {
+    flex: 1;
+    padding: 8px;
+    background: #f0f0f0;
+}
+
+/* min. výška, aby sa dala úloha pustiť aj do prázdneho stĺpca (lekcia 5) */
+.zoznam {
+    min-height: 60px;
+}
+
+/* karta jednej úlohy */
+.karta {
+    margin-bottom: 8px;
+    padding: 8px;
+    background: white;
+    border: 1px solid #ccc;
+}
+
+/* farebný okraj karty podľa priority – názov triedy = hodnota priority */
+.karta.low {
+    border-left: 4px solid #4caf50;
+}
+
+.karta.medium {
+    border-left: 4px solid #ff9800;
+}
+
+.karta.high {
+    border-left: 4px solid #f44336;
+}
+
+/* výber člena tímu na karte */
+.karta select {
+    display: block;
+    margin-top: 6px;
+}

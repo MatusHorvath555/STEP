@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STEP – Nástenka</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>STEP – aplikácia</h1>
+
+  <!-- Kanban nástenka (lekcie 4 – 6) -->
+  <section id="nastenka">
+    <h2>Nástenka</h2>
+
+    <!-- Formulár na novú úlohu -->
+    <form id="formUloha">
+      <input id="nazovUlohy" placeholder="Názov úlohy" required>
+      <input id="popisUlohy" placeholder="Popis (nepovinný)">
+      <!-- value = presná hodnota priority v databáze -->
+      <select id="prioritaUlohy">
+        <option value="low">Low</option>
+        <option value="medium" selected>Medium</option>
+        <option value="high">High</option>
+      </select>
+      <button type="submit">Pridať úlohu</button>
+    </form>
+
+    <!-- 3 stĺpce – id zoznamu je rovnaké ako hodnota "status" úlohy -->
+    <div class="stlpce">
+      <div class="stlpec">
+        <h3>To Do</h3>
+        <div id="todo" class="zoznam"></div>
+      </div>
+      <div class="stlpec">
+        <h3>In Progress</h3>
+        <div id="inprogress" class="zoznam"></div>
+      </div>
+      <div class="stlpec">
+        <h3>Done</h3>
+        <div id="done" class="zoznam"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Časť 3: Posledná aktivita (lekcia 7) -->
+  <section id="aktivita">
+    <h2>Posledná aktivita</h2>
+  </section>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/kanban.js"></script>
+
+</body>
+</html>
