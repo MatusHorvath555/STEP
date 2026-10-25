@@ -32,10 +32,10 @@ if (!isset($_SESSION['user_id'])) {
     <?php if ($_SESSION['role'] == 'teacher'): ?>
 
         <ul>
-            <li>students.php Študenti</a></li>
-            <li>teams.php Tímy</a></li>
-            <li>tasks.php Všetky úlohy</a></li>
-            <li>create_task.php Vytvorenie úlohy</a></li>
+            <li><a href="sql.php">Študenti</a></li>
+            <li><a href="teams.php">Tímy</a></li>
+            <li><a href="tasks.php">Všetky úlohy</a></li>
+            <li><a href="create_task.php">Vytvorenie úlohy</a></li>
         </ul>
 
     <?php endif; ?>
