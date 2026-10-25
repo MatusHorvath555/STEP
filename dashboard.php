@@ -32,10 +32,10 @@ if (!isset($_SESSION['user_id'])) {
     <?php if ($_SESSION['role'] == 'teacher'): ?>
 
         <ul>
-            <li>students.phpŠtudenti</a></li>
-            <li>teams.phpTímy</a></li>
-            <li>tasks.phpVšetky úlohy</a></li>
-            <li>create_task.phpVytvorenie úlohy</a></li>
+            <li>students.php Študenti</a></li>
+            <li>teams.php Tímy</a></li>
+            <li>tasks.php Všetky úlohy</a></li>
+            <li>create_task.php Vytvorenie úlohy</a></li>
         </ul>
 
     <?php endif; ?>
@@ -43,15 +43,16 @@ if (!isset($_SESSION['user_id'])) {
     <?php if ($_SESSION['role'] == 'student'): ?>
 
         <ul>
-            <li>my_tasks.phpMoje úlohy</a></li>
-            <li>profile.phpMôj profil</a></li>
+            <li><a href="my_tasks.php">Moje úlohy</a></li>
+            <li><a href="profile.php">Môj profil</a></li>
         </ul>
 
     <?php endif; ?>
 
     <hr>
 
-    logout.phpOdhlásiť sa</a>
+    <a href="logout.php">Odhlásiť sa</a>
+    <a href="change_password.php">Zmeniť heslo </a>
 
 </body>
 

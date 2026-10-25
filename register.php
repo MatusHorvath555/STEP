@@ -34,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Registrácia</title>
+
 </head>
 
 <body>
@@ -53,13 +54,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="email" name="email" required><br><br>
 
         <label>Heslo:</label><br>
-        <input type="password" name="password" required><br><br>
+        <input id="password" type="password" name="password" required><br><br>
+
+        <input type="checkbox" onclick="togglePassword()">Show Password
 
         <button type="submit">
             Registrovať
         </button>
 
     </form>
+
+    <script>
+        function togglePassword() {
+
+            const password =
+                document.getElementById("password");
+
+            if (password.type === "password") {
+                password.type = "text";
+            } else {
+                password.type = "password";
+            }
+        }
+    </script>
 
 </body>
 
