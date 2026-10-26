@@ -342,3 +342,13 @@ footer {
 
   footer { font-size: 13px; }
 }
+.puzzle-section {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.puzzle-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px; /* Jemne zaoblené rohy pre čistý dizajn */
+}
