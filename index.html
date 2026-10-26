@@ -5,19 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>STEP – Step Towards an Effective Project</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" type="image/png" href="img/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg" />
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+    <link rel="manifest" href="img/site.webmanifest" />
   </head>
   <body>
-    <!-- Hlavička: rovnaká na všetkých stránkach -->
     <header class="hlavicka">
       <a href="index.html" class="logo">
-        <img src="logo.png" alt="" />
+        <img src="logo.png" alt="STEP logo" />
       </a>
       <nav>
         <a href="stranky/motivacny-list.html">Motivačný list</a>
-        <a href="stranky/zapisnica.html">Zápisnica z 1. stretnutia</a>
+        <a href="stranky/zapisnica.html">Zápisnica</a>
         <a href="stranky/harmonogram.html">Harmonogram</a>
         <a href="stranky/o-aplikacii.html">O aplikácii</a>
       </nav>
+      <hr class="nav-divider" />
     </header>
 
     <main>
@@ -45,39 +50,36 @@
 
       <section class="centrovane">
         <h2>Misia</h2>
-        <div class="karty">
-          <div class="karta">
+        <section class="karty">
+          <article class="karta">
             <h3>Spolupráca</h3>
             <p>Celý tím pracuje spoločne na jednom mieste.</p>
-          </div>
-          <div class="karta">
+          </article>
+          <article class="karta">
             <h3>Tím</h3>
             <p>Každý má svoju rolu a vie, za čo zodpovedá.</p>
-          </div>
-          <div class="karta">
+          </article>
+          <article class="karta">
             <h3>Efektivita</h3>
             <p>Menej času na organizáciu, viac na samotnú prácu.</p>
-          </div>
-          <div class="karta">
+          </article>
+          <article class="karta">
             <h3>Prehľadnosť</h3>
             <p>Stav projektu je jasný na prvý pohľad.</p>
-          </div>
-        </div>
+          </article>
+        </section>
       </section>
 
       <section class="centrovane">
         <h2>Náš tím</h2>
-        <p>
         
-<div class="karta"><img src="img/tím_foto.jpg" alt="Fotka tímu" />
-</div>
-          
+        <figure class="fotka-timu">
+          <img src="img/tím_foto.jpg" alt="Spoločná fotka tímu STEP" />
+        </figure>
 
-        </p>
-        <!-- Fotky ulož do priečinka img/ pod názvami clen1.jpg až clen4.jpg -->
-        <div class="karty">
-          <div class="karta">
-            <img src="img/foto-dorota.png" alt="Fotka člena tímu" />
+        <section class="karty">
+          <article class="karta">
+            <img src="img/foto-dorota.png" alt="Dorota Pelánová" />
             <h3>Dorota Pelánová</h3>
             <p><strong>Vedúca tímu</strong></p>
             <p>
@@ -87,9 +89,9 @@
               digitálnymi nástrojmi. V projekte STEP sa zameriava na
               dokumentáciu, prípravu textov a koordináciu tímovej spolupráce.
             </p>
-          </div>
-          <div class="karta">
-            <img src="img/foto-matus.png" alt="Fotka – Matúš Horváth" />
+          </article>
+          <article class="karta">
+            <img src="img/foto-matus.png" alt="Matúš Horváth" />
             <h3>Matúš Horváth</h3>
             <p><strong>Vývojár logiky aplikácie, integrácií</strong></p>
             <p>
@@ -99,9 +101,9 @@
               webové aplikácie a ich prepojenie s externými službami. Ovláda
               tiež základy HTML, CSS, PHP, MySQL a prácu s Gitom a GitHubom.
             </p>
-          </div>
-          <div class="karta">
-            <img src="img/marianna.png" alt="Fotka – Marianna Čápeková" />
+          </article>
+          <article class="karta">
+            <img src="img/marianna.png" alt="Marianna Čápeková" />
             <h3>Marianna Čápeková</h3>
             <p><strong>Dizajn a návrh používateľského rozhrania</strong></p>
             <p>
@@ -112,11 +114,11 @@
               potrebami používateľov a kreativitu pri návrhu funkčného a
               vizuálne atraktívneho riešenia.
             </p>
-          </div>
-          <div class="karta">
-            <img src="img/clen4.jpg" alt="Fotka člena tímu" />
+          </article>
+          <article class="karta">
+            <img src="img/clen4.jpg" alt="Dagmar Achsová" />
             <h3>Dagmar Achsová</h3>
-            <p><strong> Tvorba databáz, testing </strong></p>
+            <p><strong>Tvorba databáz, testing</strong></p>
             <p>
               Pracuje v oblasti so zameraním na databázy a editovanie obsahu
               webových stránok. Ovláda návrh a správu databázových systémov aj
@@ -128,12 +130,11 @@
               aplikácie s cieľom zabezpečiť jej správnu funkčnosť a
               spoľahlivosť.
             </p>
-          </div>
-        </div>
+          </article>
+        </section>
       </section>
     </main>
 
-    <!-- Pätička: rovnaká na všetkých stránkach -->
     <footer>
       <p>© 2026 Tím STEP, UCM v Trnave · Kontakt: pelanova1@ucm.sk</p>
     </footer>
