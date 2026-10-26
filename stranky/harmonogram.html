@@ -26,50 +26,322 @@
     <hr class="nav-divider">
   </header>
 
-  <main>
-    <h1>Harmonogram</h1>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Termín</th>
-          <th>Míľnik</th>
-          <th>Stav</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>do 28. 10. 2026</td>
-          <td>Statická stránka na webhostingu (logo, tím, motivačný list, zápisnica, podstránka o aplikácii)</td>
-          <td>Prebieha</td>
-        </tr>
-        <tr>
-          <td>začiatok novembra</td>
-          <td>Rozpis funkcií a rolí, wireframy, návrh databázy</td>
-          <td>Plánované</td>
-        </tr>
-        <tr>
-          <td>november</td>
-          <td>Prihlásenie, tímy, Kanban nástenka</td>
-          <td>Plánované</td>
-        </tr>
-        <tr>
-          <td>začiatok decembra</td>
-          <td>Notifikácie do Discordu, testovanie</td>
-          <td>Plánované</td>
-        </tr>
-        <tr>
-          <td>pred Vianocami</td>
-          <td>Funkčný prototyp a odkaz naň na stránke</td>
-          <td>Plánované</td>
-        </tr>
-      </tbody>
-    </table>
-  </main>
+    <main>
+        <article class="content-panel">
+            <header>
+                <h1>Harmonogram a rozdelenie úloh</h1>
+                <p class="deadlines"><strong>Celkové deadliny:</strong> 28. októbra 2026 | 15. decembra 2026</p>
+                <p class="rule"><em>Pravidlo:</em> Každý člen má 2–3 úlohy na týždeň, ktoré sa dajú jednoznačne vyhodnotiť ako splnené / nesplnené.</p>
+            </header>
+<p class="pdf-akcie">
+      <a href="../dokumenty/STEP – Harmonogram a rozdelenie úloh.pdf" download class="btn-pro">Stiahnuť PDF</a>
+    </p>
+            <section class="roles-section">
+                <h2>Rozdelenie rolí</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Člen</th>
+                            <th>Oblasť</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Matúš Horváth</strong></td>
+                            <td>JavaScript, Kanban tabuľka, webhooky na Discord</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Daška</strong></td>
+                            <td>Databáza a prihlásenie (login)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dorota Pelanová</strong></td>
+                            <td>Grafická šablóna aplikácie</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Marianna Čápeková</strong></td>
+                            <td>Web stránka - HTML a CSS</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
 
-  <footer>
-    <p>© 2026 Tím STEP, UCM v Trnave · Kontakt: pelanova1@ucm.sk</p>
-  </footer>
+            <section class="deadline-block">
+                <h2>DEADLINE 1: 28. októbra</h2>
+                
+                <section class="week-block">
+                    <h3>Týždeň 1 (24. – 28. 10.)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Člen</th>
+                                <th>Úloha 1</th>
+                                <th>Úloha 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Matúš</strong></td>
+                                <td>HTML štruktúra Kanban tabuľky (3 stĺpce: To Do / In Progress / Done)</td>
+                                <td>JS: pridanie novej karty kliknutím na tlačidlo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Daška</strong></td>
+                                <td>ER diagram - tabuľky users, tasks, columns</td>
+                                <td>SQL skript - vytvorenie tabuliek v databáze</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dorota</strong></td>
+                                <td>Farebná paleta + fonty appky (min. 3 farby, 2 fonty)</td>
+                                <td>Wireframe hlavnej obrazovky appky (papier alebo Figma)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marianna</strong></td>
+                                <td>Sekcia "O projekte" na webe dokončená</td>
+                                <td>Sekcia "Tím" so všetkými členmi dokončená</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
 
+            <section class="phase-block">
+                <h2>Fáza 2: Vývoj (29. 10. – 25. 11.)</h2>
+
+                <section class="week-block">
+                    <h3>Týždeň 2 (29. 10. – 4. 11.)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Člen</th>
+                                <th>Úloha 1</th>
+                                <th>Úloha 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Matúš</strong></td>
+                                <td>JS: drag & drop kariet medzi stĺpcami</td>
+                                <td>JS: mazanie karty</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Daška</strong></td>
+                                <td>Registračný formulár (HTML + PHP)</td>
+                                <td>Ukladanie nového užívateľa do databázy</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dorota</strong></td>
+                                <td>CSS šablóna - header a navigácia appky</td>
+                                <td>CSS šablóna - Kanban stĺpce (farby, tiene, zaoblenie)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marianna</strong></td>
+                                <td>Responzívnosť webu (mobile menu)</td>
+                                <td>Sekcia "Harmonogram" na webe</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="week-block">
+                    <h3>Týždeň 3 (5. – 11. 11.)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Člen</th>
+                                <th>Úloha 1</th>
+                                <th>Úloha 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Matúš</strong></td>
+                                <td>JS: editácia existujúcej karty</td>
+                                <td>Prepojenie kariet s backendom (fetch/AJAX)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Daška</strong></td>
+                                <td>Prihlasovací formulár (HTML + PHP)</td>
+                                <td>Session po prihlásení presmerowanie do appky</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dorota</strong></td>
+                                <td>CSS šablóna - modal okno (pridanie/editácia karty)</td>
+                                <td>CSS šablóna - tlačidlá a formulárové prvky</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marianna</strong></td>
+                                <td>Sekcia "Ako to funguje" (popis appky)</td>
+                                <td>Finálna kontrola a oprava chýb na webe</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="week-block">
+                    <h3>Týždeň 4 (12. – 18. 11.)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Člen</th>
+                                <th>Úloha 1</th>
+                                <th>Úloha 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Matúš</strong></td>
+                                <td>Discord webhook - notifikácia pri presunutí karty do "Done"</td>
+                                <td>Testovanie webhookov na reálnom Discord serveri</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Daška</strong></td>
+                                <td>Odhlásenie (logout + zničenie session)</td>
+                                <td>Ochrana stránok - neprihlásený user presmerovaný na login</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dorota</strong></td>
+                                <td>CSS šablóna - login a registračná stránka</td>
+                                <td>Tmavý/svetlý režim (prepínač)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marianna</strong></td>
+                                <td>Web nasadený na GitHub Pages (verejný odkaz)</td>
+                                <td>Testovanie webu na mobile a tablete</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="week-block">
+                    <h3>Týždeň 5 (19. – 25. 11.)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Člen</th>
+                                <th>Úloha 1</th>
+                                <th>Úloha 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Matúš</strong></td>
+                                <td>Discord webhook - notifikácia pri vytvorení novej karty</td>
+                                <td>Nastavenie vlastného názvu a avatara bota</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Daška</strong></td>
+                                <td>Každý user vidí len svoje karty (filtrovanie podľa user_id)</td>
+                                <td>Testovanie prihlásenia viacerých rôznych účtov</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dorota</strong></td>
+                                <td>Finalizácia CSS šablóny - jednotný vzhľad celej appky</td>
+                                <td>Kontrola responzívnosti na mobile</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marianna</strong></td>
+                                <td>Zapracovanie spätnej väzby od tímu na web</td>
+                                <td>Pridanie screenshotov/ukážok appky na web</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
+
+            <section class="phase-block">
+                <h2>Fáza 3: Integrácia a finalizácia (26. 11. – 15. 12.)</h2>
+
+                <section class="week-block">
+                    <h3>Týždeň 6 (26. 11. – 2. 12.)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Člen</th>
+                                <th>Úloha 1</th>
+                                <th>Úloha 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Matúš</strong></td>
+                                <td>Celková integrácia JS s backendom</td>
+                                <td>Oprava bugov z testovania</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Daška</strong></td>
+                                <td>Integrácia databázy s Kanban tabuľkou</td>
+                                <td>Testovanie celého toku: registrácia → login → kanban</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dorota</strong></td>
+                                <td>Kontrola CSS na všetkých podstránkach appky</td>
+                                <td>Finálne úpravy grafiky podľa spätnej väzby</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marianna</strong></td>
+                                <td>Finálna verzia webu - žiadne placeholder texty</td>
+                                <td>Všetky obrázky členov tímu sú na webe</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="week-block">
+                    <h3>Týždeň 7 (3. – 9. 12.)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Člen</th>
+                                <th>Úloha 1</th>
+                                <th>Úloha 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Matúš</strong></td>
+                                <td>Záverečné testovanie všetkých JS funkcií</td>
+                                <td>Čistenie kódu (odstránenie console.log, komentárov)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Daška</strong></td>
+                                <td>Záverečné testovanie databázy a loginu</td>
+                                <td>Príprava inštalačného návodu (README)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dorota</strong></td>
+                                <td>Príprava prezentácie projektu (snímky)</td>
+                                <td>Screenshot finálnej verzie appky do dokumentácie</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marianna</strong></td>
+                                <td>Záverečná kontrola webu pred odovzdaním</td>
+                                <td>Aktualizácia webu s odkazom na finálnu appku</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="week-block final-deadline">
+                    <h3>Týždeň 8 (10. – 15. 12.) – DEADLINE 2</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Člen</th>
+                                <th>Hlavné aktivity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Všetci</strong></td>
+                                <td>Spoločné finálne testovanie celého projektu | Odovzdanie projektu | Prezentácia</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
+        </article>
+    </main>
 </body>
 </html>
