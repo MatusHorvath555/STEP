@@ -39,7 +39,7 @@ if (!isset($_SESSION['user_id'])) {
     <?php if ($_SESSION['role'] == 'student'): ?>
 
         <ul>
-            <li><a href="tasks.php">Moje úlohy</a></li>
+            <li><a href="my_tasks.php">Moje úlohy</a></li>
             <li><a href="profile.php">Môj profil</a></li>
         </ul>
 

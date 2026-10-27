@@ -73,6 +73,9 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="dashboard.php" class="btn btn-secondary mb-3">
             Dashboard
         </a>
+        <a href="team_members.php" class="btn btn-secondary mb-3">
+            Pridaj členov tímov
+        </a>
 
         <?php if (!empty($message)): ?>
 
@@ -171,6 +174,10 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
     </div>
+
+
+
+
 
 </body>
 
