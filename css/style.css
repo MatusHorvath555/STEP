@@ -78,7 +78,7 @@ hr.nav-divider {
   margin-top: 20px;
 }
 
-/* Nadpis*/
+/* Nadpisy */
 h1, h2, h3 {
   margin-bottom: 14px;
 }
@@ -118,24 +118,40 @@ h3 {
   text-align: left;
 }
 
-/* Karty */
-.karty {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 22px;
-  margin-top: 20px;
-  margin-bottom: 35px;
+  /* Karty */
+  .karty {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    margin-top: 20px;
+    margin-bottom: 35px;
+    justify-content: center;
+  }
+
+  .karty h3 {
+  flex-basis: 100%;
+  text-align: center;
 }
 
-.karta,
+  .karta {
+    flex: 1 1 180px;
+    max-width: 220px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 18px;
+    border: 1px solid rgba(30, 58, 138, 0.08);
+    box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.05);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
 article {
-  flex: 1 1 220px;
   background-color: #ffffff;
   border-radius: 16px;
   padding: 26px;
   border: 1px solid rgba(30, 58, 138, 0.08);
   box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.05);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 25px;
 }
 
 .karta:hover,
@@ -169,7 +185,7 @@ article:hover {
   border: 1px solid rgba(30, 58, 138, 0.08);
 }
 
-/* tabulky*/
+/* Tabuľky */
 table {
   width: 100%;
   border-collapse: separate;
@@ -209,7 +225,7 @@ tr:hover {
   background-color: rgba(5, 150, 105, 0.04);
 }
 
-/* tlacidla */
+/* Tlačidlá */
 .btn-pro {
   display: inline-block;
   padding: 12px 24px;
@@ -239,6 +255,25 @@ tr:hover {
 .pdf-nahlad iframe {
   border-radius: 12px;
   border: 1px solid rgba(217, 119, 6, 0.12);
+}
+
+/* Puzzle sekcie */
+.step-puzzle-section,
+.puzzle-section {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.puzzle-figure {
+  margin: 0;
+}
+
+.puzzle-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(30, 58, 138, 0.08);
+  box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.05);
 }
 
 /* Pata */
@@ -289,6 +324,7 @@ footer {
   .karta, article {
     min-width: 0;
     padding: 22px;
+    max-width: 100%;
   }
 
   table {
@@ -328,6 +364,7 @@ footer {
   .karta, article {
     flex-basis: 100%;
     padding: 18px;
+    max-width: 100%;
   }
 
   th, td {
@@ -341,14 +378,4 @@ footer {
   }
 
   footer { font-size: 13px; }
-}
-.puzzle-section {
-    text-align: center;
-    margin: 2rem 0;
-}
-
-.puzzle-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px; /* Jemne zaoblené rohy pre čistý dizajn */
 }
