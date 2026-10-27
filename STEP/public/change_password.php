@@ -72,22 +72,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <form method="POST">
 
-        <label>Aktuálne heslo</label><br>
-        <input type="password"
-            name="current_password"
-            required><br><br>
+        <label>Aktuálne heslo:</label><br>
+        <input id="password" type="password" name="currentpassword" required><br><br>
+
+        <input type="checkbox" onclick="togglePassword()">Show Password<br>
+
+        <br>
 
         <label>Nové heslo</label><br>
-        <input type="password"
+        <input id="password" type="password"
             name="new_password"
             required><br><br>
-
+        <input type="checkbox" onclick="togglePassword()">Show Password <br>
+        
         <button type="submit">
             Zmeniť heslo
         </button>
 
     </form>
+    <script>
+        function togglePassword() {
 
+            const password =
+                document.getElementById("password");
+
+            if (password.type === "password") {
+                password.type = "text";
+            } else {
+                password.type = "password";
+            }
+        }
+    </script>
 </body>
 
 </html>

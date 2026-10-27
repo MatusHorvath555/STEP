@@ -93,6 +93,13 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
         <a href="change_password.php" class="btn btn-warning">
             Zmeniť heslo
         </a>
+        <a href="dashboard.php" class="btn btn-warning">
+            Dashboard
+        </a>
+
+        <a href="index.php" class="btn btn-warning">
+            Domovská stránka
+        </a>
 
     </div>
 
