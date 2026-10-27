@@ -119,7 +119,13 @@ $members = $pdo->query("
 
     <meta charset="UTF-8">
     <title>Členovia tímov</title>
-
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid green;
+        }
+    </style>
 
 
 </head>
@@ -130,11 +136,7 @@ $members = $pdo->query("
 
         <h1>Členovia tímov</h1>
 
-        <a href="dashboard.php" class="btn btn-secondary mb-3">
 
-            Dashboard
-
-        </a>
 
         <?php if (!empty($message)): ?>
 
@@ -151,7 +153,7 @@ $members = $pdo->query("
 
             <div class="card-header">
 
-                Pridať študenta do tímu
+                <h2>Pridať študenta do tímu</h2>
 
             </div>
 
@@ -163,7 +165,8 @@ $members = $pdo->query("
 
                         <label class="form-label">
 
-                            Tím
+                            <li>Vyber team
+                            <li>
 
                         </label>
 
@@ -190,34 +193,34 @@ $members = $pdo->query("
 
                         <label class="form-label">
 
-                            Študent
+                            <li>Vyber študenta</li>
 
                         </label>
 
-                        <select
-                            name="user_id"
-                            class="form-control"
-                            required>
+                        <li><select
+                                name="user_id"
+                                class="form-control"
+                                required>
 
-                            <?php foreach ($students as $student): ?>
+                                <?php foreach ($students as $student): ?>
 
-                                <option value="<?php echo $student['id']; ?>">
+                                    <option value="<?php echo $student['id']; ?>">
 
-                                    <?php echo $student['name']; ?>
+                                        <?php echo $student['name']; ?>
 
-                                </option>
+                                    </option>
 
-                            <?php endforeach; ?>
+                                <?php endforeach; ?>
 
-                        </select>
+                            </select></li>
 
                     </div>
-
+                    <br>
                     <button
                         class="btn btn-primary"
                         type="submit">
 
-                        Pridať
+                        Pridaj študenta do tímu
 
                     </button>
 
@@ -275,6 +278,12 @@ $members = $pdo->query("
         </table>
 
     </div>
+
+    <a href="dashboard.php" class="btn btn-secondary mb-3">
+
+        Dashboard
+
+    </a>
 
 </body>
 
