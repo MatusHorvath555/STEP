@@ -29,21 +29,17 @@ if (!isset($_SESSION['user_id'])) {
 
     <h2>Dostupné funkcie</h2>
 
-    <?php if ($_SESSION['role'] == 'teacher'): ?>
-
-        <ul>
-            <li><a href="sql.php">Študenti</a></li>
-            <li><a href="teams.php">Tímy</a></li>
-            <li><a href="team_members.php">Členovia tímov</a></li>
-            <li><a href="tasks.php">Všetky úlohy</a></li>
-            <li><a href="create_task.php">Vytvorenie úlohy</a></li>
-        </ul>
-
-    <?php endif; ?>
+    <?php
+    if ($_SESSION['role'] == 'teacher') {
+        header("Location: teacher_dashboard.php");
+        exit; // Ukončí skript po presmerovaní
+    }
+    ?>
 
     <?php if ($_SESSION['role'] == 'student'): ?>
 
         <ul>
+            <li><a href="team_members.php">Moje tímy</a></li>
             <li><a href="my_tasks.php">Moje úlohy</a></li>
             <li><a href="profile.php">Môj profil</a></li>
         </ul>
@@ -54,6 +50,7 @@ if (!isset($_SESSION['user_id'])) {
 
     <a href="logout.php">Odhlásiť sa</a>
     <a href="change_password.php">Zmeniť heslo </a>
+    <a href="index.php">Späť na úvodnú stránku</a>
 
 </body>
 

@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <form method="POST">
 
-        <label>Meno:</label><br>
+        <label>Meno a priezvisko<?php:</label><br>
         <input type="text" name="name" required><br><br>
 
         <label>Email:</label><br>
@@ -77,7 +77,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     </script>
-
+<br><a href="login.php">Už máte účet? Prihláste sa tu.</a><br>
+<a href="index.php">Späť na úvodnú stránku</a>
 </body>
 
 </html>

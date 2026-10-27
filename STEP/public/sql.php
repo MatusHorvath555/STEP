@@ -3,7 +3,7 @@
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-  header("Location: login.php");
+  header("Location: <public/login.php");
   exit();
 }
 
@@ -87,7 +87,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     </table>
 
-    <a href="dashboard.php" class="btn btn-primary">
+    <a href="public/teacher_dashboard.php" class="btn btn-primary">
       Späť na Dashboard
     </a>
 
