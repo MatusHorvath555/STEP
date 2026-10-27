@@ -34,6 +34,7 @@ if (!isset($_SESSION['user_id'])) {
         <ul>
             <li><a href="sql.php">Študenti</a></li>
             <li><a href="teams.php">Tímy</a></li>
+            <li><a href="team_members.php">Členovia tímov</a></li>
             <li><a href="tasks.php">Všetky úlohy</a></li>
             <li><a href="create_task.php">Vytvorenie úlohy</a></li>
         </ul>

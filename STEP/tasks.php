@@ -80,7 +80,11 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php endforeach; ?>
 
   </table>
-
+  <p>
+    <a href="create_task.php">
+      Pridať novú úlohu
+    </a>
+  </p>
 </body>
 
 </html>
