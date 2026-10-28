@@ -1,107 +1,85 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="sk">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>STEP - Task Management</title>
 
     <!-- Prepojenie s CSS -->
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
-
+  <body>
     <header class="hlavicka">
-        <div class="logo">
-            <h1>STEP</h1>
-        </div>
+      <div class="logo">
+        <h1>STEP</h1>
+      </div>
 
-        <nav>
-            <a href="index.html" class="active">Domov</a>
-            <a href="register.php">Registrácia</a>
-            <a href="login.php">Prihlásenie</a>
-            <a href="teams.php">Tímy</a>
-        </nav>
+      <nav>
+        <a href="index.html" class="active">Domov</a>
+        <a href="register.php">Registrácia</a>
+        <a href="login.php">Prihlásenie</a>
+      </nav>
     </header>
 
-    <hr class="nav-divider">
+    <hr class="nav-divider" />
 
     <main>
-        <h1>STEP - Task Management</h1>
+      <h1>STEP - Task Management</h1>
 
-        <article class="centrovane">
-            <h2>Vitajte v aplikácii STEP</h2>
+      <article class="centrovane">
+        <h2>Vitajte v aplikácii STEP</h2>
 
-            <p>
-                STEP je aplikácia na správu úloh a tímov.
-                Umožňuje používateľom organizovať prácu,
-                spolupracovať a prehľadne spravovať svoje úlohy.
-            </p>
-        </article>
+        <p>
+          STEP je aplikácia na správu úloh a tímov. Umožňuje používateľom
+          organizovať prácu, spolupracovať a prehľadne spravovať svoje úlohy.
+          <ul>
+            <li>Vytvárajte a spravujte úlohy</li>
+            <li>Priraďujte úlohy členom tímu</li>
+            <li>Sledujte stav úloh a termíny</li>
+            <li>Spolupracujte s ostatnými členmi tímu</li>
+          </ul>
+        </p>
+      </article>
 
-        <section class="karty">
-            <h3>Čo môžete v aplikácii robiť?</h3>
+      <section class="karty">
+        <h3>Zaregistrujte sa alebo sa prihláste</h3>
 
-            <div class="karta">
-                <h3>Registrácia</h3>
-                <p>
-                    Vytvorte si používateľský účet a začnite
-                    používať aplikáciu STEP.
-                </p>
-                <p>
-                    <a href="register.php" class="btn-pro">
-                        Registrovať sa
-                    </a>
-                </p>
-            </div>
+        <div class="karta">
+          <h3>Registrácia</h3>
+          <p>
+            Vytvorte si používateľský účet a začnite používať aplikáciu STEP.
+          </p>
+          <p>
+            <a href="register.php" class="btn-pro"> Registrovať sa </a>
+          </p>
+        </div>
 
-            <div class="karta">
-                <h3>Prihlásenie</h3>
-                <p>
-                    Prihláste sa do svojho účtu a pokračujte
-                    v správe svojich úloh.
-                </p>
-                <p>
-                    <a href="login.php" class="btn-pro">
-                        Prihlásiť sa
-                    </a>
-                </p>
-            </div>
+        <div class="karta">
+          <h3>Prihlásenie</h3>
+          <p>Prihláste sa do svojho účtu a pokračujte v správe svojich úloh.</p>
+          <p>
+            <a href="login.php" class="btn-pro"> Prihlásiť sa </a>
+          </p>
+        </div>
+      </section>
 
-            <div class="karta">
-                <h3>Tímy</h3>
-                <p>
-                    Prezrite si zoznam tímov a získajte
-                    prehľad o tímovej spolupráci.
-                </p>
-                <p>
-                    <a href="teams.php" class="btn-pro">
-                        Zobraziť tímy
-                    </a>
-                </p>
-            </div>
-        </section>
+      <article>
+        <h2>Používateľské roly</h2>
 
-        <article>
-            <h2>Používateľské roly</h2>
+        <p>
+          Pri registrácii je používateľovi automaticky priradená rola
+          <strong>študent</strong>.
+        </p>
 
-            <p>
-                Pri registrácii je používateľovi automaticky
-                priradená rola <strong>študent</strong>.
-            </p>
-
-            <p>
-                Rolu <strong>učiteľ</strong> priraďuje
-                používateľovi administrátor.
-            </p>
-        </article>
+        <p>
+          Rolu <strong>učiteľ</strong> priraďuje používateľovi administrátor.
+        </p>
+      </article>
     </main>
 
     <footer>
-        <p>&copy; 2026 STEP - Task Management</p>
+      <p>&copy; 2026 STEP - Task Management</p>
     </footer>
-
-</body>
+  </body>
 </html>
