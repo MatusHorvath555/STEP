@@ -14,7 +14,7 @@
     <li><a href="register.php">Registrácia používateľa</a></li>
     <p>pouzivatelovi je pri registrácii automaticky priradena rola student, ucitel sa priraduje adminom</p>
     <li><a href="login.php">Prihlásenie</a></li>
-    <li><a href="teams.php">Zoznam týmov</a></li>
+    <li><a href="teams.php">Zoznam tímov</a></li>
   </ul>
 
 </body>
