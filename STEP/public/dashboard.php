@@ -21,9 +21,9 @@ if (!isset($_SESSION['user_id'])) {
 
     <h1>STEP</h1>
 
-    <p>Vitaj, <?php echo $_SESSION['name']; ?></p>
+<p>Vitaj, <?php echo htmlspecialchars($_SESSION['name']); ?></p>
 
-    <p>Rola: <?php echo $_SESSION['role']; ?></p>
+<p>Rola: <?php echo htmlspecialchars($_SESSION['role']); ?></p>
 
     <hr>
 
