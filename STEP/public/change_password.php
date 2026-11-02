@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-require "database.php";
+require_once "config.php";
 
 $message = "";
 
@@ -16,40 +16,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $currentPassword = $_POST['current_password'];
     $newPassword = $_POST['new_password'];
 
-    $stmt = $pdo->prepare("
-        SELECT password_hash
-        FROM users
-        WHERE id = :id
-    ");
+    // Kontrola minimálnej dĺžky hesla
+    if (strlen($newPassword) < 8) {
 
-    $stmt->execute([
-        'id' => $_SESSION['user_id']
-    ]);
+        $message = "Nové heslo musí mať aspoň 8 znakov.";
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    } else {
 
-    if ($user && password_verify($currentPassword, $user['password_hash'])) {
-
-        $newHash = password_hash(
-            $newPassword,
-            PASSWORD_DEFAULT
-        );
-
-        $update = $pdo->prepare("
-            UPDATE users
-            SET password_hash = :password
+        // Načítanie aktuálneho hesla z databázy
+        $stmt = $pdo->prepare("
+            SELECT password_hash
+            FROM users
             WHERE id = :id
         ");
 
-        $update->execute([
-            'password' => $newHash,
+        $stmt->execute([
             'id' => $_SESSION['user_id']
         ]);
 
-        $message = "Heslo bolo úspešne zmenené.";
-    } else {
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $message = "Aktuálne heslo nie je správne.";
+        // Overenie aktuálneho hesla
+        if ($user && password_verify($currentPassword, $user['password_hash'])) {
+
+            // Vytvorenie nového hashu
+            $newHash = password_hash(
+                $newPassword,
+                PASSWORD_DEFAULT
+            );
+
+            // Aktualizácia hesla v databáze
+            $update = $pdo->prepare("
+                UPDATE users
+                SET password_hash = :password
+                WHERE id = :id
+            ");
+
+            $update->execute([
+                'password' => $newHash,
+                'id' => $_SESSION['user_id']
+            ]);
+
+            $message = "Heslo bolo úspešne zmenené.";
+
+        } else {
+
+            $message = "Aktuálne heslo nie je správne.";
+        }
     }
 }
 ?>
@@ -70,39 +83,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p><?php echo $message; ?></p>
     <?php endif; ?>
 
-    <form method="POST">
+         
+<form method="POST">
 
-        <label>Aktuálne heslo:</label><br>
-        <input id="password" type="password" name="currentpassword" required><br><br>
+    <label>Aktuálne heslo:</label><br>
+    <input id="current_password"
+        type="password"
+        name="current_password"
+        required><br>
 
-        <input type="checkbox" onclick="togglePassword()">Show Password<br>
+    <input type="checkbox"
+        onclick="togglePassword('current_password')">
+    Zobraziť heslo
 
-        <br>
+    <br><br>
 
-        <label>Nové heslo</label><br>
-        <input id="password" type="password"
-            name="new_password"
-            required><br><br>
-        <input type="checkbox" onclick="togglePassword()">Show Password <br>
-        
-        <button type="submit">
-            Zmeniť heslo
-        </button>
+    <label>Nové heslo:</label><br>
+    <input id="new_password"
+        type="password"
+        name="new_password"
+        required><br>
 
-    </form>
-    <script>
-        function togglePassword() {
+    <input type="checkbox"
+        onclick="togglePassword('new_password')">
+    Zobraziť heslo
 
-            const password =
-                document.getElementById("password");
+    <br><br>
 
-            if (password.type === "password") {
-                password.type = "text";
-            } else {
-                password.type = "password";
-            }
+    <button type="submit">
+        Zmeniť heslo
+    </button>
+
+</form>
+
+<script>
+    function togglePassword(id) {
+
+        const password = document.getElementById(id);
+
+        if (password.type === "password") {
+            password.type = "text";
+        } else {
+            password.type = "password";
         }
-    </script>
+    }
+</script>
+
 </body>
 
 </html>
