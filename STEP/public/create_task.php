@@ -1,6 +1,17 @@
 <?php
+session_start();
 
-require "database.php";
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+if ($_SESSION['role'] !== 'teacher') {
+    header("Location: dashboard.php");
+    exit();
+}
+
+require_once "config.php";
 
 $message = "";
 
@@ -80,7 +91,7 @@ $teams = $pdo->query("SELECT * FROM teams ORDER BY name")
             <?php foreach ($teams as $team): ?>
 
                 <option value="<?php echo $team['id']; ?>">
-                    <?php echo $team['name']; ?>
+                    <?php echo htmlspecialchars($team['name']); ?>
                 </option>
 
             <?php endforeach; ?>
@@ -93,7 +104,7 @@ $teams = $pdo->query("SELECT * FROM teams ORDER BY name")
             <?php foreach ($users as $user): ?>
 
                 <option value="<?php echo $user['id']; ?>">
-                    <?php echo $user['name']; ?>
+                    <?php echo htmlspecialchars($user['name']); ?>
                 </option>
 
             <?php endforeach; ?>
