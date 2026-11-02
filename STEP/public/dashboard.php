@@ -36,7 +36,7 @@ if ($_SESSION['role'] === 'teacher') {
 
 
 
-    <?php if ($_SESSION['role'] == 'student'): ?>
+    <?php if ($_SESSION['role'] === 'student'): ?>
 
         <ul>
             <li><a href="my_tasks.php">Moje úlohy</a></li>
@@ -47,9 +47,9 @@ if ($_SESSION['role'] === 'teacher') {
 
     <hr>
 
-    <a href="logout.php">Odhlásiť sa</a>
-    <a href="change_password.php">Zmeniť heslo </a>
-    <a href="index.php">Späť na úvodnú stránku</a>
+<p><a href="change_password.php">Zmeniť heslo</a></p>
+<p><a href="index.php">Späť na úvodnú stránku</a></p>
+<p><a href="logout.php">Odhlásiť sa</a></p>
 
 </body>
 
