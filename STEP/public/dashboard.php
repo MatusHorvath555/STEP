@@ -7,6 +7,11 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+if ($_SESSION['role'] === 'teacher') {
+    header("Location: teacher_dashboard.php");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -29,12 +34,7 @@ if (!isset($_SESSION['user_id'])) {
 
     <h2>Dostupné funkcie</h2>
 
-    <?php
-    if ($_SESSION['role'] == 'teacher') {
-        header("Location: teacher_dashboard.php");
-        exit; // Ukončí skript po presmerovaní
-    }
-    ?>
+
 
     <?php if ($_SESSION['role'] == 'student'): ?>
 
