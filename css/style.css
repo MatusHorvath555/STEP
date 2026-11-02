@@ -379,3 +379,26 @@ footer {
 
   footer { font-size: 13px; }
 }
+
+/* 
+   PRIHLASOVACIA STRÁNKA (Dark-mode)
+*/
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #0a0f1d;
+    margin: 0;
+}
+
+.login-card {
+    background-color: #0d1b2a;
+    border: 1px solid rgba(5, 150, 105, 0.3);
+    padding: 40px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    color: #f8fafc;
+}
