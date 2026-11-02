@@ -104,7 +104,7 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </td>
 
                     <td>
-                        <?php echo htmlspecialchars($task['team_name']); ?>
+                       <?php echo htmlspecialchars($task['team_name'] ?? 'Bez tímu'); ?>
                     </td>
 
                     <td>
