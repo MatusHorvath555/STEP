@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-require "database.php";
+require_once "config.php";
 
 $stmt = $pdo->prepare("
     SELECT
@@ -25,6 +25,13 @@ $stmt->execute([
 ]);
 
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!$user) {
+    session_unset();
+    session_destroy();
+
+    header("Location: login.php");
+    exit();
+}
 
 ?>
 
@@ -61,7 +68,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 <p>
                     <strong>ID:</strong>
-                    <?php echo $user['id']; ?>
+                   <?php echo htmlspecialchars((string)$user['id']); ?>
                 </p>
 
                 <p>
@@ -81,7 +88,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 <p>
                     <strong>Registrovaný od:</strong>
-                    <?php echo $user['created_at']; ?>
+                    <?php echo htmlspecialchars($user['created_at'] ?? 'Neznáme'); ?>
                 </p>
 
             </div>
@@ -93,9 +100,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
         <a href="change_password.php" class="btn btn-warning">
             Zmeniť heslo
         </a>
-        <a href="dashboard.php" class="btn btn-warning">
-            Dashboard
-        </a>
+     
 
         <a href="index.php" class="btn btn-warning">
             Domovská stránka
