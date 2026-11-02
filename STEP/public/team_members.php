@@ -12,7 +12,7 @@ if (($_SESSION['role'] ?? '') !== 'teacher') {
     die("Prístup zamietnutý.");
 }
 
-require_once "config.php";
+require_once __DIR__ . "/../config/config.php";
 
 $message = "";
 $messageType = "info";

@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-require_once "config.php";
+require_once __DIR__ . "/../config/config.php";
 
 $userId = $_SESSION['user_id'];
 

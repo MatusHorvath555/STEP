@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-require_once "config.php";
+require_once __DIR__ . "/../config/config.php";
 
 $userId = (int) $_SESSION['user_id'];
 
@@ -31,6 +31,13 @@ if (empty($_SESSION['csrf_token'])) {
 }
 
 $csrfToken = $_SESSION['csrf_token'];
+
+// Jednorazový token na ochranu pred duplicitným vytvorením úlohy.
+if (empty($_SESSION['create_task_token'])) {
+    $_SESSION['create_task_token'] = bin2hex(random_bytes(32));
+}
+
+$createTaskToken = $_SESSION['create_task_token'];
 
 // Pomocné funkcie
 function h($value)
@@ -134,18 +141,17 @@ function getManagedTask($pdo, $taskId, $userId)
 
 $teamsStmt = $pdo->prepare("
     SELECT t.id, t.name
-FROM teams t
-INNER JOIN team_members tm ON tm.team_id = t.id
-INNER JOIN users u ON u.id = tm.user_id
-WHERE tm.user_id = :user_id
-  AND tm.is_team_leader = TRUE
-  AND u.role = 'student'
-ORDER BY t.name
+    FROM teams t
+    INNER JOIN team_members tm ON tm.team_id = t.id
+    INNER JOIN users u ON u.id = tm.user_id
+    WHERE tm.user_id = :user_id
+      AND tm.is_team_leader = TRUE
+      AND u.role = 'student'
+    ORDER BY t.name
 ");
 
 $teamsStmt->execute(['user_id' => $userId]);
 $teams = $teamsStmt->fetchAll(PDO::FETCH_ASSOC);
-
 
 /*
  * SPRACOVANIE FORMULÁROV
@@ -171,6 +177,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
          */
 
         if ($action === 'create_task') {
+
+            // Kontrola jednorazového tokenu.
+            $submittedCreateToken = $_POST['create_task_token'] ?? '';
+
+            if (
+                !is_string($submittedCreateToken) ||
+                empty($_SESSION['create_task_token']) ||
+                !hash_equals($_SESSION['create_task_token'], $submittedCreateToken)
+            ) {
+                throw new Exception(
+                    "Tento formulár už bol odoslaný. Obnov stránku a skús to znova."
+                );
+            }
+
+            // Token spotrebujeme pred vytvorením úlohy.
+            unset($_SESSION['create_task_token']);
 
             $teamId = filter_var(
                 $_POST['team_id'] ?? null,
@@ -393,11 +415,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-
 /*
  * NAČÍTANIE ČLENOV VEDÚCICH TÍMOV
- *
- * Každý člen je priradený ku konkrétnemu tímu.
  */
 
 $members = [];
@@ -405,25 +424,25 @@ $members = [];
 if (!empty($teams)) {
 
     $membersStmt = $pdo->prepare("
-    SELECT
-        tm.team_id,
-        u.id,
-        u.name
-    FROM team_members tm
-    INNER JOIN users u ON u.id = tm.user_id
-    WHERE u.role = 'student'
-      AND EXISTS (
-          SELECT 1
-          FROM team_members leader
-          INNER JOIN users leader_user
-              ON leader_user.id = leader.user_id
-          WHERE leader.team_id = tm.team_id
-            AND leader.user_id = :leader_id
-            AND leader.is_team_leader = TRUE
-            AND leader_user.role = 'student'
-      )
-    ORDER BY u.name
-");
+        SELECT
+            tm.team_id,
+            u.id,
+            u.name
+        FROM team_members tm
+        INNER JOIN users u ON u.id = tm.user_id
+        WHERE u.role = 'student'
+          AND EXISTS (
+              SELECT 1
+              FROM team_members leader
+              INNER JOIN users leader_user
+                  ON leader_user.id = leader.user_id
+              WHERE leader.team_id = tm.team_id
+                AND leader.user_id = :leader_id
+                AND leader.is_team_leader = TRUE
+                AND leader_user.role = 'student'
+          )
+        ORDER BY u.name
+    ");
 
     $membersStmt->execute([
         'leader_id' => $userId
@@ -795,6 +814,12 @@ foreach ($tasks as $task) {
             background: #008f9f;
         }
 
+        .btn:disabled {
+            background: #7b9295;
+            cursor: not-allowed;
+            opacity: .8;
+        }
+
         .task-list {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -1014,7 +1039,6 @@ foreach ($tasks as $task) {
 
 <body>
 
-
     <?php require_once "navigation.php"; ?>
 
     <main class="container">
@@ -1108,10 +1132,11 @@ foreach ($tasks as $task) {
 
                 <h2>+ Vytvoriť novú úlohu</h2>
 
-                <form method="POST">
+                <form method="POST" id="createTaskForm">
 
                     <input type="hidden" name="csrf_token" value="<?= h($csrfToken) ?>">
                     <input type="hidden" name="action" value="create_task">
+                    <input type="hidden" name="create_task_token" value="<?= h($createTaskToken) ?>">
 
                     <div class="form-grid">
 
@@ -1172,7 +1197,9 @@ foreach ($tasks as $task) {
                         </div>
 
                         <div class="form-group full">
-                            <button type="submit" class="btn">Vytvoriť úlohu</button>
+                            <button type="submit" class="btn" id="createTaskButton">
+                                Vytvoriť úlohu
+                            </button>
                         </div>
 
                     </div>
@@ -1378,8 +1405,28 @@ foreach ($tasks as $task) {
             teamSelect.addEventListener('change', filterMembers);
             filterMembers();
         }
+
+        // Ochrana pred opakovaným kliknutím na tlačidlo.
+        const createTaskForm = document.getElementById('createTaskForm');
+        const createTaskButton = document.getElementById('createTaskButton');
+
+        if (createTaskForm && createTaskButton) {
+            createTaskForm.addEventListener('submit', function(event) {
+
+                if (createTaskForm.dataset.submitted === 'true') {
+                    event.preventDefault();
+                    return;
+                }
+
+                createTaskForm.dataset.submitted = 'true';
+
+                createTaskButton.disabled = true;
+                createTaskButton.textContent = 'Vytváram úlohu...';
+            });
+        }
     </script>
 
 </body>
 
 </html>
+```

@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -12,7 +11,7 @@ if (($_SESSION['role'] ?? '') !== 'teacher') {
     die("Prístup zamietnutý.");
 }
 
-require_once "config.php";
+require_once __DIR__ . "/../config/config.php";
 
 // Načítanie údajov učiteľa
 $stmt = $pdo->prepare("
@@ -58,7 +57,6 @@ $initials = mb_strtoupper($initials, 'UTF-8');
     <title>Teacher Dashboard | STEP</title>
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -138,7 +136,6 @@ $initials = mb_strtoupper($initials, 'UTF-8');
                 flex-direction: column;
             }
         }
-
     </style>
 
 </head>
@@ -183,4 +180,5 @@ $initials = mb_strtoupper($initials, 'UTF-8');
     </main>
 
 </body>
+
 </html>
