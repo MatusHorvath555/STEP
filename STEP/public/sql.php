@@ -1,17 +1,18 @@
+
 <?php
 
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-  header("Location: <public/login.php");
-  exit();
+    header("Location: login.php");
+    exit();
 }
 
-if ($_SESSION['role'] != 'teacher') {
-  die("Prístup zamietnutý.");
+if ($_SESSION['role'] !== 'teacher') {
+    die("Prístup zamietnutý.");
 }
 
-require "database.php";
+require_once "config.php";
 
 $stmt = $pdo->query("
     SELECT
@@ -24,6 +25,7 @@ $stmt = $pdo->query("
     WHERE role = 'student'
     ORDER BY name
 ");
+
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
@@ -69,7 +71,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
           <tr>
 
-            <td><?php echo $user['id']; ?></td>
+            <td><?php echo (int)$user['id']; ?></td>
 
             <td><?php echo htmlspecialchars($user['name']); ?></td>
 
@@ -77,7 +79,7 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <td><?php echo htmlspecialchars($user['role']); ?></td>
 
-            <td><?php echo $user['created_at']; ?></td>
+            <td><?php echo htmlspecialchars($user['created_at'] ?? 'Neznáme'); ?></td>
 
           </tr>
 
