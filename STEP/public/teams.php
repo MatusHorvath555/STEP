@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -43,12 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $message = "Zadajte názov tímu.";
         $messageType = "danger";
-
     } elseif (mb_strlen($name, 'UTF-8') > 255) {
 
         $message = "Názov tímu môže obsahovať maximálne 255 znakov.";
         $messageType = "danger";
-
     } else {
 
         $stmt = $pdo->prepare("
@@ -94,6 +91,7 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
+    <?php require_once "navigation.php"; ?>
 
     <div class="container mt-4">
 
@@ -130,8 +128,7 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <input
                         type="hidden"
                         name="csrf_token"
-                        value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>"
-                    >
+                        value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
 
                     <div class="mb-3">
 
@@ -145,8 +142,7 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             id="team_name"
                             class="form-control"
                             maxlength="255"
-                            required
-                        >
+                            required>
 
                     </div>
 

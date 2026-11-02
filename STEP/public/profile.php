@@ -49,6 +49,7 @@ if (!$user) {
 </head>
 
 <body>
+    <?php require_once "navigation.php"; ?>
 
     <div class="container mt-4">
 
@@ -68,7 +69,7 @@ if (!$user) {
 
                 <p>
                     <strong>ID:</strong>
-                   <?php echo htmlspecialchars((string)$user['id']); ?>
+                    <?php echo htmlspecialchars((string)$user['id']); ?>
                 </p>
 
                 <p>
@@ -100,7 +101,7 @@ if (!$user) {
         <a href="change_password.php" class="btn btn-warning">
             Zmeniť heslo
         </a>
-     
+
 
         <a href="index.php" class="btn btn-warning">
             Domovská stránka

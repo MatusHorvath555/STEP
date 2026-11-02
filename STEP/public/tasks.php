@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -50,6 +49,7 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
+    <?php require_once "navigation.php"; ?>
 
     <h1>Zoznam úloh</h1>
 
@@ -139,4 +139,5 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php endif; ?>
 
 </body>
+
 </html>

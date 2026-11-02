@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -9,6 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if (($_SESSION['role'] ?? '') !== 'teacher') {
+    http_response_code(403);
     die("Prístup zamietnutý.");
 }
 
@@ -23,7 +23,7 @@ if (empty($_SESSION['csrf_token'])) {
 }
 
 /*
- * PRIDANIE ŠTUDENTA DO TÍMU
+ * SPRACOVANIE FORMULÁROV
  */
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -34,94 +34,212 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         !is_string($submittedToken) ||
         !hash_equals($_SESSION['csrf_token'], $submittedToken)
     ) {
+        http_response_code(400);
         die("Neplatná požiadavka. Obnovte stránku a skúste to znova.");
     }
 
-    $team_id = filter_input(INPUT_POST, 'team_id', FILTER_VALIDATE_INT);
-    $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
+    $action = $_POST['action'] ?? '';
 
-    if (!$team_id || !$user_id) {
+    /*
+     * PRIDANIE ŠTUDENTA DO TÍMU
+     */
 
-        $message = "Vyberte platný tím a študenta.";
-        $messageType = "danger";
+    if ($action === 'add_member') {
 
-    } else {
+        $team_id = filter_input(INPUT_POST, 'team_id', FILTER_VALIDATE_INT);
+        $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
 
-        // Kontrola existencie tímu
-        $teamCheck = $pdo->prepare("
-            SELECT id
-            FROM teams
-            WHERE id = :team_id
-        ");
+        if (!$team_id || !$user_id || $team_id <= 0 || $user_id <= 0) {
 
-        $teamCheck->execute([
-            'team_id' => $team_id
-        ]);
-
-        // Kontrola existencie študenta
-        $studentCheck = $pdo->prepare("
-            SELECT id
-            FROM users
-            WHERE id = :user_id
-            AND role = 'student'
-        ");
-
-        $studentCheck->execute([
-            'user_id' => $user_id
-        ]);
-
-        if (!$teamCheck->fetch()) {
-
-            $message = "Vybraný tím neexistuje.";
+            $message = "Vyberte platný tím a študenta.";
             $messageType = "danger";
-
-        } elseif (!$studentCheck->fetch()) {
-
-            $message = "Vybraný študent neexistuje.";
-            $messageType = "danger";
-
         } else {
 
-            // Kontrola duplicitného členstva
-            $check = $pdo->prepare("
+            $teamCheck = $pdo->prepare("
                 SELECT id
-                FROM team_members
-                WHERE team_id = :team_id
-                AND user_id = :user_id
+                FROM teams
+                WHERE id = :team_id
             ");
 
-            $check->execute([
-                'team_id' => $team_id,
-                'user_id' => $user_id
-            ]);
+            $teamCheck->execute(['team_id' => $team_id]);
 
-            if ($check->fetch()) {
+            $studentCheck = $pdo->prepare("
+                SELECT id
+                FROM users
+                WHERE id = :user_id
+                AND role = 'student'
+            ");
 
-                $message = "Študent už je členom tohto tímu.";
-                $messageType = "warning";
+            $studentCheck->execute(['user_id' => $user_id]);
 
+            if (!$teamCheck->fetch()) {
+
+                $message = "Vybraný tím neexistuje.";
+                $messageType = "danger";
+            } elseif (!$studentCheck->fetch()) {
+
+                $message = "Vybraný študent neexistuje.";
+                $messageType = "danger";
             } else {
 
-                $insert = $pdo->prepare("
-                    INSERT INTO team_members (
-                        team_id,
-                        user_id
-                    )
-                    VALUES (
-                        :team_id,
-                        :user_id
-                    )
+                $check = $pdo->prepare("
+                    SELECT id
+                    FROM team_members
+                    WHERE team_id = :team_id
+                    AND user_id = :user_id
                 ");
 
-                $insert->execute([
+                $check->execute([
                     'team_id' => $team_id,
                     'user_id' => $user_id
                 ]);
 
-                $message = "Študent bol úspešne pridaný do tímu.";
-                $messageType = "success";
+                if ($check->fetch()) {
+
+                    $message = "Študent už je členom tohto tímu.";
+                    $messageType = "warning";
+                } else {
+
+                    $insert = $pdo->prepare("
+                        INSERT INTO team_members (team_id, user_id)
+                        VALUES (:team_id, :user_id)
+                    ");
+
+                    $insert->execute([
+                        'team_id' => $team_id,
+                        'user_id' => $user_id
+                    ]);
+
+                    $message = "Študent bol úspešne pridaný do tímu.";
+                    $messageType = "success";
+                }
             }
         }
+    }
+
+    /*
+     * NASTAVENIE VEDÚCEHO TÍMU
+     */ elseif ($action === 'set_leader') {
+
+        $team_id = filter_input(INPUT_POST, 'team_id', FILTER_VALIDATE_INT);
+        $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
+
+        if (!$team_id || !$user_id || $team_id <= 0 || $user_id <= 0) {
+
+            $message = "Neplatný tím alebo študent.";
+            $messageType = "danger";
+        } else {
+
+            try {
+
+                $pdo->beginTransaction();
+
+                // Overenie, že študent je členom vybraného tímu
+                $memberCheck = $pdo->prepare("
+                    SELECT tm.id
+                    FROM team_members tm
+                    JOIN users u ON u.id = tm.user_id
+                    WHERE tm.team_id = :team_id
+                    AND tm.user_id = :user_id
+                    AND u.role = 'student'
+                    FOR UPDATE OF tm
+                ");
+
+                $memberCheck->execute([
+                    'team_id' => $team_id,
+                    'user_id' => $user_id
+                ]);
+
+                if (!$memberCheck->fetch()) {
+
+                    throw new RuntimeException(
+                        "Vybraný študent nie je členom tohto tímu."
+                    );
+                }
+
+                // Zrušenie aktuálneho vedúceho v danom tíme
+                $removeOldLeader = $pdo->prepare("
+                    UPDATE team_members
+                    SET is_team_leader = FALSE
+                    WHERE team_id = :team_id
+                    AND is_team_leader = TRUE
+                ");
+
+                $removeOldLeader->execute([
+                    'team_id' => $team_id
+                ]);
+
+                // Nastavenie nového vedúceho
+                $setNewLeader = $pdo->prepare("
+                    UPDATE team_members
+                    SET is_team_leader = TRUE
+                    WHERE team_id = :team_id
+                    AND user_id = :user_id
+                ");
+
+                $setNewLeader->execute([
+                    'team_id' => $team_id,
+                    'user_id' => $user_id
+                ]);
+
+                $pdo->commit();
+
+                $message = "Vedúci tímu bol úspešne nastavený.";
+                $messageType = "success";
+            } catch (Throwable $e) {
+
+                if ($pdo->inTransaction()) {
+                    $pdo->rollBack();
+                }
+
+                error_log("Team leader update error: " . $e->getMessage());
+
+                $message = "Vedúceho tímu sa nepodarilo nastaviť.";
+                $messageType = "danger";
+            }
+        }
+    }
+
+    /*
+     * ODVOĽANIE VEDÚCEHO TÍMU
+     */ elseif ($action === 'remove_leader') {
+
+        $team_id = filter_input(INPUT_POST, 'team_id', FILTER_VALIDATE_INT);
+        $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
+
+        if (!$team_id || !$user_id || $team_id <= 0 || $user_id <= 0) {
+
+            $message = "Neplatný tím alebo študent.";
+            $messageType = "danger";
+        } else {
+
+            $removeLeader = $pdo->prepare("
+                UPDATE team_members
+                SET is_team_leader = FALSE
+                WHERE team_id = :team_id
+                AND user_id = :user_id
+                AND is_team_leader = TRUE
+            ");
+
+            $removeLeader->execute([
+                'team_id' => $team_id,
+                'user_id' => $user_id
+            ]);
+
+            if ($removeLeader->rowCount() > 0) {
+
+                $message = "Vedúci tímu bol úspešne odvolaný.";
+                $messageType = "success";
+            } else {
+
+                $message = "Tento študent nie je vedúcim vybraného tímu.";
+                $messageType = "warning";
+            }
+        }
+    } else {
+
+        $message = "Neznáma požiadavka.";
+        $messageType = "danger";
     }
 }
 
@@ -153,6 +271,9 @@ $students = $pdo->query("
 $members = $pdo->query("
     SELECT
         tm.id,
+        tm.team_id,
+        tm.user_id,
+        tm.is_team_leader,
         t.name AS team_name,
         u.name AS student_name,
         u.email
@@ -174,11 +295,14 @@ $members = $pdo->query("
 
     <title>Členovia tímov</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
 </head>
 
 <body>
+    <?php require_once "navigation.php"; ?>
 
     <div class="container mt-4">
 
@@ -188,20 +312,20 @@ $members = $pdo->query("
             Dashboard
         </a>
 
-        <?php if (!empty($message)): ?>
+        <?php if ($message !== ""): ?>
 
-            <div class="alert alert-<?php echo $messageType; ?>">
-
+            <div class="alert alert-<?php echo htmlspecialchars($messageType, ENT_QUOTES, 'UTF-8'); ?>">
                 <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
-
             </div>
 
         <?php endif; ?>
 
+        <!-- PRIDANIE ŠTUDENTA -->
+
         <div class="card mb-4">
 
             <div class="card-header">
-                <h2>Pridať študenta do tímu</h2>
+                <h2 class="h5 mb-0">Pridať študenta do tímu</h2>
             </div>
 
             <div class="card-body">
@@ -218,11 +342,10 @@ $members = $pdo->query("
 
                     <form method="POST">
 
-                        <input
-                            type="hidden"
-                            name="csrf_token"
-                            value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>"
-                        >
+                        <input type="hidden" name="csrf_token"
+                            value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+
+                        <input type="hidden" name="action" value="add_member">
 
                         <div class="mb-3">
 
@@ -230,20 +353,14 @@ $members = $pdo->query("
                                 Vyberte tím
                             </label>
 
-                            <select
-                                name="team_id"
-                                id="team_id"
-                                class="form-select"
-                                required>
+                            <select name="team_id" id="team_id" class="form-select" required>
 
                                 <option value="">Vyberte tím</option>
 
                                 <?php foreach ($teams as $team): ?>
 
                                     <option value="<?php echo (int) $team['id']; ?>">
-
                                         <?php echo htmlspecialchars($team['name'], ENT_QUOTES, 'UTF-8'); ?>
-
                                     </option>
 
                                 <?php endforeach; ?>
@@ -258,21 +375,15 @@ $members = $pdo->query("
                                 Vyberte študenta
                             </label>
 
-                            <select
-                                name="user_id"
-                                id="user_id"
-                                class="form-select"
-                                required>
+                            <select name="user_id" id="user_id" class="form-select" required>
 
                                 <option value="">Vyberte študenta</option>
 
                                 <?php foreach ($students as $student): ?>
 
                                     <option value="<?php echo (int) $student['id']; ?>">
-
                                         <?php echo htmlspecialchars($student['name'], ENT_QUOTES, 'UTF-8'); ?>
                                         (<?php echo htmlspecialchars($student['email'], ENT_QUOTES, 'UTF-8'); ?>)
-
                                     </option>
 
                                 <?php endforeach; ?>
@@ -281,12 +392,8 @@ $members = $pdo->query("
 
                         </div>
 
-                        <button
-                            class="btn btn-primary"
-                            type="submit">
-
+                        <button class="btn btn-primary" type="submit">
                             Pridať študenta do tímu
-
                         </button>
 
                     </form>
@@ -297,6 +404,8 @@ $members = $pdo->query("
 
         </div>
 
+        <!-- ZOZNAM ČLENOV -->
+
         <h3>Zoznam členov tímov</h3>
 
         <?php if (empty($members)): ?>
@@ -305,47 +414,118 @@ $members = $pdo->query("
 
         <?php else: ?>
 
-            <table class="table table-striped table-hover">
+            <div class="table-responsive">
 
-                <thead class="table-dark">
+                <table class="table table-striped table-hover align-middle">
 
-                    <tr>
-                        <th>Tím</th>
-                        <th>Študent</th>
-                        <th>Email</th>
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    <?php foreach ($members as $member): ?>
+                    <thead class="table-dark">
 
                         <tr>
-
-                            <td>
-                                <?php echo htmlspecialchars($member['team_name'], ENT_QUOTES, 'UTF-8'); ?>
-                            </td>
-
-                            <td>
-                                <?php echo htmlspecialchars($member['student_name'], ENT_QUOTES, 'UTF-8'); ?>
-                            </td>
-
-                            <td>
-                                <?php echo htmlspecialchars($member['email'], ENT_QUOTES, 'UTF-8'); ?>
-                            </td>
-
+                            <th>Tím</th>
+                            <th>Študent</th>
+                            <th>Email</th>
+                            <th>Funkcia</th>
+                            <th>Akcia</th>
                         </tr>
 
-                    <?php endforeach; ?>
+                    </thead>
 
-                </tbody>
+                    <tbody>
 
-            </table>
+                        <?php foreach ($members as $member): ?>
+
+                            <tr>
+
+                                <td>
+                                    <?php echo htmlspecialchars($member['team_name'], ENT_QUOTES, 'UTF-8'); ?>
+                                </td>
+
+                                <td>
+                                    <?php echo htmlspecialchars($member['student_name'], ENT_QUOTES, 'UTF-8'); ?>
+                                </td>
+
+                                <td>
+                                    <?php echo htmlspecialchars($member['email'], ENT_QUOTES, 'UTF-8'); ?>
+                                </td>
+
+                                <td>
+
+                                    <?php if ($member['is_team_leader']): ?>
+
+                                        <span class="badge bg-success">
+                                            Vedúci tímu
+                                        </span>
+
+                                    <?php else: ?>
+
+                                        <span class="badge bg-secondary">
+                                            Člen tímu
+                                        </span>
+
+                                    <?php endif; ?>
+
+                                </td>
+
+                                <td>
+
+                                    <?php if ($member['is_team_leader']): ?>
+
+                                        <form method="POST" class="d-inline">
+
+                                            <input type="hidden" name="csrf_token"
+                                                value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+
+                                            <input type="hidden" name="action" value="remove_leader">
+                                            <input type="hidden" name="team_id" value="<?php echo (int) $member['team_id']; ?>">
+                                            <input type="hidden" name="user_id" value="<?php echo (int) $member['user_id']; ?>">
+
+                                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                onclick="return confirm('Naozaj chcete odvolať vedúceho tímu?');">
+
+                                                Odvolať vedúceho
+
+                                            </button>
+
+                                        </form>
+
+                                    <?php else: ?>
+
+                                        <form method="POST" class="d-inline">
+
+                                            <input type="hidden" name="csrf_token"
+                                                value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+
+                                            <input type="hidden" name="action" value="set_leader">
+                                            <input type="hidden" name="team_id" value="<?php echo (int) $member['team_id']; ?>">
+                                            <input type="hidden" name="user_id" value="<?php echo (int) $member['user_id']; ?>">
+
+                                            <button type="submit" class="btn btn-outline-primary btn-sm"
+                                                onclick="return confirm('Naozaj chcete nastaviť tohto študenta za vedúceho tímu?');">
+
+                                                Nastaviť za vedúceho
+
+                                            </button>
+
+                                        </form>
+
+                                    <?php endif; ?>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
 
         <?php endif; ?>
 
     </div>
 
 </body>
+
 </html>

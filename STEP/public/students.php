@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -46,6 +45,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
+    <?php require_once "navigation.php"; ?>
 
     <div class="container mt-4">
 
@@ -121,4 +121,5 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
 </body>
+
 </html>

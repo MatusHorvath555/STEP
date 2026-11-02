@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -56,7 +55,6 @@ $initials = mb_strtoupper($initials, 'UTF-8');
     <title>Môj profil | STEP</title>
 
     <style>
-
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
@@ -137,12 +135,12 @@ $initials = mb_strtoupper($initials, 'UTF-8');
             color: #888;
             font-size: 13px;
         }
-
     </style>
 
 </head>
 
 <body>
+    <?php require_once "navigation.php"; ?>
 
     <div class="profile-container">
 
@@ -204,4 +202,5 @@ $initials = mb_strtoupper($initials, 'UTF-8');
     </div>
 
 </body>
+
 </html>

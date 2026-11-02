@@ -70,6 +70,7 @@ $teams = $pdo->query("SELECT * FROM teams ORDER BY name")
 </head>
 
 <body>
+    <?php require_once "navigation.php"; ?>
 
     <h2>Nová úloha</h2>
 

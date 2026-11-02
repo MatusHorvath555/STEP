@@ -20,7 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (strlen($newPassword) < 8) {
 
         $message = "Nové heslo musí mať aspoň 8 znakov.";
-
     } else {
 
         // Načítanie aktuálneho hesla z databázy
@@ -58,7 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ]);
 
             $message = "Heslo bolo úspešne zmenené.";
-
         } else {
 
             $message = "Aktuálne heslo nie je správne.";
@@ -76,6 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
+    <?php require_once "navigation.php"; ?>
 
     <h2>Zmena hesla</h2>
 
@@ -83,51 +82,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p><?php echo $message; ?></p>
     <?php endif; ?>
 
-         
-<form method="POST">
 
-    <label>Aktuálne heslo:</label><br>
-    <input id="current_password"
-        type="password"
-        name="current_password"
-        required><br>
+    <form method="POST">
 
-    <input type="checkbox"
-        onclick="togglePassword('current_password')">
-    Zobraziť heslo
+        <label>Aktuálne heslo:</label><br>
+        <input id="current_password"
+            type="password"
+            name="current_password"
+            required><br>
 
-    <br><br>
+        <input type="checkbox"
+            onclick="togglePassword('current_password')">
+        Zobraziť heslo
 
-    <label>Nové heslo:</label><br>
-    <input id="new_password"
-        type="password"
-        name="new_password"
-        required><br>
+        <br><br>
 
-    <input type="checkbox"
-        onclick="togglePassword('new_password')">
-    Zobraziť heslo
+        <label>Nové heslo:</label><br>
+        <input id="new_password"
+            type="password"
+            name="new_password"
+            required><br>
 
-    <br><br>
+        <input type="checkbox"
+            onclick="togglePassword('new_password')">
+        Zobraziť heslo
 
-    <button type="submit">
-        Zmeniť heslo
-    </button>
+        <br><br>
 
-</form>
+        <button type="submit">
+            Zmeniť heslo
+        </button>
 
-<script>
-    function togglePassword(id) {
+    </form>
 
-        const password = document.getElementById(id);
+    <script>
+        function togglePassword(id) {
 
-        if (password.type === "password") {
-            password.type = "text";
-        } else {
-            password.type = "password";
+            const password = document.getElementById(id);
+
+            if (password.type === "password") {
+                password.type = "text";
+            } else {
+                password.type = "password";
+            }
         }
-    }
-</script>
+    </script>
 
 </body>
 
