@@ -6,10 +6,13 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
+require_once "config.php";
 
-require "database.php";
+$taskId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-$taskId = $_GET['id'];
+if (!$taskId) {
+    die("Neplatné ID úlohy.");
+}
 
 $stmt = $pdo->prepare("
     SELECT *
@@ -33,15 +36,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $status = $_POST['status'];
 
+    // Kontrola povolených stavov
+    $allowedStatuses = ['To Do', 'In Progress', 'Done'];
+
+    if (!in_array($status, $allowedStatuses, true)) {
+        die("Neplatný stav úlohy.");
+    }
+
     $update = $pdo->prepare("
         UPDATE tasks
         SET status = :status
         WHERE id = :id
+        AND assigned_to = :user_id
     ");
 
     $update->execute([
         'status' => $status,
-        'id' => $taskId
+        'id' => $taskId,
+        'user_id' => $_SESSION['user_id']
     ]);
 
     header("Location: my_tasks.php");
