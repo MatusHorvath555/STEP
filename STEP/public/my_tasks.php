@@ -92,7 +92,7 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <tr>
 
                     <td>
-                        <?php echo $task['id']; ?>
+                       <?php echo (int)$task['id']; ?>
                     </td>
 
                     <td>
@@ -100,7 +100,7 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </td>
 
                     <td>
-                        <?php echo htmlspecialchars($task['description']); ?>
+                        <?php echo htmlspecialchars($task['description'] ?? 'Bez popisu'); ?>
                     </td>
 
                     <td>
@@ -116,18 +116,20 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </td>
 
                     <td>
-                        <?php echo htmlspecialchars($task['deadline']); ?>
+                       <?php echo htmlspecialchars($task['deadline'] ?? 'Neurčený'); ?>
                     </td>
                     <td>
-                        <a href="change_status.php?id=<?php echo $task['id']; ?>">
+                        <a href="change_status.php?id=<?php echo (int)$task['id']; ?>">
                             Zmeniť stav
                         </a>
                     </td>
-                    <td>
-                        <a href="task_detail.php?id=<?php echo $task['id']; ?>">
-                            Zobraziť detail
-                        </a>
-                </tr>
+                  <td>
+                   <a href="task_detail.php?id=<?php echo (int)$task['id']; ?>">
+                        Zobraziť detail
+                    </a>
+                    </td>
+            </tr>
+            
 
             <?php endforeach; ?>
 
