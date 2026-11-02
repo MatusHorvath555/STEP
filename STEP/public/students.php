@@ -14,7 +14,7 @@ if ($_SESSION['role'] !== 'teacher') {
 }
 
 // Pripojenie k databáze
-require_once "config.php";
+require_once __DIR__ . "/../config/config.php";
 
 // Načítanie študentov
 $stmt = $pdo->query("

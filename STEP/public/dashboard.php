@@ -2,7 +2,7 @@
 
 session_start();
 
-require_once "config.php";
+require_once __DIR__ . "/../config/config.php";
 
 // Kontrola prihlásenia
 if (!isset($_SESSION['user_id'])) {

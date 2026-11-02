@@ -1,8 +1,7 @@
-
 <?php
 
 session_start();
-require_once "config.php";
+require_once __DIR__ . "/../config/config.php";
 
 // Docasny nahlad povoleny iba na localhoste.
 $allowedHosts = ['localhost', '127.0.0.1', '::1'];
@@ -77,12 +76,14 @@ $stmt->execute($params);
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Pomocna funkcia na bezpecny vypis
-function e($value) {
+function e($value)
+{
     return htmlspecialchars((string)($value ?? ''), ENT_QUOTES, 'UTF-8');
 }
 
 // Preklad roli
-function roleLabel($role) {
+function roleLabel($role)
+{
     $roles = [
         'student' => 'Študent',
         'teacher' => 'Učiteľ',
@@ -93,7 +94,8 @@ function roleLabel($role) {
     return $roles[$role] ?? 'Neznáma rola';
 }
 
-function roleClass($role) {
+function roleClass($role)
+{
     $classes = [
         'student' => 'student',
         'teacher' => 'teacher',
@@ -108,6 +110,7 @@ function roleClass($role) {
 
 <!DOCTYPE html>
 <html lang="sk">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -135,7 +138,7 @@ function roleClass($role) {
             align-items: center;
             justify-content: space-between;
             padding: 0 4%;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
         }
 
         .logo {
@@ -230,7 +233,7 @@ function roleClass($role) {
             border-radius: 17px;
             padding: 15px 22px;
             min-height: 95px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.16);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
         }
 
         .stat-number {
@@ -246,10 +249,21 @@ function roleClass($role) {
             margin-top: 5px;
         }
 
-        .teal { color: #0096a8; }
-        .green { color: #65c52d; }
-        .orange { color: #f0442e; }
-        .blue { color: #3984c6; }
+        .teal {
+            color: #0096a8;
+        }
+
+        .green {
+            color: #65c52d;
+        }
+
+        .orange {
+            color: #f0442e;
+        }
+
+        .blue {
+            color: #3984c6;
+        }
 
         /* FILTRE */
 
@@ -257,7 +271,7 @@ function roleClass($role) {
             background: white;
             padding: 20px;
             border-radius: 16px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.14);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.14);
             margin-bottom: 25px;
         }
 
@@ -274,7 +288,8 @@ function roleClass($role) {
             flex-wrap: wrap;
         }
 
-        input, select {
+        input,
+        select {
             padding: 11px 13px;
             border: 1px solid #ccc;
             border-radius: 7px;
@@ -292,7 +307,8 @@ function roleClass($role) {
             min-width: 180px;
         }
 
-        button, .reset-button {
+        button,
+        .reset-button {
             border: none;
             border-radius: 7px;
             padding: 11px 23px;
@@ -322,7 +338,7 @@ function roleClass($role) {
             background: white;
             border-radius: 17px;
             padding: 22px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
             overflow: hidden;
         }
 
@@ -471,7 +487,8 @@ function roleClass($role) {
                 flex-direction: column;
             }
 
-            input, select {
+            input,
+            select {
                 width: 100%;
             }
 
@@ -485,205 +502,205 @@ function roleClass($role) {
 
 <body>
 
-<header>
-    <div class="logo">STEP</div>
+    <header>
+        <div class="logo">STEP</div>
 
-    <div class="header-right">
-        <span>Administrácia systému</span>
-        <a href="logout.php">ODHLÁSIŤ SA</a>
-    </div>
-</header>
+        <div class="header-right">
+            <span>Administrácia systému</span>
+            <a href="logout.php">ODHLÁSIŤ SA</a>
+        </div>
+    </header>
 
-<main class="container">
+    <main class="container">
 
-    <div class="page-heading">
-        <div>
-            <h1>Správa používateľov</h1>
-            <div class="subtitle">
-                Administrácia používateľských účtov v systéme STEP
+        <div class="page-heading">
+            <div>
+                <h1>Správa používateľov</h1>
+                <div class="subtitle">
+                    Administrácia používateľských účtov v systéme STEP
+                </div>
+            </div>
+
+            <div class="admin-label">
+                ADMINISTRÁCIA
             </div>
         </div>
 
-        <div class="admin-label">
-            ADMINISTRÁCIA
-        </div>
-    </div>
-
-    <?php if ($previewMode): ?>
-        <div class="preview-warning">
-            <strong>Režim náhľadu:</strong>
-            Stránka je otvorená bez administrátorského účtu.
-            Údaje môžeš prezerať, ale administrátorské úpravy nie sú dostupné.
-            Tento režim funguje iba na localhoste.
-        </div>
-    <?php endif; ?>
-
-    <!-- STATISTIKY -->
-
-    <section class="stats">
-
-        <div class="stat-card">
-            <div class="stat-number teal">
-                <?= (int)$stats['total'] ?>
+        <?php if ($previewMode): ?>
+            <div class="preview-warning">
+                <strong>Režim náhľadu:</strong>
+                Stránka je otvorená bez administrátorského účtu.
+                Údaje môžeš prezerať, ale administrátorské úpravy nie sú dostupné.
+                Tento režim funguje iba na localhoste.
             </div>
-            <div class="stat-label">Všetci používatelia</div>
-        </div>
+        <?php endif; ?>
 
-        <div class="stat-card">
-            <div class="stat-number green">
-                <?= (int)$stats['students'] ?>
+        <!-- STATISTIKY -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+                <div class="stat-number teal">
+                    <?= (int)$stats['total'] ?>
+                </div>
+                <div class="stat-label">Všetci používatelia</div>
             </div>
-            <div class="stat-label">Študenti</div>
-        </div>
 
-        <div class="stat-card">
-            <div class="stat-number blue">
-                <?= (int)$stats['teachers'] ?>
+            <div class="stat-card">
+                <div class="stat-number green">
+                    <?= (int)$stats['students'] ?>
+                </div>
+                <div class="stat-label">Študenti</div>
             </div>
-            <div class="stat-label">Učitelia</div>
-        </div>
 
-        <div class="stat-card">
-            <div class="stat-number orange">
-                <?= (int)$stats['admins'] ?>
+            <div class="stat-card">
+                <div class="stat-number blue">
+                    <?= (int)$stats['teachers'] ?>
+                </div>
+                <div class="stat-label">Učitelia</div>
             </div>
-            <div class="stat-label">Administrátori</div>
-        </div>
 
-    </section>
-
-    <!-- VYHLADAVANIE A FILTROVANIE -->
-
-    <section class="filter-card">
-
-        <div class="filter-title">
-            Vyhľadávanie a filtrovanie používateľov
-        </div>
-
-        <form method="GET" class="filter-form">
-
-            <input
-                type="text"
-                name="search"
-                placeholder="Vyhľadať podľa mena alebo e-mailu..."
-                value="<?= e($search) ?>"
-            >
-
-            <select name="role">
-                <option value="">Všetky roly</option>
-
-                <option value="student"
-                    <?= $selectedRole === 'student' ? 'selected' : '' ?>>
-                    Študent
-                </option>
-
-                <option value="teacher"
-                    <?= $selectedRole === 'teacher' ? 'selected' : '' ?>>
-                    Učiteľ
-                </option>
-
-                <option value="team_leader"
-                    <?= $selectedRole === 'team_leader' ? 'selected' : '' ?>>
-                    Vedúci tímu
-                </option>
-
-                <option value="admin"
-                    <?= $selectedRole === 'admin' ? 'selected' : '' ?>>
-                    Administrátor
-                </option>
-            </select>
-
-            <button type="submit">Filtrovať</button>
-
-            <a href="users.php" class="reset-button">Resetovať</a>
-
-        </form>
-
-    </section>
-
-    <!-- TABULKA POUZIVATELOV -->
-
-    <section class="table-card">
-
-        <div class="table-heading">
-            <h2>Zoznam používateľov</h2>
-
-            <div class="result-count">
-                Zobrazených používateľov: <?= count($users) ?>
-                / <?= $totalUsers ?>
+            <div class="stat-card">
+                <div class="stat-number orange">
+                    <?= (int)$stats['admins'] ?>
+                </div>
+                <div class="stat-label">Administrátori</div>
             </div>
-        </div>
 
-        <div class="table-wrapper">
+        </section>
 
-            <table>
+        <!-- VYHLADAVANIE A FILTROVANIE -->
 
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Používateľ</th>
-                        <th>Rola</th>
-                        <th>Dátum registrácie</th>
-                    </tr>
-                </thead>
+        <section class="filter-card">
 
-                <tbody>
+            <div class="filter-title">
+                Vyhľadávanie a filtrovanie používateľov
+            </div>
 
-                    <?php if (empty($users)): ?>
+            <form method="GET" class="filter-form">
 
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Vyhľadať podľa mena alebo e-mailu..."
+                    value="<?= e($search) ?>">
+
+                <select name="role">
+                    <option value="">Všetky roly</option>
+
+                    <option value="student"
+                        <?= $selectedRole === 'student' ? 'selected' : '' ?>>
+                        Študent
+                    </option>
+
+                    <option value="teacher"
+                        <?= $selectedRole === 'teacher' ? 'selected' : '' ?>>
+                        Učiteľ
+                    </option>
+
+                    <option value="team_leader"
+                        <?= $selectedRole === 'team_leader' ? 'selected' : '' ?>>
+                        Vedúci tímu
+                    </option>
+
+                    <option value="admin"
+                        <?= $selectedRole === 'admin' ? 'selected' : '' ?>>
+                        Administrátor
+                    </option>
+                </select>
+
+                <button type="submit">Filtrovať</button>
+
+                <a href="users.php" class="reset-button">Resetovať</a>
+
+            </form>
+
+        </section>
+
+        <!-- TABULKA POUZIVATELOV -->
+
+        <section class="table-card">
+
+            <div class="table-heading">
+                <h2>Zoznam používateľov</h2>
+
+                <div class="result-count">
+                    Zobrazených používateľov: <?= count($users) ?>
+                    / <?= $totalUsers ?>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
                         <tr>
-                            <td colspan="4" class="empty">
-                                Nenašli sa žiadni používatelia.
-                            </td>
+                            <th>ID</th>
+                            <th>Používateľ</th>
+                            <th>Rola</th>
+                            <th>Dátum registrácie</th>
                         </tr>
+                    </thead>
 
-                    <?php else: ?>
+                    <tbody>
 
-                        <?php foreach ($users as $user): ?>
+                        <?php if (empty($users)): ?>
 
                             <tr>
-                                <td><?= (int)$user['id'] ?></td>
-
-                                <td>
-                                    <div class="user-name">
-                                        <?= e($user['name']) ?>
-                                    </div>
-
-                                    <div class="user-email">
-                                        <?= e($user['email']) ?>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <span class="role <?= e(roleClass($user['role'])) ?>">
-                                        <?= e(roleLabel($user['role'])) ?>
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <?= $user['created_at']
-                                        ? e(date('d.m.Y', strtotime($user['created_at'])))
-                                        : '—' ?>
+                                <td colspan="4" class="empty">
+                                    Nenašli sa žiadni používatelia.
                                 </td>
                             </tr>
 
-                        <?php endforeach; ?>
+                        <?php else: ?>
 
-                    <?php endif; ?>
+                            <?php foreach ($users as $user): ?>
 
-                </tbody>
+                                <tr>
+                                    <td><?= (int)$user['id'] ?></td>
 
-            </table>
+                                    <td>
+                                        <div class="user-name">
+                                            <?= e($user['name']) ?>
+                                        </div>
 
-        </div>
+                                        <div class="user-email">
+                                            <?= e($user['email']) ?>
+                                        </div>
+                                    </td>
 
-    </section>
+                                    <td>
+                                        <span class="role <?= e(roleClass($user['role'])) ?>">
+                                            <?= e(roleLabel($user['role'])) ?>
+                                        </span>
+                                    </td>
 
-</main>
+                                    <td>
+                                        <?= $user['created_at']
+                                            ? e(date('d.m.Y', strtotime($user['created_at'])))
+                                            : '—' ?>
+                                    </td>
+                                </tr>
 
-<footer>
-    STEP – Tímový projekt | Administrácia
-</footer>
+                            <?php endforeach; ?>
+
+                        <?php endif; ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        STEP – Tímový projekt | Administrácia
+    </footer>
 
 </body>
+
 </html>
