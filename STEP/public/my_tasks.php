@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-require "database.php";
+require_once "config.php";
 
 $userId = $_SESSION['user_id'];
 
