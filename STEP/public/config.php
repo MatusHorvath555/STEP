@@ -1,6 +1,6 @@
 <?php
 
-$host = "host:aws-0-eu-west-1.pooler.supabase.com";
+$host = "aws-0-eu-west-1.pooler.supabase.com";
 $dbname = "postgres";
 $user = "postgres.jmgfuykbkuzjmcxxvfwv";
 $password = "1nbOVXk8KQl4CrQv";
