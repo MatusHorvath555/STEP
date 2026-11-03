@@ -136,6 +136,7 @@ $teachers = $pdo->query("SELECT name FROM users WHERE role = 'teacher' ORDER BY 
                                         <a href="task_detail.php?id=<?= (int) $task['id'] ?>"><?= h($task['title']) ?></a>
                                         <p><?= $task['deadline'] ? h(date('d.m.Y', strtotime($task['deadline']))) : 'Bez termínu' ?></p>
                                         <p><?= h($task['assigned_name'] ?? 'Nepridelené') ?></p>
+                                        <p class="priorita">Priorita: <?= h($task['priority']) ?></p>
                                     </article>
                                 <?php endforeach; ?>
                             </div>

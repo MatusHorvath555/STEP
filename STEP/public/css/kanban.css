@@ -97,6 +97,32 @@ main.container .sucty th {
 main.container .sucty td {
     text-align: right;
 }
+/* Odznak priority – triedu high/medium/low má karta (article.karta) */
+main.container .karta .priorita {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 2px 8px;
+    border: 1px solid;
+    border-radius: 20px;
+    color: var(--farba-primarna);
+    font-weight: 700;
+}
+
+/* Sýty okraj, aby odznak nesplynul so žltou/zelenou kartou v In Progress a Done */
+main.container .karta.high .priorita {
+    background: var(--farba-stav-pozor);
+    border-color: var(--farba-pozor);
+}
+
+main.container .karta.medium .priorita {
+    background: var(--farba-stav-vporiadku);
+    border-color: var(--farba-vporiadku);
+}
+
+main.container .karta.low .priorita {
+    background: var(--farba-stav-vyborne);
+    border-color: var(--farba-vyborne);
+}
 
 /* Úzka obrazovka (mobil): všetko pod sebou */
 @media (max-width: 800px) {
