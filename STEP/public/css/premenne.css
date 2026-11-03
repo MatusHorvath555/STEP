@@ -1,0 +1,42 @@
+/* STEP appka – základné CSS premenné (farby, fonty, zaoblenia, tiene)
+   Hodnoty dopĺňa Dorota podľa návrhu v Affinity.
+   Použitie: najprv pripojiť premenne.css, potom style.css; v CSS písať var(--názov). */
+
+:root {
+    /* Farby Dashboardy*/
+    --farba-primarna: #0C4E57;        /* tmavá tyrkysová: nadpisy, tlačidlá Filtrovať */
+    --farba-akcent: #008DA3;          /* svetlejšia tyrkysová: NOVÝ TÍM */
+    --farba-pozadie: #F4F4F4;         /* sivé pozadie stránky */
+    --farba-karta: #ffffff;     /* biela karta */
+    --farba-text: #235860;      /* tmavá tyrkysová: text v kartách, popisky, hlavičky stĺpcov */
+    --farba-text-tlmeny: #909090 ;     /* popisky, hlavičky stĺpcov */
+
+    /* Stavy tímov (Výborne / V poriadku / Pozor) a priority kariet
+       Každý stav má 2 farby: sýtu (pruh postupu, číslo) a svetlú (pozadie odznaku) */
+    --farba-vyborne: #64C434;          /* Výborne (postup 80 % a viac), sýta zelená: pruh postupu */
+    --farba-stav-vyborne: #C0F484;     /* Výborne (postup 80 % a viac), svetlá zelená: pozadie odznaku */
+    --farba-vporiadku: #F2EE0D;        /* V poriadku (postup 40 – 79 %), sýta žltá: pruh postupu */
+    --farba-stav-vporiadku: #FEFE81;   /* V poriadku (postup 40 – 79 %), svetlá žltá: pozadie odznaku */
+    --farba-pozor: #F6311A;            /* Pozor (postup pod 40 %), sýta červená: pruh postupu, tímy s problémami */
+    --farba-stav-pozor: #FB988D;       /* Pozor (postup pod 40 %), svetlá červená: pozadie odznaku */
+
+    /* Prihlásenie a registrácia (zelená paleta) */
+    --farba-tlacidlo-aktivne: #2DCF61;        /* aktívne tlačidlo */
+    --farba-neaktivne: #548389;   /* neaktívne tlačidlo  */
+    --farba-pole: #548389;           /* pozadie vstupných polí meno, mail */
+    --farba-pole-text: #B6E2C1;        /* zástupný text v poli (vas@email.sk) */
+    --velkost-tlacidlo-prihlasenie: 18px;   /* veľkosť textu na tlačidlách Prihlásiť sa a Registrovať sa , student, pedagog, Ďalej, prihalsit sa pomocou QR kodu*/
+    --velkost-nadpis-uvitanie: 36px; /* veľkosť nadpisu na prihlasovacej stránke (Vitajte, Vitajte späť) */
+
+    /* Font */
+    --font-hlavny: 'Inter', Arial, sans-serif; /* hlavný font */
+    --velkost-text: 12px;   /* veľkosť textu v kartách, popisky, hlavičky stĺpcov */
+    --velkost-nadpis: 24px; /* veľkosť hlavneho nadpisu */
+    --velkost-podnadpis: 18px; /* veľkosť podnadpisu */
+    --velkost-tlacidlo: 14px; /* veľkosť textu na tlačidlách na dashboardoch*/
+
+    /* Zaoblenie a tieň */
+    --zaoblenie-karta: 14.6px; /* zaoblenie rohov kariet */
+    --zaoblenie-tlacidlo: 5.3px ; /* zaoblenie rohov tlačidiel */
+    --tien-karta: 1.6px 1.6px 3.4px rgba(117, 117, 117, 0.5); /* tieň kariet */
+}
