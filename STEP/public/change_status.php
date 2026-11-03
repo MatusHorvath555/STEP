@@ -6,7 +6,8 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
-require_once "config.php";
+require_once __DIR__ . "/../config/config.php";
+
 
 $taskId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 

@@ -40,7 +40,8 @@ if ($role === 'teacher') {
 
     // Overenie, či je študent vedúcim aspoň jedného tímu
     if (!isset($pdo)) {
-        require_once "config.php";
+        require_once __DIR__ . "/../config/config.php";
+
     }
 
     $leaderStmt = $pdo->prepare("
