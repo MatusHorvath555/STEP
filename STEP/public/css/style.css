@@ -1,205 +1,303 @@
-/* Základné nastavenie a bledo-zelené pozadie */
+ /*1. ZÁKLADNÉ NASTAVENIA */
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+    min-height: 100%;
 }
 
 body {
-    background: linear-gradient(135deg, #e6f4ea 0%, #ceebd6 100%);
+    min-height: 100vh;
+    padding: 30px 16px;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    color: #f8fafc;
+
+    font-family: var(--font-hlavny);
+    color: var(--farba-text);
+
+    background: linear-gradient(
+        135deg,
+        #E8F7ED 0%,
+        #D2EBDD 100%
+    );
 }
 
-/* Hlavný tmavý tyrkysový kontajner */
+
+/* 2. REGISTRAČNÁ / PRIHLASOVACIA KARTA*/
+
 .login-container {
-    background: #092c28;
-    padding: 30px 35px;
-    border-radius: 20px;
-    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.3);
     width: 100%;
-    max-width: 420px;
-    border: 1px solid rgba(20, 184, 166, 0.3);
-}
+    max-width: 520px;
+    padding: 35px;
 
-/* Horná lišta (Logo + Záložky) */
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-}
+    background-color: #092F2B;
+    color: #FFFFFF;
 
-.logo-step {
-    font-weight: 800;
-    font-size: 22px;
-    color: #10b981;
-    letter-spacing: 0.5px;
-}
-
-.tabs {
-    display: flex;
-    background: #041f1c;
+    border: 1px solid var(--farba-primarna);
     border-radius: 20px;
-    padding: 3px;
-    border: 1px solid #0d5c53;
+
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
 }
 
-.tab {
-    padding: 6px 12px;
-    font-size: 12px;
-    font-weight: 500;
-    color: #94a3b8;
-    text-decoration: none;
-    border-radius: 16px;
-    transition: all 0.2s ease;
-}
-
-.tab.active {
-    background: #10b981;
-    color: #ffffff;
-}
 
 /* Nadpis */
+
 .login-container h2 {
-    margin-bottom: 20px;
-    font-size: 28px;
-    font-weight: 600;
-    color: #ffffff;
+    margin-bottom: 26px;
+
+    color: #FFFFFF;
+    font-size: var(--velkost-nadpis);
+    font-weight: 700;
     text-align: center;
 }
 
-/* Výber role (Študent / Pedagóg) */
-.section-label {
-    display: block;
-    font-size: 13px;
-    color: #94a3b8;
-    margin-bottom: 6px;
-}
 
-.role-selector {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 16px;
-}
 
-.role-btn {
-    flex: 1;
-    padding: 10px;
-    background-color: #041f1c;
-    border: 1px solid #0d5c53;
-    border-radius: 10px;
-    color: #94a3b8;
+/*3. SPRÁVY – ÚSPECH A CHYBA*/
+
+.alert {
+    padding: 12px 14px;
+    margin-bottom: 18px;
+
+    border-radius: var(--zaoblenie-tlacidlo);
+
     font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    text-align: center;
 }
 
-.role-btn.active {
-    background: #10b981;
-    color: #ffffff;
-    border-color: #10b981;
-    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+.alert.error {
+    background-color: #FCE8E6;
+    color: #A12622;
 }
+
+.alert.success {
+    background-color: #E3F5E9;
+    color: #176B36;
+}
+
+
+/* 4. FORMULÁR*/
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    width: 100%;
+}
+
+
+/* Jeden riadok – popis a políčko */
+
+.form-row {
+    display: grid;
+
+    grid-template-columns: 145px minmax(0, 1fr);
+
+    align-items: center;
+    gap: 12px;
+
+    width: 100%;
+}
+
+
+/* Popisy polí */
+
+.form-row label {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: right;
+}
+
 
 /* Vstupné políčka */
-.form-group {
-    margin-bottom: 16px;
-}
 
-.form-group label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 13px;
-    color: #94a3b8;
-}
-
-.form-group input {
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="password"] {
     width: 100%;
-    padding: 12px 16px;
-    background-color: #041f1c;
-    border: 1px solid #0d5c53;
-    border-radius: 10px;
-    font-size: 14px;
-    color: #ffffff;
+    min-width: 0;
+
+    padding: 11px 13px;
+
+    background-color: #FFFFFF;
+    color: #235860;
+
+    border: 1px solid var(--farba-primarna);
+    border-radius: var(--zaoblenie-tlacidlo);
+
+    font-family: var(--font-hlavny);
+    font-size: 15px;
+
     outline: none;
-    transition: all 0.2s ease;
+
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.form-group input::placeholder {
-    color: #475569;
+
+/* Zvýraznenie aktívneho políčka */
+
+.form-row input:focus {
+    border-color: var(--farba-akcent);
+
+    box-shadow: 0 0 0 3px rgba(0, 141, 163, 0.2);
 }
 
-.form-group input:focus {
-    border-color: #14b8a6;
-    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.25);
+
+/* 5. ZOBRAZENIE HESIEL*/
+
+.form-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-top: 3px;
 }
 
-/* Hlavné tlačidlo Ďalej */
+.form-checkbox-group input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+
+    accent-color: var(--farba-tlacidlo-aktivne);
+
+    cursor: pointer;
+}
+
+.form-checkbox-group label {
+    color: #FFFFFF;
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+
+/* 6. REGISTRAČNÉ A PRIHLASOVACIE TLAČIDLO*/
+
 .btn-submit {
     width: 100%;
-    background: linear-gradient(135deg, #0d9488 0%, #10b981 100%);
-    color: white;
+
+    padding: 13px;
+    margin-top: 5px;
+
+    background-color: var(--farba-tlacidlo-aktivne);
+    color: #FFFFFF;
+
     border: none;
-    border-radius: 10px;
-    padding: 12px;
-    font-size: 15px;
+    border-radius: var(--zaoblenie-tlacidlo);
+
+    font-family: var(--font-hlavny);
+    font-size: var(--velkost-tlacidlo-prihlasenie);
     font-weight: 600;
+
     cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 10px;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+
+    transition: background-color 0.2s, transform 0.2s;
 }
 
 .btn-submit:hover {
-    background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+    background-color: var(--farba-akcent);
+    transform: translateY(-1px);
 }
 
-/* Oddeľovač "alebo" */
-.divider {
-    text-align: center;
-    position: relative;
-    margin: 20px 0;
+
+/* 7. ODKAZY POD FORMULÁROM*/
+
+.auth-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 9px;
+
+    margin-top: 18px;
 }
 
-.divider::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: #0d5c53;
+.auth-links a {
+    color: #B6E2C1;
+    font-size: 14px;
+
+    text-decoration: none;
+
+    transition: color 0.2s;
 }
 
-.divider span {
-    position: relative;
-    background: #092c28;
-    padding: 0 12px;
-    font-size: 12px;
-    color: #64748b;
+.auth-links a:hover {
+    color: #FFFFFF;
+    text-decoration: underline;
 }
 
-/* Tlačidlo pre QR kód */
-.btn-qr {
+
+/*  8. MOBILNÉ ZOBRAZENIE */
+
+@media (max-width: 550px) {
+
+    body {
+        padding: 16px 10px;
+        align-items: flex-start;
+    }
+
+    .login-container {
+        padding: 25px 18px;
+    }
+
+    .login-container h2 {
+        font-size: 22px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+    }
+
+    .form-row label {
+        text-align: left;
+    }
+
+    .auth-form {
+        gap: 12px;
+    }
+
+    .auth-links {
+        align-items: center;
+        text-align: center;
+    }
+}
+
+
+/* Polia pre vytváranie úloh */
+.form-row select,
+.form-row textarea,
+.form-row input[type="date"] {
     width: 100%;
-    background-color: #ffffff;
-    color: #092c28;
-    border: none;
-    border-radius: 10px;
-    padding: 12px;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 11px 13px;
+
+    background-color: #FFFFFF;
+    color: var(--farba-text);
+
+    border: 1px solid var(--farba-primarna);
+    border-radius: var(--zaoblenie-tlacidlo);
+
+    font-family: var(--font-hlavny);
     font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.btn-qr:hover {
-    background-color: #f1f5f9;
+.form-row textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-row select:focus,
+.form-row textarea:focus,
+.form-row input[type="date"]:focus {
+    outline: none;
+    border-color: var(--farba-akcent);
+    box-shadow: 0 0 0 3px rgba(0, 141, 163, 0.15);
 }

@@ -83,69 +83,88 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="sk">
 
 <head>
     <meta charset="UTF-8">
-    <title>Prihlásenie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>STEP - Prihlásenie</title>
+    <link rel="stylesheet" href="css/premenne.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <?php require_once "navigation.php"; ?>
 
-    <h2>Prihlásenie</h2>
+    <main class="login-container">
 
-    <?php if (!empty($error)): ?>
-        <p style="color:red;">
-            <?php echo htmlspecialchars($error, ENT_QUOTES, "UTF-8"); ?>
-        </p>
-    <?php endif; ?>
+        <h2>Prihlásenie</h2>
 
-    <form method="POST">
+        <!-- Chybová správa -->
+        <?php if (!empty($error)): ?>
+            <p class="alert error">
+                <?php echo htmlspecialchars($error, ENT_QUOTES, "UTF-8"); ?>
+            </p>
+        <?php endif; ?>
 
-        <label for="email">Email:</label><br>
-        <input
-            type="email"
-            id="email"
-            name="email"
-            required><br><br>
+        <form method="POST" class="auth-form">
 
-        <label for="password">Heslo:</label><br>
-        <input
-            type="password"
-            id="password"
-            name="password"
-            required>
+            <section class="form-row">
+                <label for="email">Email:</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required>
+            </section>
 
-        <button
-            type="button"
-            onclick="togglePassword()"
-            aria-label="Zobraziť alebo skryť heslo">
-            👁
-        </button>
+            <section class="form-row">
+                <label for="password">Heslo:</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required>
+            </section>
 
-        <br><br>
+            <section class="form-checkbox-group">
+                <input
+                    type="checkbox"
+                    id="show-pass"
+                    onclick="togglePassword()">
 
-        <button type="submit">
-            Prihlásiť sa
-        </button>
+                <label for="show-pass">Zobraziť heslo</label>
+            </section>
 
-    </form>
+            <button type="submit" class="btn-submit">
+                Prihlásiť sa
+            </button>
+
+        </form>
+
+        <nav class="auth-links">
+            <a href="registracia.php">
+                Ešte nemáte účet? Zaregistrujte sa.
+            </a>
+
+            <a href="index.php">
+                Späť na úvodnú stránku
+            </a>
+        </nav>
+
+    </main>
 
     <script>
         function togglePassword() {
-
             const password = document.getElementById("password");
 
-            if (password.type === "password") {
-                password.type = "text";
-            } else {
-                password.type = "password";
-            }
+            password.type = password.type === "password"
+                ? "text"
+                : "password";
         }
     </script>
 
 </body>
-
 </html>

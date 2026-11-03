@@ -78,78 +78,73 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="sk">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Registrácia</title>
+  <meta charset="UTF-8">
+    <title>STEP - Registrácia</title>
+    <!-- Pripojenie CSS premenných a hlavného štýlu -->
+<link rel="stylesheet" href="css/premenne.css">
+<link rel="stylesheet" href="css/style.css">  
 </head>
 
 <body>
 
-    <h2>Registrácia používateľa</h2>
+<main class="login-container">
+        <h2>Registrácia používateľa</h2>
 
-    <?php if ($message): ?>
-        <p>
-            <?php echo htmlspecialchars($message); ?>
-        </p>
-    <?php endif; ?>
+        <?php if ($message): ?>
+            <p class="alert">
+                <?php echo htmlspecialchars($message); ?>
+            </p>
+        <?php endif; ?>
 
-    <form method="POST">
+        <form method="POST" class="auth-form">
 
-        <label>Meno a priezvisko:</label><br>
-        <input type="text" name="name" required><br><br>
+    <section class="form-row">
+        <label for="name">Meno a priezvisko:</label>
+        <input type="text" id="name" name="name" required>
+    </section>
 
-        <label>Email:</label><br>
-        <input type="email" name="email" required><br><br>
+    <section class="form-row">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+    </section>
 
-        <label>Heslo:</label><br>
-        <input
-            id="password"
-            type="password"
-            name="password"
-            required
-        ><br><br>
+    <section class="form-row">
+        <label for="password">Heslo:</label>
+        <input type="password" id="password" name="password" required>
+    </section>
 
-        <label>Potvrdenie hesla:</label><br>
-        <input
-            id="confirm_password"
-            type="password"
-            name="confirm_password"
-            required
-        ><br><br>
+    <section class="form-row">
+        <label for="confirm_password">Potvrdenie hesla:</label>
+        <input type="password" id="confirm_password"
+               name="confirm_password" required>
+    </section>
 
-        <input
-            type="checkbox"
-            onclick="togglePassword()"
-        >
-        Zobraziť heslá
+    <section class="form-checkbox-group">
+        <input type="checkbox" id="show-pass" onclick="togglePassword()">
+        <label for="show-pass">Zobraziť heslá</label>
+    </section>
 
-        <br><br>
+    <button type="submit" class="btn-submit">
+        Registrovať
+    </button>
 
-        <button type="submit">
-            Registrovať
-        </button>
-
-    </form>
+</form>
+        <nav class="auth-links">
+            <a href="login.php">Už máte účet? Prihláste sa tu.</a>
+            <a href="index.php">Späť na úvodnú stránku</a>
+        </nav>
+    </main>
 
     <script>
         function togglePassword() {
-
             const password = document.getElementById("password");
             const confirmPassword = document.getElementById("confirm_password");
-
             const newType = password.type === "password" ? "text" : "password";
 
             password.type = newType;
             confirmPassword.type = newType;
         }
     </script>
-
-    <br>
-
-    <a href="login.php">Už máte účet? Prihláste sa tu.</a>
-
-    <br>
-
-    <a href="index.php">Späť na úvodnú stránku</a>
 
 </body>
 </html>

@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         description,
         status,
         priority,
-        deadline
+        deadline    
     )
     VALUES
     (
@@ -66,68 +66,88 @@ $teams = $pdo->query("SELECT * FROM teams ORDER BY name")
 
 <head>
     <meta charset="UTF-8">
-    <title>Vytvorenie úlohy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>STEP - Nová úloha</title>
+
+   
+    <link rel="stylesheet" href="css/premenne.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+
     <?php require_once "navigation.php"; ?>
 
-    <h2>Nová úloha</h2>
+    <main class="login-container">
 
-    <?php if (!empty($message)): ?>
-        <p><?php echo $message; ?></p>
-    <?php endif; ?>
+        <h2>Nová úloha</h2>
 
-    <form method="POST">
+        <?php if (!empty($message)): ?>
+            <p class="alert">
+                <?php echo htmlspecialchars($message, ENT_QUOTES, "UTF-8"); ?>
+            </p>
+        <?php endif; ?>
 
-        <label>Názov úlohy:</label><br>
-        <input type="text" name="title" required><br><br>
+        <form method="POST" class="auth-form">
 
-        <label>Popis:</label><br>
-        <textarea name="description"></textarea><br><br>
+            <section class="form-row">
+                <label for="title">Názov úlohy:</label>
+                <input type="text" id="title" name="title" required>
+            </section>
 
-        <label>Tím:</label><br>
-        <select name="team_id" required>
+            <section class="form-row">
+                <label for="description">Popis:</label>
+                <textarea id="description" name="description"></textarea>
+            </section>
 
-            <?php foreach ($teams as $team): ?>
+            <section class="form-row">
+                <label for="team_id">Tím:</label>
+                <select id="team_id" name="team_id" required>
 
-                <option value="<?php echo $team['id']; ?>">
-                    <?php echo htmlspecialchars($team['name']); ?>
-                </option>
+                    <?php foreach ($teams as $team): ?>
+                        <option value="<?php echo $team['id']; ?>">
+                            <?php echo htmlspecialchars($team['name']); ?>
+                        </option>
+                    <?php endforeach; ?>
 
-            <?php endforeach; ?>
+                </select>
+            </section>
 
-        </select><br><br>
+            <section class="form-row">
+                <label for="assigned_to">Priradiť používateľovi:</label>
+                <select id="assigned_to" name="assigned_to" required>
 
-        <label>Priradiť používateľovi:</label><br>
-        <select name="assigned_to" required>
+                    <?php foreach ($users as $user): ?>
+                        <option value="<?php echo $user['id']; ?>">
+                            <?php echo htmlspecialchars($user['name']); ?>
+                        </option>
+                    <?php endforeach; ?>
 
-            <?php foreach ($users as $user): ?>
+                </select>
+            </section>
 
-                <option value="<?php echo $user['id']; ?>">
-                    <?php echo htmlspecialchars($user['name']); ?>
-                </option>
+            <section class="form-row">
+                <label for="priority">Priorita:</label>
+                <select id="priority" name="priority">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </section>
 
-            <?php endforeach; ?>
+            <section class="form-row">
+                <label for="deadline">Deadline:</label>
+                <input type="date" id="deadline" name="deadline">
+            </section>
 
-        </select><br><br>
+            <button type="submit" class="btn-submit">
+                Vytvoriť úlohu
+            </button>
 
-        <label>Priorita:</label><br>
-        <select name="priority">
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-        </select><br><br>
+        </form>
 
-        <label>Deadline:</label><br>
-        <input type="date" name="deadline"><br><br>
-
-        <button type="submit">
-            Vytvoriť úlohu
-        </button>
-
-    </form>
+    </main>
 
 </body>
-
 </html>
