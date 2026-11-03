@@ -33,6 +33,7 @@ if ($role === 'teacher') {
 
     $links = [
         'dashboard.php' => 'DASHBOARD',
+        'kanban.php' => 'NÁSTENKA',
         'my_tasks.php' => 'MOJE ÚLOHY',
         'profile.php' => 'MÔJ PROFIL',
         'change_password.php' => 'ZMENIŤ HESLO'
@@ -60,6 +61,7 @@ if ($role === 'teacher') {
     if ($leaderStmt->fetchColumn()) {
         $links = [
             'dashboard.php' => 'DASHBOARD',
+            'kanban.php' => 'NÁSTENKA',
             'team_leader_dashboard.php' => 'PANEL VEDÚCEHO',
             'my_tasks.php' => 'MOJE ÚLOHY',
             'profile.php' => 'MÔJ PROFIL',

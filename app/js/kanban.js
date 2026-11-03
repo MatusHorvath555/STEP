@@ -1,4 +1,4 @@
-// kanban.js – Kanban nástenka: zobrazenie, pridanie, presúvanie a prideľovanie úloh
+// kanban.js – Kanban nástenka: zobrazenie, pridanie, presúvanie, prideľovanie a mazanie úloh
 //
 // Hlavné pravidlo: pravdivé sú dáta v poli "ulohy", obrazovka je len ich obrázok.
 // Každá zmena = zmeň pole → ulož → (ak treba) vykresli nanovo.
@@ -12,6 +12,9 @@ const STAVY = ["todo", "inprogress", "done"];
 // Všetky úlohy – pri štarte sa načítajú z localStorage
 const ulohy = nacitaj("ulohy");
 
+// Úloha, pri ktorej používateľ klikol na × – zmaže sa až po potvrdení v modáli
+let idNaZmazanie = null;
+
 
 // ===== PRVKY ZO STRÁNKY =====
 
@@ -19,13 +22,24 @@ const formUloha = document.getElementById("formUloha");
 const nazovUlohy = document.getElementById("nazovUlohy");
 const popisUlohy = document.getElementById("popisUlohy");
 const prioritaUlohy = document.getElementById("prioritaUlohy");
-
+const modalZmazat = document.getElementById("modalZmazat");
 
 // ===== POMOCNÉ FUNKCIE =====
 
 // Nájde úlohu podľa id
 function najdiUlohu(id) {
   return ulohy.find(function (uloha) { return uloha.id === id; });
+}
+
+// Zmaže úlohu podľa id – splice mení pole na mieste, lebo ulohy je const
+// TODO STEP-47: sem pribudne fetch na server (DELETE)
+function zmazUlohu(id) {
+  const index = ulohy.findIndex(function (uloha) { return uloha.id === id; });
+  if (index === -1) return;   // splice(-1, 1) by inak zmazal poslednú úlohu
+
+  ulohy.splice(index, 1);
+  uloz("ulohy", ulohy);
+  vykresliNastenku();
 }
 
 // Vytvorí jednu možnosť <option> do rozbaľovacieho zoznamu
@@ -62,13 +76,30 @@ function vytvorVyberClena(uloha) {
   return vyber;
 }
 
-// Vytvorí kartu jednej úlohy: názov, farba podľa priority a výber člena
+// Vytvorí tlačidlo ×, ktoré otvorí potvrdenie zmazania úlohy
+function vytvorTlacidloZmazat(uloha) {
+  const tlacidlo = document.createElement("button");
+  tlacidlo.type = "button";
+  tlacidlo.textContent = "×";
+  tlacidlo.setAttribute("aria-label", "Zmazať kartu");   // čítačka by "×" prečítala ako "krát"
+
+  tlacidlo.addEventListener("click", function () {
+    idNaZmazanie = uloha.id;
+    modalZmazat.returnValue = "";   // Esc ho nemení – ostala by v ňom odpoveď z minulého otvorenia
+    modalZmazat.showModal();
+  });
+
+  return tlacidlo;
+}
+
+// Vytvorí kartu jednej úlohy: názov, farba podľa priority, výber člena a tlačidlo ×
 function vytvorKartu(uloha) {
   const karta = document.createElement("div");
   karta.classList.add("karta", uloha.priority);   // .low / .medium / .high = farebný okraj
   karta.dataset.id = uloha.id;                    // podľa toho pri presune zistíme, o ktorú úlohu ide
   karta.textContent = uloha.title;
   karta.appendChild(vytvorVyberClena(uloha));
+  karta.appendChild(vytvorTlacidloZmazat(uloha));
   return karta;
 }
 
@@ -116,13 +147,21 @@ formUloha.addEventListener("submit", function (e) {
   formUloha.reset();
 });
 
+// Zatvorenie modálu (tlačidlo aj Esc) – zmažeme len pri potvrdení "Zmazať"
+modalZmazat.addEventListener("close", function () {
+  if (modalZmazat.returnValue === "zmazat") {
+    zmazUlohu(idNaZmazanie);
+  }
+  idNaZmazanie = null;
+});
+
 // Zapne presúvanie myšou (knižnica SortableJS) pre jeden stĺpec
 function zapniPresuvanie(stav) {
   new Sortable(document.getElementById(stav), {
     group: "nastenka",        // spoločná skupina → karty sa dajú presúvať medzi stĺpcami
     animation: 150,           // plynulý pohyb karty (ms)
-    filter: "select",         // ťahanie nezačne na výbere člena...
-    preventOnFilter: false,   // ...a výber sa dá normálne otvoriť
+    filter: "select, button", // ťahanie nezačne na výbere člena ani na tlačidle ×...
+    preventOnFilter: false,   // ...a výber aj tlačidlo normálne fungujú
 
     // knižnica zavolá túto funkciu sama, keď používateľ pustí kartu
     onEnd: function (evt) {
@@ -131,7 +170,6 @@ function zapniPresuvanie(stav) {
       const uloha = najdiUlohu(Number(evt.item.dataset.id));   // data-id je text → číslo
       uloha.status = evt.to.id;                                 // id stĺpca = nový status
       uloz("ulohy", ulohy);
-      // vykresliť netreba – kartu už na obrazovke presunula knižnica
     }
   });
 }

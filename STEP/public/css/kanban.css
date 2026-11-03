@@ -1,0 +1,107 @@
+/* kanban.css – rozloženie nástenky: stĺpce vedľa seba, panel s členmi vpravo
+   Len základ, aby sa nástenka dala používať. Vzhľad podľa návrhu doladí Marianna.
+   Pravidlá začínajú "main.container" ako v style.css – majú rovnakú silu a vyhrajú,
+   lebo tento súbor sa načíta až po style.css. */
+
+/* Stĺpce vľavo, panel vpravo */
+main.container .nastenka {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 16px;
+}
+
+/* Tri stĺpce vedľa seba */
+main.container .stlpce {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+/* Nadpisy stĺpcov a panela – menšie ako nadpisy v style.css */
+main.container .stlpec h2,
+main.container .panel h2 {
+    margin: 0 0 8px;
+    font-size: var(--velkost-text);
+    color: var(--farba-text-tlmeny);
+    text-transform: uppercase;
+}
+
+/* Zoznam kariet. min-height je dôležitý: prázdny stĺpec by mal výšku 0
+   a kartu by doň nebolo kam pustiť */
+main.container .zoznam {
+    min-height: 120px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 8px;
+    border-radius: var(--zaoblenie-karta);
+    background: var(--farba-pozadie);
+}
+
+main.container .karta {
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    border-radius: var(--zaoblenie-tlacidlo);
+    background: var(--farba-karta);
+    box-shadow: var(--tien-karta);
+    cursor: grab;
+}
+
+main.container .karta a {
+    color: var(--farba-text);
+    font-weight: 600;
+}
+
+main.container .karta p {
+    margin: 2px 0 0;
+    font-size: var(--velkost-text);
+    line-height: 1.3;
+}
+
+/* Farba karty podľa stĺpca ako v návrhu */
+main.container .zoznam[data-status="In Progress"] .karta {
+    background: var(--farba-stav-vporiadku);
+}
+
+main.container .zoznam[data-status="Done"] .karta {
+    background: var(--farba-stav-vyborne);
+}
+
+/* Pravý panel */
+main.container .clenovia {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+}
+
+main.container .clenovia li {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+}
+
+main.container .lead {
+    font-size: var(--velkost-text);
+    font-weight: 700;
+    color: var(--farba-vyborne);
+}
+
+main.container .sucty {
+    width: 100%;
+    font-size: var(--velkost-text);
+}
+
+main.container .sucty th {
+    text-align: left;
+}
+
+main.container .sucty td {
+    text-align: right;
+}
+
+/* Úzka obrazovka (mobil): všetko pod sebou */
+@media (max-width: 800px) {
+    main.container .nastenka,
+    main.container .stlpce {
+        grid-template-columns: 1fr;
+    }
+}
