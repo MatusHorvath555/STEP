@@ -39,29 +39,43 @@ if ($_SESSION['role'] !== 'student') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STEP Dashboard</title>
+
+    <link rel="stylesheet" href="css/premenne.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
     <?php require_once "navigation.php"; ?>
 
-    <main>
-        <p>
-            Vitaj,
-            <?php echo htmlspecialchars($_SESSION['name'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
-        </p>
+    <main class="dashboard-container">
 
-        <p>
-            Rola:
-            <?php echo htmlspecialchars($_SESSION['role'], ENT_QUOTES, 'UTF-8'); ?>
-        </p>
+        <section class="dashboard-welcome">
+            <h1>
+                Vitaj,
+                <?php echo htmlspecialchars($_SESSION['name'] ?? '', ENT_QUOTES, 'UTF-8'); ?>!
+            </h1>
 
-        <h2>Dostupné funkcie</h2>
+            <p class="dashboard-role">
+                Rola:
+                <?php echo htmlspecialchars($_SESSION['role'], ENT_QUOTES, 'UTF-8'); ?>
+            </p>
+        </section>
 
-        <ul>
-            <li><a href="my_tasks.php">Moje úlohy</a></li>
-            <li><a href="profile.php">Môj profil</a></li>
-        </ul>
+        <section class="dashboard-content">
+            <h2>Dostupné funkcie</h2>
+
+            <nav class="dashboard-links">
+                <a href="my_tasks.php" class="dashboard-link">
+                    Moje úlohy
+                </a>
+
+                <a href="profile.php" class="dashboard-link">
+                    Môj profil
+                </a>
+            </nav>
+        </section>
+
     </main>
 
 </body>

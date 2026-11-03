@@ -13,6 +13,8 @@ $links = [];
 // Navigácia pre učiteľa
 if ($role === 'teacher') {
 
+    $homePage = 'teacher_dashboard.php';
+
     $links = [
         'teacher_dashboard.php' => 'DASHBOARD',
         'students.php' => 'ŠTUDENTI',
@@ -24,11 +26,14 @@ if ($role === 'teacher') {
         'change_password.php' => 'ZMENIŤ HESLO'
     ];
 
-    // Navigácia pre študenta a vedúceho tímu
+// Navigácia pre študenta a vedúceho tímu
 } elseif ($role === 'student') {
 
+    $homePage = 'dashboard.php';
+
     $links = [
-        'dashboard.php' => 'ŠTUDENTSKÝ DASHBOARD',
+        'dashboard.php' => 'DASHBOARD',
+        'kanban.php' => 'NÁSTENKA',
         'my_tasks.php' => 'MOJE ÚLOHY',
         'profile.php' => 'MÔJ PROFIL',
         'change_password.php' => 'ZMENIŤ HESLO'
@@ -36,7 +41,8 @@ if ($role === 'teacher') {
 
     // Overenie, či je študent vedúcim aspoň jedného tímu
     if (!isset($pdo)) {
-        require_once "config.php";
+        require_once __DIR__ . "/../config/config.php";
+
     }
 
     $leaderStmt = $pdo->prepare("
@@ -54,7 +60,8 @@ if ($role === 'teacher') {
 
     if ($leaderStmt->fetchColumn()) {
         $links = [
-            'dashboard.php' => 'ŠTUDENTSKÝ DASHBOARD',
+            'dashboard.php' => 'DASHBOARD',
+            'kanban.php' => 'NÁSTENKA',
             'team_leader_dashboard.php' => 'PANEL VEDÚCEHO',
             'my_tasks.php' => 'MOJE ÚLOHY',
             'profile.php' => 'MÔJ PROFIL',
@@ -62,110 +69,31 @@ if ($role === 'teacher') {
         ];
     }
 
-    // Navigácia pre administrátora
+// Navigácia pre administrátora
 } elseif ($role === 'admin') {
 
+    $homePage = 'users.php';
+
     $links = [
-        'users.php' => 'SPRÁVA POUŽÍVATEĽOV',
+        'users.php' => 'POUŽÍVATELIA',
         'change_password.php' => 'ZMENIŤ HESLO'
     ];
+
+} else {
+    $homePage = 'login.php';
 }
 
 ?>
 
-<style>
-    .step-navigation {
-        width: 100%;
-        min-height: 68px;
-        padding: 12px 4%;
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        flex-wrap: wrap;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
-        box-sizing: border-box;
-    }
-
-    .step-navigation * {
-        box-sizing: border-box;
-    }
-
-    .step-logo {
-        color: #008d91;
-        font-size: 36px;
-        font-weight: bold;
-        letter-spacing: -2px;
-        text-decoration: none;
-        flex-shrink: 0;
-    }
-
-    .step-navigation-links {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 9px;
-        flex-wrap: wrap;
-    }
-
-    .step-navigation-links a {
-        color: #164e57;
-        border: 1px solid #d5e0e1;
-        border-radius: 8px;
-        padding: 9px 13px;
-        font-size: 12px;
-        font-weight: bold;
-        text-decoration: none;
-        transition: .2s;
-    }
-
-    .step-navigation-links a:hover {
-        background: #008f9f;
-        border-color: #008f9f;
-        color: white;
-    }
-
-    .step-navigation-links a.active {
-        background: #e3f4f4;
-        border-color: #008f9f;
-        color: #008f9f;
-    }
-
-    .step-navigation-links a.logout-link {
-        border-color: #e3caca;
-        color: #a33c3c;
-    }
-
-    .step-navigation-links a.logout-link:hover {
-        background: #a33c3c;
-        border-color: #a33c3c;
-        color: white;
-    }
-
-    @media (max-width: 750px) {
-        .step-navigation {
-            align-items: flex-start;
-            flex-direction: column;
-            gap: 12px;
-            padding: 12px 15px;
-        }
-
-        .step-navigation-links {
-            justify-content: flex-start;
-            width: 100%;
-        }
-    }
-</style>
-
 <header class="step-navigation">
 
-    <a href="<?= $role === 'teacher' ? 'teacher_dashboard.php' : ($role === 'admin' ? 'users.php' : 'dashboard.php') ?>"
-        class="step-logo">
-        STEP
-    </a>
+<a href="<?= htmlspecialchars($homePage, ENT_QUOTES, 'UTF-8') ?>"
+   class="step-logo"
+   aria-label="STEP – domov">
+    <img src="logo.png" alt="STEP" width="50" height="40">
+</a>
 
-    <nav class="step-navigation-links">
+    <nav class="step-navigation-links" aria-label="Hlavná navigácia">
 
         <?php foreach ($links as $url => $label): ?>
 
