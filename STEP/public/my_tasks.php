@@ -48,95 +48,90 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="sk">
 
 <head>
-
     <meta charset="UTF-8">
-    <title>Moje úlohy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moje úlohy | STEP</title>
 
+    <link rel="stylesheet" href="css/premenne.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+
     <?php require_once "navigation.php"; ?>
 
-    <h1>Moje úlohy</h1>
+    <main class="container">
 
-    <p>
-        Prihlásený používateľ:
-        <strong><?php echo htmlspecialchars($_SESSION['name']); ?></strong>
-    </p>
+        <div class="heading">
+            <div>
+                <h1>Moje úlohy</h1>
+                <p class="subtitle">Zoznam úloh priradených pre: <strong><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8'); ?></strong></p>
+            </div>
+            <div>
+                <span class="role-label">Študent</span>
+            </div>
+        </div>
 
-    <p>
-        <a href="dashboard.php">Dashboard</a>
-    </p>
+        <?php if (count($tasks) == 0): ?>
 
-    <?php if (count($tasks) == 0): ?>
+            <div class="card">
+                <div class="empty">
+                    Momentálne nemáte pridelené žiadne úlohy.
+                </div>
+            </div>
 
-        <p>Momentálne nemáte pridelené žiadne úlohy.</p>
+        <?php else: ?>
 
-    <?php else: ?>
+            <div class="task-list">
 
-        <table border="1" cellpadding="10">
+                <?php foreach ($tasks as $task): ?>
+                    <?php 
+                        // Určenie CSS triedy pre stav úlohy
+                        $statusClass = 'todo';
+                        if ($task['status'] === 'V procese' || $task['status'] === 'in_progress') {
+                            $statusClass = 'progress';
+                        } elseif ($task['status'] === 'Dokončené' || $task['status'] === 'done') {
+                            $statusClass = 'done';
+                        }
+                    ?>
 
-            <tr>
-                <th>ID</th>
-                <th>Názov</th>
-                <th>Popis</th>
-                <th>Tím</th>
-                <th>Status</th>
-                <th>Priorita</th>
-                <th>Deadline</th>
-                <th>Akcia</th>
-                <th>Detail</th>
-            </tr>
+                    <div class="task">
+                        <div class="task-header">
+                            <h3><?php echo htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                            <span class="status <?php echo $statusClass; ?>">
+                                <?php echo htmlspecialchars($task['status'], ENT_QUOTES, 'UTF-8'); ?>
+                            </span>
+                        </div>
 
-            <?php foreach ($tasks as $task): ?>
+                        <div class="task-meta">
+                            <p><strong>Tím:</strong> <?php echo htmlspecialchars($task['team_name'] ?? 'Bez tímu', ENT_QUOTES, 'UTF-8'); ?></p>
+                            <p><strong>Priorita:</strong> <span class="priority"><?php echo htmlspecialchars($task['priority'], ENT_QUOTES, 'UTF-8'); ?></span></p>
+                            <p><strong>Deadline:</strong> <?php echo htmlspecialchars($task['deadline'] ?? 'Neurčený', ENT_QUOTES, 'UTF-8'); ?></p>
+                        </div>
 
-                <tr>
+                        <?php if (!empty($task['description'])): ?>
+                            <div class="task-description">
+                                <?php echo nl2br(htmlspecialchars($task['description'], ENT_QUOTES, 'UTF-8')); ?>
+                            </div>
+                        <?php endif; ?>
 
-                    <td>
-                        <?php echo (int)$task['id']; ?>
-                    </td>
+                        <div class="task-actions-row">
+                            <a href="change_status.php?id=<?php echo (int)$task['id']; ?>" class="btn btn-accent">
+                                Zmeniť stav
+                            </a>
+                            <a href="task_detail.php?id=<?php echo (int)$task['id']; ?>" class="btn">
+                                Zobraziť detail
+                            </a>
+                        </div>
+                    </div>
 
-                    <td>
-                        <?php echo htmlspecialchars($task['title']); ?>
-                    </td>
+                <?php endforeach; ?>
 
-                    <td>
-                        <?php echo htmlspecialchars($task['description'] ?? 'Bez popisu'); ?>
-                    </td>
+            </div>
 
-                    <td>
-                        <?php echo htmlspecialchars($task['team_name'] ?? 'Bez tímu'); ?>
-                    </td>
+        <?php endif; ?>
 
-                    <td>
-                        <?php echo htmlspecialchars($task['status']); ?>
-                    </td>
-
-                    <td>
-                        <?php echo htmlspecialchars($task['priority']); ?>
-                    </td>
-
-                    <td>
-                        <?php echo htmlspecialchars($task['deadline'] ?? 'Neurčený'); ?>
-                    </td>
-                    <td>
-                        <a href="change_status.php?id=<?php echo (int)$task['id']; ?>">
-                            Zmeniť stav
-                        </a>
-                    </td>
-                    <td>
-                        <a href="task_detail.php?id=<?php echo (int)$task['id']; ?>">
-                            Zobraziť detail
-                        </a>
-                    </td>
-                </tr>
-
-
-            <?php endforeach; ?>
-
-        </table>
-
-    <?php endif; ?>
+    </main>
 
 </body>
 

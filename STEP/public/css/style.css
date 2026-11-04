@@ -30,7 +30,6 @@ body {
     );
 }
 
-
 /* =====================================================
    2. PRIHLASOVACIA / REGISTRACNA KARTA
 ===================================================== */
@@ -59,7 +58,6 @@ body {
     text-align: center;
 }
 
-
 /* =====================================================
    3. SPRAVY – USPECH A CHYBA
 ===================================================== */
@@ -83,7 +81,6 @@ body {
     background-color: #E3F5E9;
     color: #176B36;
 }
-
 
 /* =====================================================
    4. FORMULAR
@@ -114,9 +111,6 @@ body {
     text-align: right;
 }
 
-
-/* Textove, emailove a heslove polia */
-
 .form-row input[type="text"],
 .form-row input[type="email"],
 .form-row input[type="password"] {
@@ -136,9 +130,6 @@ body {
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
-
-
-/* Polia pre vytvaranie uloh */
 
 .form-row select,
 .form-row textarea,
@@ -162,9 +153,6 @@ body {
     resize: vertical;
 }
 
-
-/* Aktivne polia */
-
 .form-row input:focus,
 .form-row select:focus,
 .form-row textarea:focus {
@@ -172,7 +160,6 @@ body {
     border-color: var(--farba-akcent);
     box-shadow: 0 0 0 3px rgba(0, 141, 163, 0.2);
 }
-
 
 /* =====================================================
    5. ZOBRAZENIE HESLA
@@ -199,7 +186,6 @@ body {
     font-size: 14px;
     cursor: pointer;
 }
-
 
 /* =====================================================
    6. TLACIDLA
@@ -229,7 +215,6 @@ body {
     transform: translateY(-1px);
 }
 
-
 /* =====================================================
    7. ODKAZY POD FORMULAROM
 ===================================================== */
@@ -254,7 +239,6 @@ body {
     color: #FFFFFF;
     text-decoration: underline;
 }
-
 
 /* =====================================================
    8. DASHBOARD – STUDENT
@@ -295,9 +279,6 @@ body {
     font-size: var(--velkost-text);
 }
 
-
-/* Obsah dashboardu */
-
 .dashboard-content {
     width: 100%;
     padding: 35px 40px;
@@ -314,9 +295,6 @@ body {
     color: var(--farba-primarna);
     font-size: var(--velkost-nadpis);
 }
-
-
-/* Dlaždice a odkazy */
 
 .dashboard-links {
     display: grid;
@@ -349,7 +327,6 @@ body {
     transform: translateY(-3px);
 }
 
-
 /* =====================================================
    9. HLAVNA NAVIGACIA STEP
 ===================================================== */
@@ -374,9 +351,6 @@ body {
     z-index: 10;
 }
 
-
-/* Logo – jednotna velkost na celej stranke */
-
 .step-logo {
     display: flex;
     align-items: center;
@@ -385,7 +359,7 @@ body {
     width: 50px;
     height: 40px;
     text-decoration: none;
-    overflow: hidden; /* Zabezpečí, že nič nevytrčí von */
+    overflow: hidden;
 }
 
 .step-logo img {
@@ -394,10 +368,8 @@ body {
     height: 40px !important;
     max-width: 50px !important;
     max-height: 40px !important;
-    object-fit: contain; /* Zachová proporcie loga bez skreslenia */
+    object-fit: contain;
 }
-
-/* Navigacne odkazy */
 
 .step-navigation-links {
     display: flex;
@@ -433,26 +405,17 @@ body {
                 border-color 0.2s ease;
 }
 
-
-/* Hover */
-
 .step-navigation-links a:hover {
     background-color: #e8f5f4;
     border-color: #d0e9e7;
     color: var(--farba-akcent);
 }
 
-
-/* Aktivna stranka */
-
 .step-navigation-links a.active {
     background-color: #e3f4f4;
     border-color: var(--farba-akcent);
     color: var(--farba-akcent);
 }
-
-
-/* Odhlasenie */
 
 .step-navigation-links a.logout-link {
     margin-left: 8px;
@@ -466,13 +429,11 @@ body {
     color: #FFFFFF;
 }
 
-
 /* =====================================================
    10. TABLET
 ===================================================== */
 
 @media (max-width: 1050px) {
-
     .step-navigation {
         height: auto;
         min-height: 75px;
@@ -488,13 +449,11 @@ body {
     }
 }
 
-
 /* =====================================================
    11. MOBILNE ZOBRAZENIE
 ===================================================== */
 
 @media (max-width: 600px) {
-
     .login-container {
         width: calc(100% - 20px);
         margin: 25px auto;
@@ -523,9 +482,6 @@ body {
         text-align: center;
     }
 
-
-    /* Dashboard */
-
     .dashboard-container {
         width: calc(100% - 24px);
         margin: 25px auto;
@@ -544,9 +500,6 @@ body {
     .dashboard-links {
         grid-template-columns: 1fr;
     }
-
-
-    /* Navigacia */
 
     .step-navigation {
         padding: 12px 16px;
@@ -577,12 +530,9 @@ body {
     }
 }
 
-
 /* =========================================
    STEP – DASHBOARD VEDÚCEHO TÍMU
    ========================================= */
-
-/* Hlavný obsah */
 
 main.container {
     width: 92%;
@@ -591,8 +541,6 @@ main.container {
     color: var(--farba-text);
     font-family: var(--font-hlavny);
 }
-
-/* Nadpis stránky */
 
 main.container .heading {
     display: flex;
@@ -625,8 +573,6 @@ main.container .role-label {
     letter-spacing: 0.5px;
 }
 
-/* Hlásenia */
-
 main.container .message {
     padding: 14px 18px;
     margin-bottom: 22px;
@@ -652,8 +598,6 @@ main.container .message.info {
     border: 1px solid #c8e3e7;
 }
 
-/* Karty */
-
 main.container .card {
     background: var(--farba-karta);
     padding: 26px;
@@ -673,8 +617,6 @@ main.container .card p {
     color: var(--farba-text-tlmeny);
     line-height: 1.6;
 }
-
-/* Štatistiky */
 
 main.container .stats {
     display: grid;
@@ -719,8 +661,6 @@ main.container .green {
     color: #2ba967;
 }
 
-/* Celkový postup */
-
 main.container .progress-track {
     width: 100%;
     height: 13px;
@@ -741,8 +681,6 @@ main.container .progress-bar {
     );
     transition: width 0.3s ease;
 }
-
-/* Formulár */
 
 main.container .form-grid {
     display: grid;
@@ -798,8 +736,6 @@ main.container .comment-form input:focus {
     box-shadow: 0 0 0 3px rgba(0, 141, 163, 0.12);
 }
 
-/* Tlačidlá */
-
 main.container .btn {
     display: inline-flex;
     justify-content: center;
@@ -828,8 +764,6 @@ main.container .btn:disabled {
     cursor: not-allowed;
     transform: none;
 }
-
-/* Nástenka úloh */
 
 main.container .task-list {
     display: flex;
@@ -860,8 +794,6 @@ main.container .task-header h3 {
     font-weight: 700;
 }
 
-/* Stav úlohy */
-
 main.container .status {
     display: inline-block;
     padding: 6px 12px;
@@ -886,8 +818,6 @@ main.container .status.done {
     color: #21834c;
 }
 
-/* Informácie o úlohe */
-
 main.container .task-meta {
     color: var(--farba-text-tlmeny);
     font-size: 12px;
@@ -910,8 +840,6 @@ main.container .task-description {
     white-space: pre-wrap;
 }
 
-/* Zmena stavu */
-
 main.container .task-form {
     margin-top: 18px;
     padding-top: 16px;
@@ -927,8 +855,6 @@ main.container .task-form form {
 main.container .task-form select {
     max-width: 240px;
 }
-
-/* Komentáre */
 
 main.container .comments {
     margin-top: 20px;
@@ -975,8 +901,6 @@ main.container .comment-form input {
     min-width: 0;
 }
 
-/* Aktivita */
-
 main.container .activity-item {
     padding: 15px 0;
     border-bottom: 1px solid #edf1f1;
@@ -993,8 +917,6 @@ main.container .activity-item strong {
     color: var(--farba-primarna);
 }
 
-/* Prázdne stavy */
-
 main.container .empty {
     padding: 25px;
     border-radius: var(--zaoblenie-karta);
@@ -1004,16 +926,12 @@ main.container .empty {
     font-size: 14px;
 }
 
-/* Pätička */
-
 footer {
     padding: 24px 15px;
     color: var(--farba-text-tlmeny);
     text-align: center;
     font-size: 12px;
 }
-
-/* Responzívny dizajn */
 
 @media (max-width: 850px) {
     main.container .stats {
@@ -1078,4 +996,199 @@ footer {
     main.container .task-form .btn {
         width: 100%;
     }
+}
+
+/* =====================================================
+   UČITEĽSKÝ DASHBOARD – ŠPECIFICKÉ ŠTÝLY
+===================================================== */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: min(1100px, calc(100% - 40px));
+    margin: 45px auto;
+    gap: 25px;
+}
+
+.container h1 {
+    color: var(--farba-primarna);
+    font-size: var(--velkost-nadpis-uvitanie);
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    padding: 35px 40px;
+    background-color: var(--farba-karta);
+    border-radius: var(--zaoblenie-karta);
+    box-shadow: var(--tien-karta);
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 85px;
+    height: 85px;
+    background-color: var(--farba-primarna);
+    color: #FFFFFF;
+    font-size: 28px;
+    font-weight: 700;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.user-details h2 {
+    color: var(--farba-primarna);
+    font-size: var(--velkost-nadpis);
+    font-weight: 600;
+    margin: 0;
+}
+
+.user-details p {
+    color: var(--farba-text);
+    font-size: var(--velkost-text);
+    margin: 0;
+}
+
+.profile-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--farba-akcent);
+    font-size: var(--velkost-text);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.profile-link:hover {
+    color: var(--farba-primarna);
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: calc(100% - 24px);
+        margin: 25px auto;
+        gap: 18px;
+    }
+
+    .user-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 25px 20px;
+        gap: 20px;
+    }
+
+    .user-details {
+        align-items: center;
+    }
+}
+
+/* =====================================================
+   TABUĽKY (students.php atď.)
+===================================================== */
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+.step-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 20px;
+    text-align: left;
+}
+
+.step-table th {
+    padding: 30px 35px;
+    background-color: #f2f7f7;
+    color: var(--farba-primarna);
+    border-top: 1px solid #e1ebeb;
+    border-bottom: 2px solid #d5e0e1;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+.step-table td {
+    padding: 30px 35px;
+    color: var(--farba-text);
+    border-bottom: 1px solid #edf1f1;
+    vertical-align: middle;
+}
+
+.step-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.step-table tbody tr:hover {
+    background-color: #f5f9f9;
+}
+
+.step-table .table-name {
+    font-weight: 800;
+    color: var(--farba-primarna);
+}
+
+.step-table .table-date {
+    color: var(--farba-text-tlmeny);
+}
+/* Sekundárne tlačidlo (napr. šedšté/akcentové) */
+.btn.btn-secondary {
+    background-color: var(--farba-primarna);
+    opacity: 0.85;
+}
+
+.btn.btn-secondary:hover {
+    opacity: 1;
+    background-color: var(--farba-primarna);
+}
+
+/* Pre lepšie odsadenie formulára v štandardnej karte */
+.card .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+}
+/* Správy o úspechu / chybe */
+.message {
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    border-radius: var(--zaoblenie-karta);
+    font-size: 14px;
+    box-shadow: var(--tien-karta);
+}
+
+.message.success {
+    background: #e5f7eb;
+    color: #18783b;
+    border: 1px solid #b9e8c8;
+}
+
+.message.error, .message.danger {
+    background: #fff0f0;
+    color: #b42318;
+    border: 1px solid #f2c5c5;
+}
+
+.message.info {
+    background: #eaf5f7;
+    color: var(--farba-primarna);
+    border: 1px solid #c8e3e7;
 }

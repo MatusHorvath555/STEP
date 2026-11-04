@@ -2,11 +2,13 @@
 
 session_start();
 
+// Kontrola prihlásenia
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
+// Kontrola oprávnenia učiteľa
 if (($_SESSION['role'] ?? '') !== 'teacher') {
     die("Prístup zamietnutý.");
 }
@@ -39,13 +41,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $name = trim($_POST['team_name'] ?? '');
 
     if ($name === '') {
-
         $message = "Zadajte názov tímu.";
-        $messageType = "danger";
+        $messageType = "error";
     } elseif (mb_strlen($name, 'UTF-8') > 255) {
-
         $message = "Názov tímu môže obsahovať maximálne 255 znakov.";
-        $messageType = "danger";
+        $messageType = "error";
     } else {
 
         $stmt = $pdo->prepare("
@@ -80,147 +80,117 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="sk">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Správa tímov | STEP</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="css/premenne.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <?php require_once "navigation.php"; ?>
 
-    <div class="container mt-4">
+    <main class="container">
 
-        <h1>Správa tímov</h1>
-
-        <a href="teacher_dashboard.php" class="btn btn-secondary mb-3">
-            Dashboard
-        </a>
-
-        <a href="team_members.php" class="btn btn-secondary mb-3">
-            Správa členov tímov
-        </a>
-
-        <?php if (!empty($message)): ?>
-
-            <div class="alert alert-<?php echo $messageType; ?>">
-
-                <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
-
+        <div class="heading">
+            <div>
+                <h1>Správa tímov</h1>
+                <p class="subtitle">Vytváranie a prehľad existujúcich tímov v systéme</p>
             </div>
-
-        <?php endif; ?>
-
-        <div class="card mb-4">
-
-            <div class="card-header">
-                Vytvorenie nového tímu
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="teacher_dashboard.php" class="btn">
+                    ← Dashboard
+                </a>
+                <a href="team_members.php" class="btn btn-secondary">
+                    Správa členov tímov
+                </a>
             </div>
-
-            <div class="card-body">
-
-                <form method="POST">
-
-                    <input
-                        type="hidden"
-                        name="csrf_token"
-                        value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
-
-                    <div class="mb-3">
-
-                        <label class="form-label" for="team_name">
-                            Názov tímu
-                        </label>
-
-                        <input
-                            type="text"
-                            name="team_name"
-                            id="team_name"
-                            class="form-control"
-                            maxlength="255"
-                            required>
-
-                    </div>
-
-                    <button
-                        type="submit"
-                        class="btn btn-primary">
-
-                        Vytvoriť tím
-
-                    </button>
-
-                </form>
-
-            </div>
-
         </div>
 
-        <div class="card">
-
-            <div class="card-header">
-                Existujúce tímy
+        <?php if (!empty($message)): ?>
+            <div class="message <?php echo htmlspecialchars($messageType, ENT_QUOTES, 'UTF-8'); ?>">
+                <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
             </div>
+        <?php endif; ?>
 
-            <div class="card-body">
+        <!-- Karta s formulárom -->
+        <div class="card" style="margin-bottom: 30px;">
+            <h2>Vytvorenie nového tímu</h2>
 
-                <?php if (empty($teams)): ?>
+            <form method="POST" class="auth-form" style="max-width: 100%;">
 
-                    <p class="text-muted">
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+
+                <div class="form-row">
+                    <label for="team_name">Názov tímu</label>
+                    <input
+                        type="text"
+                        name="team_name"
+                        id="team_name"
+                        maxlength="255"
+                        required>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                    <button type="submit" class="btn" style="width: auto; min-width: 160px;">
+                        Vytvoriť tím
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Karta s tabuľkou tímov cez celú šírku -->
+        <div class="card-table-wrapper">
+            <h2>Existujúce tímy</h2>
+
+            <?php if (empty($teams)): ?>
+                <div class="card-empty-box">
+                    <div class="empty">
                         Zatiaľ nebol vytvorený žiadny tím.
-                    </p>
-
-                <?php else: ?>
-
-                    <table class="table table-striped table-hover">
-
-                        <thead class="table-dark">
-
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="table-responsive">
+                    <table class="step-table">
+                        <thead>
                             <tr>
-                                <th>ID</th>
+                                <th class="col-id">ID</th>
                                 <th>Názov tímu</th>
                                 <th>Dátum vytvorenia</th>
                             </tr>
-
                         </thead>
-
                         <tbody>
-
                             <?php foreach ($teams as $team): ?>
-
                                 <tr>
-
-                                    <td>
+                                    <td class="col-id">
                                         <?php echo (int) $team['id']; ?>
                                     </td>
-
-                                    <td>
+                                    <td class="table-name">
                                         <?php echo htmlspecialchars($team['name'], ENT_QUOTES, 'UTF-8'); ?>
                                     </td>
-
-                                    <td>
-                                        <?php echo htmlspecialchars($team['created_at'] ?? 'Neznámy', ENT_QUOTES, 'UTF-8'); ?>
+                                    <td class="table-date">
+                                        <?php 
+                                            $dateFormatted = $team['created_at'] ?? '';
+                                            if (!empty($dateFormatted)) {
+                                                $dateFormatted = date('d.m.Y H:i', strtotime($dateFormatted));
+                                            }
+                                            echo htmlspecialchars($dateFormatted ?: 'Neznámy', ENT_QUOTES, 'UTF-8'); 
+                                        ?>
                                     </td>
-
                                 </tr>
-
                             <?php endforeach; ?>
-
                         </tbody>
-
                     </table>
-
-                <?php endif; ?>
-
-            </div>
-
+                </div>
+            <?php endif; ?>
         </div>
 
-    </div>
+    </main>
 
 </body>
 
