@@ -343,7 +343,7 @@ $members = $pdo->query("
                             <option value="">-- Vyberte študenta --</option>
                             <?php foreach ($students as $student): ?>
                                 <option value="<?php echo (int) $student['id']; ?>">
-                                    <?php echo htmlspecialchars($student['name'], ENT_QUOTES, 'UTF-8'); ?> 
+                                    <?php echo htmlspecialchars($student['name'], ENT_QUOTES, 'UTF-8'); ?>
                                     (<?php echo htmlspecialchars($student['email'], ENT_QUOTES, 'UTF-8'); ?>)
                                 </option>
                             <?php endforeach; ?>
@@ -394,9 +394,7 @@ $members = $pdo->query("
                                         <?php echo htmlspecialchars($member['student_name'], ENT_QUOTES, 'UTF-8'); ?>
                                     </td>
                                     <td class="table-email">
-                                        <?php echo htmlspecialchars($member['email'], ENT_QUOTES, 'URL_ENCODE' === 'URL_ENCODE' ? ENT_QUOTES : ENT_QUOTES); ?>
-                                        <!-- Použité bezpečné escape cez htmlspecialchars -->
-                                        <?php // echo htmlspecialchars($member['email'], ENT_QUOTES, 'UTF-8'); ?>
+                                        <?php echo htmlspecialchars($member['email'], ENT_QUOTES, 'UTF-8'); ?>
                                     </td>
                                     <td>
                                         <?php if ($member['is_team_leader']): ?>
