@@ -62,40 +62,53 @@ $initials = mb_strtoupper($initials, 'UTF-8');
 
     <?php require_once "navigation.php"; ?>
 
+
     <main class="container">
 
         <h1>Učiteľský dashboard</h1>
 
-        <div class="user-info">
+        <div class="card">
 
-            <div class="avatar">
-                <?php echo htmlspecialchars($initials, ENT_QUOTES, 'UTF-8'); ?>
+            <div class="user-info">
+
+                <div class="avatar">
+                    <?php echo htmlspecialchars($initials, ENT_QUOTES, 'UTF-8'); ?>
+                </div>
+
+                <div class="user-details">
+
+                    <h2>
+                        <?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>
+                    </h2>
+
+                    <a href="teacher_profile.php" class="profile-link">
+                        Zobraziť môj profil →
+                    </a>
+
+                </div>
+
             </div>
 
-            <div class="user-details">
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 25px;">
 
-                <h2>
-                    <?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>
-                </h2>
+                <div style="flex: 1; min-width: 220px; padding: 18px; border: 1px solid #e1ebeb; border-radius: 10px;">
+                    <p class="subtitle" style="margin-bottom: 8px;">Email</p>
+                    <strong>
+                        <?php echo htmlspecialchars($teacher['email'], ENT_QUOTES, 'UTF-8'); ?>
+                    </strong>
+                </div>
 
-                <p>
-                    Email:
-                    <?php echo htmlspecialchars($teacher['email'], ENT_QUOTES, 'UTF-8'); ?>
-                </p>
-
-                <p>
-                    Rola: Učiteľ
-                </p>
-
-                <a href="teacher_profile.php" class="profile-link">
-                    Zobraziť môj profil →
-                </a>
+                <div style="flex: 1; min-width: 150px; padding: 18px; border: 1px solid #e1ebeb; border-radius: 10px;">
+                    <p class="subtitle" style="margin-bottom: 8px;">Rola</p>
+                    <strong>Učiteľ</strong>
+                </div>
 
             </div>
 
         </div>
 
     </main>
+    ```
 
 </body>
 

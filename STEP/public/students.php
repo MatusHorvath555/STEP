@@ -1,3 +1,4 @@
+```php
 <?php
 
 session_start();
@@ -9,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Kontrola oprávnenia učiteľa
-if ($_SESSION['role'] !== 'teacher') {
+if (($_SESSION['role'] !== 'teacher')) {
     die("Prístup zamietnutý.");
 }
 
@@ -54,29 +55,34 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <h1>Zoznam študentov</h1>
                 <p class="subtitle">Prehľad všetkých registrovaných študentov v systéme</p>
             </div>
-            <div>
+            <div class="heading-actions">
                 <a href="teacher_dashboard.php" class="btn">
                     ← Dashboard
                 </a>
             </div>
         </div>
 
+        <!-- Karta s tabuľkou študentov -->
         <div class="card">
             <h2>Registrovaní študenti</h2>
 
             <?php if (empty($students)): ?>
 
-                <div class="empty">
-                    Zatiaľ nie sú registrovaní žiadni študenti.
-                </div>
+                <p class="subtitle">Zatiaľ nie sú registrovaní žiadni študenti.</p>
 
             <?php else: ?>
 
-                <div class="table-responsive">
-                    <table class="step-table">
+                <div class="table-responsive" style="border: 1px solid #e1ebeb; border-radius: 10px;">
+                    <table class="step-table" style="width: 100%; table-layout: fixed;">
+                        <colgroup>
+                            <col style="width: 10%;">
+                            <col style="width: 25%;">
+                            <col style="width: 35%;">
+                            <col style="width: 30%;">
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th class="col-id">ID</th>
                                 <th>Meno</th>
                                 <th>Email</th>
                                 <th>Dátum registrácie</th>
@@ -84,8 +90,14 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </thead>
                         <tbody>
                             <?php foreach ($students as $student): ?>
+                                <?php
+                                $dateFormatted = $student['created_at'] ?? '';
+                                if (!empty($dateFormatted)) {
+                                    $dateFormatted = date('d.m.Y H:i', strtotime($dateFormatted));
+                                }
+                                ?>
                                 <tr>
-                                    <td>
+                                    <td class="col-id">
                                         <?php echo (int) $student['id']; ?>
                                     </td>
                                     <td class="table-name">
@@ -95,7 +107,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <?php echo htmlspecialchars($student['email'], ENT_QUOTES, 'UTF-8'); ?>
                                     </td>
                                     <td class="table-date">
-                                        <?php echo htmlspecialchars($student['created_at'] ?? 'Neznáme', ENT_QUOTES, 'UTF-8'); ?>
+                                        <?php echo htmlspecialchars($dateFormatted ?: 'Neznáme', ENT_QUOTES, 'UTF-8'); ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -112,3 +124,4 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </body>
 
 </html>
+```

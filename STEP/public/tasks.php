@@ -1,3 +1,4 @@
+```php
 <?php
 
 session_start();
@@ -33,7 +34,6 @@ $sql = "
 ";
 
 $stmt = $pdo->query($sql);
-
 $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
@@ -70,19 +70,25 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
 
-        <!-- Karta s tabuľkou úloh cez celú šírku -->
-        <div class="card-table-wrapper">
+        <!-- Karta s tabuľkou úloh -->
+        <div class="card">
             <h2>Všetky úlohy</h2>
 
             <?php if (empty($tasks)): ?>
-                <div class="card-empty-box">
-                    <div class="empty">
-                        Zatiaľ neboli vytvorené žiadne úlohy.
-                    </div>
-                </div>
+                <p class="subtitle">Zatiaľ neboli vytvorené žiadne úlohy.</p>
             <?php else: ?>
-                <div class="table-responsive">
-                    <table class="step-table">
+                <div class="table-responsive" style="border: 1px solid #e1ebeb; border-radius: 10px;">
+                    <table class="step-table" style="width: 100%; table-layout: fixed;">
+                        <colgroup>
+                            <col style="width: 6%;">
+                            <col style="width: 22%;">
+                            <col style="width: 13%;">
+                            <col style="width: 14%;">
+                            <col style="width: 13%;">
+                            <col style="width: 10%;">
+                            <col style="width: 12%;">
+                            <col style="width: 10%;">
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th class="col-id">ID</th>
@@ -111,11 +117,11 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <?php echo htmlspecialchars($task['assigned_user'] ?? 'Nepriradené', ENT_QUOTES, 'UTF-8'); ?>
                                     </td>
                                     <td>
-                                        <?php 
-                                            $statusClass = 'todo';
-                                            $st = $task['status'];
-                                            if ($st === 'In Progress') $statusClass = 'progress';
-                                            if ($st === 'Done') $statusClass = 'done';
+                                        <?php
+                                        $statusClass = 'todo';
+                                        $st = $task['status'];
+                                        if ($st === 'In Progress') $statusClass = 'progress';
+                                        if ($st === 'Done') $statusClass = 'done';
                                         ?>
                                         <span class="status <?php echo $statusClass; ?>">
                                             <?php echo htmlspecialchars($st, ENT_QUOTES, 'UTF-8'); ?>
@@ -127,12 +133,12 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </span>
                                     </td>
                                     <td class="table-date">
-                                        <?php 
-                                            $deadlineFormatted = $task['deadline'] ?? '';
-                                            if (!empty($deadlineFormatted)) {
-                                                $deadlineFormatted = date('d.m.Y', strtotime($deadlineFormatted));
-                                            }
-                                            echo htmlspecialchars($deadlineFormatted ?: 'Neurčený', ENT_QUOTES, 'UTF-8'); 
+                                        <?php
+                                        $deadlineFormatted = $task['deadline'] ?? '';
+                                        if (!empty($deadlineFormatted)) {
+                                            $deadlineFormatted = date('d.m.Y', strtotime($deadlineFormatted));
+                                        }
+                                        echo htmlspecialchars($deadlineFormatted ?: 'Neurčený', ENT_QUOTES, 'UTF-8');
                                         ?>
                                     </td>
                                     <td class="col-action">
@@ -153,3 +159,4 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </body>
 
 </html>
+```
