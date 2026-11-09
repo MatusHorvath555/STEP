@@ -145,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </form>
 
         <nav class="auth-links">
-            <a href="registracia.php">
+            <a href="register.php">
                 Ešte nemáte účet? Zaregistrujte sa.
             </a>
 
@@ -160,11 +160,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         function togglePassword() {
             const password = document.getElementById("password");
 
-            password.type = password.type === "password"
-                ? "text"
-                : "password";
+            password.type = password.type === "password" ?
+                "text" :
+                "password";
         }
     </script>
 
 </body>
+
 </html>

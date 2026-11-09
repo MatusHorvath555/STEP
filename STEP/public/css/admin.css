@@ -1,0 +1,383 @@
+/* =========================================
+   ADMINISTRACIA - SPRAVA POUZIVATELOV
+========================================= */
+
+.admin-users-page {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f3f3;
+  color: #164e57;
+}
+
+/* HORNA LISTA */
+
+.admin-users-page header {
+  height: 68px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.admin-users-page .logo {
+  font-size: 38px;
+  font-weight: bold;
+  letter-spacing: -2px;
+  color: #008d91;
+}
+
+.admin-users-page .header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.admin-users-page .header-right span {
+  color: #555;
+  font-size: 14px;
+}
+
+.admin-users-page .header-right a {
+  text-decoration: none;
+  color: #444;
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 8px 15px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* HLAVNY OBSAH */
+
+.admin-users-container {
+  max-width: 1250px;
+  margin: 35px auto;
+  padding: 0 20px;
+}
+
+.admin-users-page .page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.admin-users-page h1 {
+  margin: 0;
+  font-size: 27px;
+  color: #164e57;
+}
+
+.admin-users-page .subtitle {
+  margin-top: 5px;
+  color: #245b64;
+  font-size: 17px;
+}
+
+.admin-users-page .admin-label {
+  background: #008f9f;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* REZIM NAHLADU */
+
+.admin-users-page .preview-warning {
+  background: #fff4d9;
+  color: #765400;
+  border: 1px solid #efd28b;
+  border-radius: 10px;
+  padding: 13px 16px;
+  margin-bottom: 22px;
+  font-size: 14px;
+}
+
+/* STATISTIKY */
+
+.admin-users-page .stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.admin-users-page .stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 18px 22px;
+  min-height: 95px;
+  border: 1px solid #e1ebeb;
+}
+
+.admin-users-page .stat-number {
+  font-size: 36px;
+  font-weight: bold;
+  line-height: 1.1;
+}
+
+.admin-users-page .stat-label {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 7px;
+}
+
+.admin-users-page .teal {
+  color: #0096a8;
+}
+.admin-users-page .green {
+  color: #65a936;
+}
+.admin-users-page .orange {
+  color: #ea580c;
+}
+.admin-users-page .blue {
+  color: #3984c6;
+}
+
+/* FILTROVANIE */
+
+.admin-users-page .filter-card {
+  background: white;
+  padding: 22px;
+  border-radius: 12px;
+  border: 1px solid #e1ebeb;
+  margin-bottom: 25px;
+}
+
+.admin-users-page .filter-title {
+  color: #64748b;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.admin-users-page .filter-form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-users-page input,
+.admin-users-page select {
+  padding: 11px 13px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  font-size: 14px;
+  color: #164e57;
+  background: white;
+}
+
+.admin-users-page input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.admin-users-page select {
+  min-width: 180px;
+}
+
+.admin-users-page .filter-form button,
+.admin-users-page .reset-button {
+  border: none;
+  border-radius: 7px;
+  padding: 11px 23px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.admin-users-page .filter-form button {
+  background: #0c5059;
+  color: white;
+}
+
+.admin-users-page .reset-button {
+  background: #dedede;
+  color: #164e57;
+}
+
+.admin-users-page .filter-form button:hover {
+  background: #008f9f;
+}
+
+/* TABULKA POUZIVATELOV */
+
+.admin-users-page .table-card {
+  background: white;
+  border-radius: 12px;
+  padding: 22px;
+  border: 1px solid #e1ebeb;
+  overflow: hidden;
+}
+
+.admin-users-page .table-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.admin-users-page .table-heading h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.admin-users-page .result-count {
+  color: #777;
+  font-size: 13px;
+}
+
+.admin-users-page .table-wrapper {
+  overflow-x: auto;
+}
+
+.admin-users-page table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 650px;
+}
+
+.admin-users-page th {
+  text-align: left;
+  color: #888;
+  font-size: 13px;
+  padding: 13px 12px;
+  border-bottom: 2px solid #e6e6e6;
+}
+
+.admin-users-page td {
+  padding: 15px 12px;
+  border-bottom: 1px solid #e9e9e9;
+  font-size: 14px;
+}
+
+.admin-users-page tr:hover td {
+  background: #f8fbfb;
+}
+
+.admin-users-page .user-name {
+  font-weight: bold;
+  color: #164e57;
+}
+
+.admin-users-page .user-email {
+  color: #777;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+/* ROLE */
+
+.admin-users-page .role {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.admin-users-page .role.student {
+  color: #398a32;
+  background: #e6f4df;
+}
+
+.admin-users-page .role.teacher {
+  color: #087e9a;
+  background: #dff2f7;
+}
+
+.admin-users-page .role.leader {
+  color: #7656a6;
+  background: #eee7f8;
+}
+
+.admin-users-page .role.admin {
+  color: #bd493d;
+  background: #fbe7e3;
+}
+
+.admin-users-page .role.unknown {
+  color: #555;
+  background: #eee;
+}
+
+/* OSTATNE */
+
+.admin-users-page .empty {
+  text-align: center;
+  padding: 35px;
+  color: #888;
+}
+
+.admin-users-page footer {
+  text-align: center;
+  padding: 25px;
+  color: #888;
+  font-size: 13px;
+}
+
+/* RESPONZIVITA */
+
+@media (max-width: 850px) {
+  .admin-users-page .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 550px) {
+  .admin-users-page header {
+    padding: 0 15px;
+  }
+
+  .admin-users-page .logo {
+    font-size: 30px;
+  }
+
+  .admin-users-page .header-right span {
+    display: none;
+  }
+
+  .admin-users-container {
+    margin-top: 22px;
+    padding: 0 12px;
+  }
+
+  .admin-users-page .stats {
+    gap: 10px;
+  }
+
+  .admin-users-page .stat-card {
+    padding: 13px;
+  }
+
+  .admin-users-page .stat-number {
+    font-size: 32px;
+  }
+
+  .admin-users-page .filter-form {
+    flex-direction: column;
+  }
+
+  .admin-users-page .filter-form input,
+  .admin-users-page .filter-form select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .admin-users-page .filter-form button,
+  .admin-users-page .reset-button {
+    text-align: center;
+  }
+}
