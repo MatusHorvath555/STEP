@@ -381,3 +381,82 @@
     text-align: center;
   }
 }
+
+/* Oznamenie o vykonanej zmene */
+.admin-users-page .admin-message {
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  background: #e0f2f1;
+  color: #0f766e;
+  border: 1px solid #99d5ce;
+  border-radius: 8px;
+}
+
+/* Stav uctu */
+.admin-users-page .account-status {
+  display: inline-block;
+  margin-top: 7px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admin-users-page .account-status.active {
+  color: #15803d;
+}
+
+.admin-users-page .account-status.inactive {
+  color: #dc2626;
+}
+
+.admin-users-page .inactive-user {
+  opacity: 0.65;
+}
+
+/* Akcie pri pouzivatelovi */
+.admin-users-page .user-actions {
+  min-width: 170px;
+}
+
+.admin-users-page .user-actions form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.admin-users-page .role-edit-form {
+  flex-direction: column;
+}
+
+.admin-users-page .user-actions select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.admin-users-page .admin-action-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #e0f2f1;
+  color: #0f766e;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-users-page .admin-action-btn:hover {
+  opacity: 0.8;
+}
+
+.admin-users-page .deactivate-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.admin-users-page .activate-btn {
+  background: #dcfce7;
+  color: #15803d;
+}

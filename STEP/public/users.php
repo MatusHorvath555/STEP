@@ -20,6 +20,101 @@ if (!$isAdmin && !$isLocalhost) {
 
 $previewMode = !$isAdmin;
 
+// Ochrana formularov proti CSRF
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+// Spracovanie administracnych zmien
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // V rezime nahladu nie su zmeny povolene
+    if (!$isAdmin) {
+        http_response_code(403);
+        exit('Na tuto akciu nemas opravnenie.');
+    }
+
+    // Kontrola CSRF tokenu
+    if (
+        !isset($_POST['csrf_token']) ||
+        !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
+    ) {
+        http_response_code(403);
+        exit('Neplatna poziadavka.');
+    }
+
+    $action = $_POST['action'] ?? '';
+    $userId = filter_var($_POST['user_id'] ?? null, FILTER_VALIDATE_INT);
+
+    // Predpokladame, ze ID prihlaseneho pouzivatela je ulozene v session
+    $currentUserId = $_SESSION['user_id'] ?? null;
+
+    if (!$userId || !$currentUserId) {
+        $_SESSION['admin_message'] = 'Nepodarilo sa overit pouzivatela.';
+    } elseif ($userId === (int)$currentUserId) {
+        $_SESSION['admin_message'] = 'Vlastny ucet nemozes upravovat ani deaktivovat.';
+    } else {
+        try {
+
+            if ($action === 'change_role') {
+
+                $newRole = $_POST['new_role'] ?? '';
+
+                // Cez tuto stranku menime iba roly student a teacher
+                if (!in_array($newRole, ['student', 'teacher'], true)) {
+                    throw new Exception('Neplatna rola.');
+                }
+
+                $updateStmt = $pdo->prepare("
+                    UPDATE users
+                    SET role = :role
+                    WHERE id = :id
+                    AND role IN ('student', 'teacher')
+                ");
+
+                $updateStmt->execute([
+                    'role' => $newRole,
+                    'id' => $userId
+                ]);
+
+                $_SESSION['admin_message'] = $updateStmt->rowCount() > 0
+                    ? 'Rola pouzivatela bola uspesne zmenena.'
+                    : 'Rola sa nezmenila. Pouzivatel mozno nema upravitelnu rolu.';
+            } elseif ($action === 'deactivate' || $action === 'activate') {
+
+                $isActive = ($action === 'activate');
+
+                $updateStmt = $pdo->prepare("
+                    UPDATE users
+                    SET is_active = :is_active
+                    WHERE id = :id
+                    AND role <> 'admin'
+                ");
+
+                $updateStmt->execute([
+                    'is_active' => $isActive,
+                    'id' => $userId
+                ]);
+
+                $_SESSION['admin_message'] = $updateStmt->rowCount() > 0
+                    ? ($isActive ? 'Ucet bol aktivovany.' : 'Ucet bol deaktivovany.')
+                    : 'Stav uctu sa nezmenil.';
+            } else {
+                $_SESSION['admin_message'] = 'Neznama akcia.';
+            }
+        } catch (Exception $e) {
+            $_SESSION['admin_message'] = 'Zmenu sa nepodarilo vykonat: ' . $e->getMessage();
+        }
+    }
+
+    header('Location: users.php');
+    exit;
+}
+
+// Sprava po vykonani akcie
+$adminMessage = $_SESSION['admin_message'] ?? '';
+unset($_SESSION['admin_message']);
+
 // Vyhladavanie a filtrovanie
 $search = trim($_GET['search'] ?? '');
 $selectedRole = $_GET['role'] ?? '';
@@ -60,7 +155,7 @@ if ($selectedRole !== '') {
 }
 
 $sql = "
-    SELECT id, name, email, role, created_at
+    SELECT id, name, email, role, created_at, is_active
     FROM users
 ";
 
@@ -151,6 +246,11 @@ function roleClass($role)
         </div>
 
         <?php if ($previewMode): ?>
+            <?php if ($adminMessage !== ''): ?>
+                <div class="admin-message">
+                    <?= e($adminMessage) ?>
+                </div>
+            <?php endif; ?>
             <div class="preview-warning">
                 <strong>Režim náhľadu:</strong>
                 Stránka je otvorená bez administrátorského účtu.
@@ -262,8 +362,9 @@ function roleClass($role)
                         <tr>
                             <th>ID</th>
                             <th>Používateľ</th>
-                            <th>Rola</th>
+                            <th>Rola a stav</th>
                             <th>Dátum registrácie</th>
+                            <th>Akcie</th>
                         </tr>
                     </thead>
 
@@ -272,7 +373,7 @@ function roleClass($role)
                         <?php if (empty($users)): ?>
 
                             <tr>
-                                <td colspan="4" class="empty">
+                                <td colspan="5" class="empty">
                                     Nenašli sa žiadni používatelia.
                                 </td>
                             </tr>
@@ -281,7 +382,8 @@ function roleClass($role)
 
                             <?php foreach ($users as $user): ?>
 
-                                <tr>
+                                <tr class="<?= !$user['is_active'] ? 'inactive-user' : '' ?>">
+
                                     <td><?= (int)$user['id'] ?></td>
 
                                     <td>
@@ -298,6 +400,12 @@ function roleClass($role)
                                         <span class="role <?= e(roleClass($user['role'])) ?>">
                                             <?= e(roleLabel($user['role'])) ?>
                                         </span>
+
+                                        <div>
+                                            <span class="account-status <?= $user['is_active'] ? 'active' : 'inactive' ?>">
+                                                <?= $user['is_active'] ? 'Aktívny' : 'Neaktívny' ?>
+                                            </span>
+                                        </div>
                                     </td>
 
                                     <td>
@@ -305,6 +413,71 @@ function roleClass($role)
                                             ? e(date('d.m.Y', strtotime($user['created_at'])))
                                             : '—' ?>
                                     </td>
+
+                                    <td class="user-actions">
+
+                                        <?php if ($isAdmin && (int)$user['id'] !== (int)($_SESSION['user_id'] ?? 0)): ?>
+
+                                            <?php if (in_array($user['role'], ['student', 'teacher'], true)): ?>
+
+                                                <form method="POST" class="role-edit-form">
+                                                    <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
+                                                    <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
+                                                    <input type="hidden" name="action" value="change_role">
+
+                                                    <select name="new_role">
+                                                        <option value="student" <?= $user['role'] === 'student' ? 'selected' : '' ?>>
+                                                            Študent
+                                                        </option>
+
+                                                        <option value="teacher" <?= $user['role'] === 'teacher' ? 'selected' : '' ?>>
+                                                            Učiteľ
+                                                        </option>
+                                                    </select>
+
+                                                    <button type="submit" class="admin-action-btn">
+                                                        Zmeniť rolu
+                                                    </button>
+                                                </form>
+
+                                            <?php endif; ?>
+
+                                            <?php if ($user['role'] !== 'admin'): ?>
+
+                                                <form method="POST"
+                                                    onsubmit="return confirm('Naozaj chceš <?= $user['is_active'] ? 'deaktivovať' : 'aktivovať' ?> tento účet?');">
+
+                                                    <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
+                                                    <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
+
+                                                    <input
+                                                        type="hidden"
+                                                        name="action"
+                                                        value="<?= $user['is_active'] ? 'deactivate' : 'activate' ?>">
+
+                                                    <button
+                                                        type="submit"
+                                                        class="admin-action-btn <?= $user['is_active'] ? 'deactivate-btn' : 'activate-btn' ?>">
+
+                                                        <?= $user['is_active'] ? 'Deaktivovať' : 'Aktivovať' ?>
+
+                                                    </button>
+                                                </form>
+
+                                            <?php endif; ?>
+
+                                        <?php elseif (!$isAdmin): ?>
+
+                                            <span>Len na prezeranie</span>
+
+                                        <?php else: ?>
+
+                                            <span>Vlastný účet</span>
+
+                                        <?php endif; ?>
+
+                                    </td>
+
                                 </tr>
 
                             <?php endforeach; ?>
