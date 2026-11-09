@@ -10,6 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Kontrola oprávnenia učiteľa
 if (($_SESSION['role'] ?? '') !== 'teacher') {
+    http_response_code(403);
     die("Prístup zamietnutý.");
 }
 
@@ -17,6 +18,13 @@ require_once __DIR__ . "/../config/config.php";
 
 $message = "";
 $messageType = "success";
+
+// Správa po presmerovaní (zabráni opätovnému odoslaniu formulára po F5)
+if (!empty($_SESSION['flash_message'])) {
+    $message = $_SESSION['flash_message'];
+    $messageType = $_SESSION['flash_type'] ?? 'success';
+    unset($_SESSION['flash_message'], $_SESSION['flash_type']);
+}
 
 // CSRF token
 if (empty($_SESSION['csrf_token'])) {
@@ -35,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         !is_string($submittedToken) ||
         !hash_equals($_SESSION['csrf_token'], $submittedToken)
     ) {
+        http_response_code(400);
         die("Neplatná požiadavka. Obnovte stránku a skúste to znova.");
     }
 
@@ -57,19 +66,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'name' => $name
         ]);
 
-        $message = "Tím bol úspešne vytvorený.";
-        $messageType = "success";
+        $_SESSION['flash_message'] = "Tím bol úspešne vytvorený.";
+        $_SESSION['flash_type'] = "success";
+
+        header("Location: teams.php");
+        exit();
     }
 }
 
 /*
- * NAČÍTANIE TÍMOV
+ * NAČÍTANIE TÍMOV (aj s počtom členov)
  */
 
 $stmt = $pdo->query("
-    SELECT id, name, created_at
-    FROM teams
-    ORDER BY id DESC
+    SELECT
+        t.id,
+        t.name,
+        t.created_at,
+        COUNT(tm.id) AS member_count
+    FROM teams t
+    LEFT JOIN team_members tm ON tm.team_id = t.id
+    GROUP BY t.id, t.name, t.created_at
+    ORDER BY t.id DESC
 ");
 
 $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -98,13 +116,9 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <h1>Správa tímov</h1>
                 <p class="subtitle">Vytváranie a prehľad existujúcich tímov v systéme</p>
             </div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <a href="teacher_dashboard.php" class="btn">
-                    ← Dashboard
-                </a>
-                <a href="team_members.php" class="btn btn-secondary">
-                    Správa členov tímov
-                </a>
+            <div class="heading-actions">
+                <a href="teacher_dashboard.php" class="btn">← Dashboard</a>
+                <a href="team_members.php" class="btn btn-secondary">Správa členov tímov</a>
             </div>
         </div>
 
@@ -144,28 +158,31 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </form>
         </div>
 
-        <!-- Karta s tabuľkou tímov cez celú šírku -->
-        <div class="card-table-wrapper">
+        <!-- Karta s tabuľkou tímov (rovnaká štruktúra ako karta formulára) -->
+        <div class="card">
             <h2>Existujúce tímy</h2>
 
             <?php if (empty($teams)): ?>
-                <div class="card-empty-box">
-                    <div class="empty">
-                        Zatiaľ nebol vytvorený žiadny tím.
-                    </div>
-                </div>
+                <p class="subtitle">Zatiaľ nebol vytvorený žiadny tím.</p>
             <?php else: ?>
-                <div class="table-responsive">
+                <div class="table-responsive" style="border: 1px solid #e1ebeb; border-radius: 10px;">
                     <table class="step-table">
                         <thead>
                             <tr>
                                 <th class="col-id">ID</th>
                                 <th>Názov tímu</th>
+                                <th>Počet členov</th>
                                 <th>Dátum vytvorenia</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($teams as $team): ?>
+                                <?php
+                                $dateFormatted = $team['created_at'] ?? '';
+                                if (!empty($dateFormatted)) {
+                                    $dateFormatted = date('d.m.Y H:i', strtotime($dateFormatted));
+                                }
+                                ?>
                                 <tr>
                                     <td class="col-id">
                                         <?php echo (int) $team['id']; ?>
@@ -173,14 +190,11 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <td class="table-name">
                                         <?php echo htmlspecialchars($team['name'], ENT_QUOTES, 'UTF-8'); ?>
                                     </td>
+                                    <td>
+                                        <?php echo (int) $team['member_count']; ?>
+                                    </td>
                                     <td class="table-date">
-                                        <?php 
-                                            $dateFormatted = $team['created_at'] ?? '';
-                                            if (!empty($dateFormatted)) {
-                                                $dateFormatted = date('d.m.Y H:i', strtotime($dateFormatted));
-                                            }
-                                            echo htmlspecialchars($dateFormatted ?: 'Neznámy', ENT_QUOTES, 'UTF-8'); 
-                                        ?>
+                                        <?php echo htmlspecialchars($dateFormatted ?: 'Neznámy', ENT_QUOTES, 'UTF-8'); ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
