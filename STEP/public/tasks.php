@@ -44,99 +44,111 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoznam úloh | STEP</title>
 
-    <title>Zoznam úloh</title>
+    <link rel="stylesheet" href="css/premenne.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <?php require_once "navigation.php"; ?>
 
-    <h1>Zoznam úloh</h1>
+    <main class="container">
 
-    <p>
-        <a href="teacher_dashboard.php">
-            Späť na dashboard
-        </a>
-    </p>
+        <div class="heading">
+            <div>
+                <h1>Zoznam úloh</h1>
+                <p class="subtitle">Prehľad všetkých úloh vytvorených v systéme</p>
+            </div>
+            <div class="heading-actions">
+                <a href="teacher_dashboard.php" class="btn btn-secondary">
+                    ← Späť na dashboard
+                </a>
+                <a href="create_task.php" class="btn">
+                    + Pridať novú úlohu
+                </a>
+            </div>
+        </div>
 
-    <p>
-        <a href="create_task.php">
-            + Pridať novú úlohu
-        </a>
-    </p>
+        <!-- Karta s tabuľkou úloh cez celú šírku -->
+        <div class="card-table-wrapper">
+            <h2>Všetky úlohy</h2>
 
-    <hr>
+            <?php if (empty($tasks)): ?>
+                <div class="card-empty-box">
+                    <div class="empty">
+                        Zatiaľ neboli vytvorené žiadne úlohy.
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="table-responsive">
+                    <table class="step-table">
+                        <thead>
+                            <tr>
+                                <th class="col-id">ID</th>
+                                <th>Názov</th>
+                                <th>Tím</th>
+                                <th>Priradené</th>
+                                <th>Status</th>
+                                <th>Priorita</th>
+                                <th>Deadline</th>
+                                <th class="col-action">Akcia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($tasks as $task): ?>
+                                <tr>
+                                    <td class="col-id">
+                                        <?php echo (int) $task['id']; ?>
+                                    </td>
+                                    <td class="table-name">
+                                        <?php echo htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo htmlspecialchars($task['team_name'] ?? 'Bez tímu', ENT_QUOTES, 'UTF-8'); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo htmlspecialchars($task['assigned_user'] ?? 'Nepriradené', ENT_QUOTES, 'UTF-8'); ?>
+                                    </td>
+                                    <td>
+                                        <?php 
+                                            $statusClass = 'todo';
+                                            $st = $task['status'];
+                                            if ($st === 'In Progress') $statusClass = 'progress';
+                                            if ($st === 'Done') $statusClass = 'done';
+                                        ?>
+                                        <span class="status <?php echo $statusClass; ?>">
+                                            <?php echo htmlspecialchars($st, ENT_QUOTES, 'UTF-8'); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="priority">
+                                            <?php echo htmlspecialchars($task['priority'], ENT_QUOTES, 'UTF-8'); ?>
+                                        </span>
+                                    </td>
+                                    <td class="table-date">
+                                        <?php 
+                                            $deadlineFormatted = $task['deadline'] ?? '';
+                                            if (!empty($deadlineFormatted)) {
+                                                $deadlineFormatted = date('d.m.Y', strtotime($deadlineFormatted));
+                                            }
+                                            echo htmlspecialchars($deadlineFormatted ?: 'Neurčený', ENT_QUOTES, 'UTF-8'); 
+                                        ?>
+                                    </td>
+                                    <td class="col-action">
+                                        <a href="task_detail.php?id=<?php echo (int) $task['id']; ?>" class="btn btn-table-action">
+                                            Zobraziť
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endif; ?>
+        </div>
 
-    <?php if (empty($tasks)): ?>
-
-        <p>Zatiaľ neboli vytvorené žiadne úlohy.</p>
-
-    <?php else: ?>
-
-        <table border="1" cellpadding="10">
-
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Názov</th>
-                    <th>Tím</th>
-                    <th>Priradené</th>
-                    <th>Status</th>
-                    <th>Priorita</th>
-                    <th>Deadline</th>
-                    <th>Detail</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <?php foreach ($tasks as $task): ?>
-
-                    <tr>
-
-                        <td>
-                            <?php echo (int) $task['id']; ?>
-                        </td>
-
-                        <td>
-                            <?php echo htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8'); ?>
-                        </td>
-
-                        <td>
-                            <?php echo htmlspecialchars($task['team_name'] ?? 'Bez tímu', ENT_QUOTES, 'UTF-8'); ?>
-                        </td>
-
-                        <td>
-                            <?php echo htmlspecialchars($task['assigned_user'] ?? 'Nepriradené', ENT_QUOTES, 'UTF-8'); ?>
-                        </td>
-
-                        <td>
-                            <?php echo htmlspecialchars($task['status'], ENT_QUOTES, 'UTF-8'); ?>
-                        </td>
-
-                        <td>
-                            <?php echo htmlspecialchars($task['priority'], ENT_QUOTES, 'UTF-8'); ?>
-                        </td>
-
-                        <td>
-                            <?php echo htmlspecialchars($task['deadline'] ?? 'Neurčený', ENT_QUOTES, 'UTF-8'); ?>
-                        </td>
-
-                        <td>
-                            <a href="task_detail.php?id=<?php echo (int) $task['id']; ?>">
-                                Zobraziť
-                            </a>
-                        </td>
-
-                    </tr>
-
-                <?php endforeach; ?>
-
-            </tbody>
-
-        </table>
-
-    <?php endif; ?>
+    </main>
 
 </body>
 
