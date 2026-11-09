@@ -109,7 +109,7 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <?php require_once "navigation.php"; ?>
 
-    <main class="container">
+    <main class="container teacher-teams-page">
 
         <div class="heading">
             <div>
@@ -129,10 +129,10 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endif; ?>
 
         <!-- Karta s formulárom -->
-        <div class="card" style="margin-bottom: 30px;">
+        <div class="card team-form-card">
             <h2>Vytvorenie nového tímu</h2>
 
-            <form method="POST" class="auth-form" style="max-width: 100%;">
+            <form method="POST" class="auth-form team-create-form">
 
                 <input
                     type="hidden"
@@ -149,8 +149,8 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         required>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-                    <button type="submit" class="btn" style="width: auto; min-width: 160px;">
+                <div class="team-form-actions">
+                    <button type="submit" class="btn team-submit-btn">
                         Vytvoriť tím
                     </button>
                 </div>
@@ -165,14 +165,8 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php if (empty($teams)): ?>
                 <p class="subtitle">Zatiaľ nebol vytvorený žiadny tím.</p>
             <?php else: ?>
-                <div class="table-responsive" style="border: 1px solid #e1ebeb; border-radius: 10px;">
-                    <table class="step-table" style="width: 100%; table-layout: fixed;">
-                        <colgroup>
-                            <col style="width: 10%;">
-                            <col style="width: 40%;">
-                            <col style="width: 20%;">
-                            <col style="width: 30%;">
-                        </colgroup>
+                <div class="table-responsive teams-table-wrapper">
+                    <table class="step-table teams-table">
                         <thead>
                             <tr>
                                 <th class="col-id">ID</th>

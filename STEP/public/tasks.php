@@ -1,4 +1,3 @@
-```php
 <?php
 
 session_start();
@@ -53,7 +52,7 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <?php require_once "navigation.php"; ?>
 
-    <main class="container">
+    <main class="container teacher-tasks-page">
 
         <div class="heading">
             <div>
@@ -77,18 +76,9 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php if (empty($tasks)): ?>
                 <p class="subtitle">Zatiaľ neboli vytvorené žiadne úlohy.</p>
             <?php else: ?>
-                <div class="table-responsive" style="border: 1px solid #e1ebeb; border-radius: 10px;">
-                    <table class="step-table" style="width: 100%; table-layout: fixed;">
-                        <colgroup>
-                            <col style="width: 6%;">
-                            <col style="width: 22%;">
-                            <col style="width: 13%;">
-                            <col style="width: 14%;">
-                            <col style="width: 13%;">
-                            <col style="width: 10%;">
-                            <col style="width: 12%;">
-                            <col style="width: 10%;">
-                        </colgroup>
+                <div class="table-responsive tasks-table-wrapper">
+                    <table class="step-table tasks-table">
+
                         <thead>
                             <tr>
                                 <th class="col-id">ID</th>

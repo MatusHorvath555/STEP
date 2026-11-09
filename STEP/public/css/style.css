@@ -950,3 +950,334 @@ main.container .card,
     color: var(--farba-text-tlmeny);
     font-size: 13px;
 }
+
+
+
+
+
+/* =====================================================
+   TEACHER DASHBOARD – SAMOSTATNE STYLY
+===================================================== */
+
+/* PREHLADOVE STATISTIKY */
+
+.teacher-dashboard .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin: 25px 0;
+}
+
+.teacher-dashboard .stat-card {
+    background: white;
+    border: 1px solid #e1ebeb;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.teacher-dashboard .stat-card p {
+    color: #718096;
+    margin-bottom: 10px;
+}
+
+.teacher-dashboard .stat-card h2 {
+    font-size: 28px;
+    margin: 0;
+}
+
+
+/* TABULKY */
+
+.teacher-dashboard .dashboard-section {
+    background: white;
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 25px;
+    border: 1px solid #e1ebeb;
+}
+
+.teacher-dashboard .dashboard-section h2 {
+    margin-bottom: 20px;
+}
+
+.teacher-dashboard .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.teacher-dashboard .dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.teacher-dashboard .dashboard-table th,
+.teacher-dashboard .dashboard-table td {
+    padding: 13px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e1ebeb;
+}
+
+.teacher-dashboard .dashboard-table th {
+    background: #f4f7f8;
+    color: #52616b;
+    font-weight: 600;
+}
+
+.teacher-dashboard .dashboard-table tr:last-child td {
+    border-bottom: none;
+}
+
+.teacher-dashboard .dashboard-table td {
+    color: #344054;
+}
+
+.teacher-dashboard .empty-message {
+    text-align: center;
+    color: #718096;
+    padding: 25px;
+}
+
+
+/* STAVY ULOH */
+
+.teacher-dashboard .status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.teacher-dashboard .status-todo {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.teacher-dashboard .status-progress {
+    background: #cfe2ff;
+    color: #084298;
+}
+
+.teacher-dashboard .status-done {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.teacher-dashboard .status-other {
+    background: #e9ecef;
+    color: #495057;
+}
+
+
+/* PRIORITY ULOH */
+
+.teacher-dashboard .priority {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.teacher-dashboard .priority-high {
+    color: #dc3545;
+}
+
+.teacher-dashboard .priority-medium {
+    color: #d69e00;
+}
+
+.teacher-dashboard .priority-low {
+    color: #198754;
+}
+
+
+/* RESPONSIVITA */
+
+@media (max-width: 600px) {
+
+    .teacher-dashboard .dashboard-section {
+        padding: 15px;
+    }
+
+    .teacher-dashboard .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+
+/* =====================================================
+   ZOZNAM ULOH UCITELA
+===================================================== */
+
+.teacher-tasks-page {
+    max-width: 1200px;
+    width: calc(100% - 40px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tasks-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e1ebeb;
+    border-radius: 10px;
+}
+
+.tasks-table {
+    width: 100%;
+    min-width: 900px;
+    table-layout: auto;
+}
+
+.tasks-table th,
+.tasks-table td {
+    padding: 12px 10px;
+}
+
+.tasks-table th {
+    white-space: nowrap;
+}
+
+.tasks-table .table-name {
+    overflow-wrap: anywhere;
+}
+
+.tasks-table th:nth-child(1) { width: 6%; }
+.tasks-table th:nth-child(2) { width: 22%; }
+.tasks-table th:nth-child(3) { width: 13%; }
+.tasks-table th:nth-child(4) { width: 14%; }
+.tasks-table th:nth-child(5) { width: 13%; }
+.tasks-table th:nth-child(6) { width: 10%; }
+.tasks-table th:nth-child(7) { width: 12%; }
+.tasks-table th:nth-child(8) { width: 10%; }
+
+
+
+/* =====================================================
+   ZOZNAM STUDENTOV UCITELA
+===================================================== */
+
+.teacher-students-page {
+    max-width: 1200px;
+    width: calc(100% - 40px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.students-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e1ebeb;
+    border-radius: 10px;
+}
+
+.students-table {
+    width: 100%;
+    min-width: 650px;
+    table-layout: fixed;
+}
+
+.students-table th,
+.students-table td {
+    padding: 12px 10px;
+}
+
+.students-table th:nth-child(1) {
+    width: 10%;
+}
+
+.students-table th:nth-child(2) {
+    width: 25%;
+}
+
+.students-table th:nth-child(3) {
+    width: 35%;
+}
+
+.students-table th:nth-child(4) {
+    width: 30%;
+}
+
+.students-table th {
+    white-space: nowrap;
+}
+
+.students-table td {
+    overflow-wrap: anywhere;
+}
+
+/* =====================================================
+   SPRAVA TIMOV UCITELA
+===================================================== */
+
+.teacher-teams-page {
+    max-width: 1200px;
+    width: calc(100% - 40px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Formular na vytvorenie timu */
+
+.team-form-card {
+    margin-bottom: 30px;
+}
+
+.team-create-form {
+    max-width: 100%;
+}
+
+.team-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.team-submit-btn {
+    width: auto;
+    min-width: 160px;
+}
+
+/* Tabulka timov */
+
+.teams-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e1ebeb;
+    border-radius: 10px;
+}
+
+.teams-table {
+    width: 100%;
+    min-width: 650px;
+    table-layout: fixed;
+}
+
+.teams-table th,
+.teams-table td {
+    padding: 12px 10px;
+}
+
+.teams-table th:nth-child(1) {
+    width: 10%;
+}
+
+.teams-table th:nth-child(2) {
+    width: 40%;
+}
+
+.teams-table th:nth-child(3) {
+    width: 20%;
+}
+
+.teams-table th:nth-child(4) {
+    width: 30%;
+}
+
+.teams-table th {
+    white-space: nowrap;
+}
+
+.teams-table td {
+    overflow-wrap: anywhere;
+}

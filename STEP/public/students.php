@@ -1,4 +1,3 @@
-```php
 <?php
 
 session_start();
@@ -48,7 +47,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <?php require_once "navigation.php"; ?>
 
-    <main class="container">
+    <main class="container teacher-students-page">
 
         <div class="heading">
             <div>
@@ -72,14 +71,9 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <?php else: ?>
 
-                <div class="table-responsive" style="border: 1px solid #e1ebeb; border-radius: 10px;">
-                    <table class="step-table" style="width: 100%; table-layout: fixed;">
-                        <colgroup>
-                            <col style="width: 10%;">
-                            <col style="width: 25%;">
-                            <col style="width: 35%;">
-                            <col style="width: 30%;">
-                        </colgroup>
+                <div class="table-responsive students-table-wrapper">
+                    <table class="step-table students-table">
+
                         <thead>
                             <tr>
                                 <th class="col-id">ID</th>
