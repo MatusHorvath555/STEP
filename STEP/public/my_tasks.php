@@ -60,7 +60,7 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <?php require_once "navigation.php"; ?>
 
-    <main class="container">
+    <main class="container my-tasks-page">
 
         <div class="heading">
             <div>
@@ -68,7 +68,9 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <p class="subtitle">Zoznam úloh priradených pre: <strong><?php echo htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8'); ?></strong></p>
             </div>
             <div>
-                <span class="role-label">Študent</span>
+                <span class="role-label">
+                    <?= htmlspecialchars($_SESSION['role'] ?? 'Používateľ', ENT_QUOTES, 'UTF-8') ?>
+                </span>
             </div>
         </div>
 
@@ -85,14 +87,14 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="task-list">
 
                 <?php foreach ($tasks as $task): ?>
-                    <?php 
-                        // Určenie CSS triedy pre stav úlohy
-                        $statusClass = 'todo';
-                        if ($task['status'] === 'V procese' || $task['status'] === 'in_progress') {
-                            $statusClass = 'progress';
-                        } elseif ($task['status'] === 'Dokončené' || $task['status'] === 'done') {
-                            $statusClass = 'done';
-                        }
+                    <?php
+                    // Určenie CSS triedy pre stav úlohy
+                    $statusClass = 'todo';
+                    if ($task['status'] === 'V procese' || $task['status'] === 'in_progress') {
+                        $statusClass = 'progress';
+                    } elseif ($task['status'] === 'Dokončené' || $task['status'] === 'done') {
+                        $statusClass = 'done';
+                    }
                     ?>
 
                     <div class="task">

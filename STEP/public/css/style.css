@@ -1308,3 +1308,227 @@ main.container .card,
 .dashboard-overview-title {
     margin-top: 30px;
 }
+
+
+/* =====================================================
+   TEAM LEADER DASHBOARD
+===================================================== */
+
+.team-leader-dashboard {
+    max-width: 1200px;
+    width: calc(100% - 40px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Nazvy timov */
+
+.team-leader-dashboard .team-name-label {
+    display: inline-block;
+    margin: 0 8px 8px 0;
+}
+
+/* Celkovy postup */
+
+.team-leader-dashboard .team-progress-value {
+    display: block;
+    width: 100%;
+    height: 12px;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    appearance: none;
+    accent-color: #0d9488;
+    background: #e1ebeb;
+}
+
+.team-leader-dashboard .team-progress-value::-webkit-progress-bar {
+    background: #e1ebeb;
+    border-radius: 10px;
+}
+
+.team-leader-dashboard .team-progress-value::-webkit-progress-value {
+    background: #0d9488;
+    border-radius: 10px;
+}
+
+.team-leader-dashboard .team-progress-value::-moz-progress-bar {
+    background: #0d9488;
+    border-radius: 10px;
+}
+
+/* ROZBALOVACIE SEKCIE */
+.team-leader-dashboard .collapsible-section {
+    padding: 0;
+    overflow: hidden;
+}
+
+.team-leader-dashboard .collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
+    list-style: none;
+}
+
+.team-leader-dashboard .collapsible-header::-webkit-details-marker {
+    display: none;
+}
+
+.team-leader-dashboard .collapsible-header::after {
+    content: "＋";
+    font-size: 22px;
+    color: #0d9488;
+}
+
+.team-leader-dashboard .collapsible-section[open] .collapsible-header::after {
+    content: "−";
+}
+
+.team-leader-dashboard .collapsible-count {
+    margin-left: auto;
+    font-size: 13px;
+    font-weight: 400;
+    color: #64748b;
+}
+
+.team-leader-dashboard .collapsible-content {
+    padding: 0 20px 20px;
+}
+
+/* MOJE ULOHY */
+
+.my-tasks-page {
+    max-width: 1200px;
+    width: calc(100% - 40px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.my-tasks-page .task-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.my-tasks-page .task {
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+    border: 1px solid #e1ebeb;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.my-tasks-page .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.my-tasks-page .task-header h3 {
+    overflow-wrap: anywhere;
+}
+
+.my-tasks-page .task-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.my-tasks-page .task-meta p {
+    margin: 0;
+}
+
+.my-tasks-page .task-description {
+    margin-bottom: 18px;
+    overflow-wrap: anywhere;
+}
+
+.my-tasks-page .task-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.my-tasks-page .task-actions-row .btn {
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .my-tasks-page .task-list {
+        grid-template-columns: 1fr;
+    }
+
+    .my-tasks-page .task-actions-row {
+        flex-direction: column;
+    }
+
+    .my-tasks-page .task-actions-row .btn {
+        width: 100%;
+    }
+}
+
+/* TEAM LEADER - STATISTIKY */
+
+.team-leader-dashboard .stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin: 25px 0;
+}
+
+.team-leader-dashboard .stat {
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e1ebeb;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.team-leader-dashboard .stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.team-leader-dashboard .stat-label {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.team-leader-dashboard .teal {
+    color: #0d9488;
+}
+
+.team-leader-dashboard .orange {
+    color: #ea580c;
+}
+
+.team-leader-dashboard .blue {
+    color: #2563eb;
+}
+
+.team-leader-dashboard .green {
+    color: #16a34a;
+}
+
+@media (max-width: 800px) {
+    .team-leader-dashboard .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 450px) {
+    .team-leader-dashboard .stats {
+        grid-template-columns: 1fr;
+    }
+}

@@ -582,7 +582,7 @@ foreach ($tasks as $task) {
 <!DOCTYPE html>
 <html lang="sk">
 
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STEP | Vedúci tímu</title>
@@ -596,7 +596,7 @@ foreach ($tasks as $task) {
 
     <?php require_once "navigation.php"; ?>
 
-    <main class="container">
+    <main class="container team-leader-dashboard">
 
         <div class="heading">
             <div>
@@ -633,7 +633,7 @@ foreach ($tasks as $task) {
                 <h2>Moje tímy</h2>
 
                 <?php foreach ($teams as $team): ?>
-                    <span class="role-label" style="display:inline-block; margin:0 8px 8px 0;">
+                    <span class="role-label team-name-label">
                         <?= h($team['name']) ?>
                     </span>
                 <?php endforeach; ?>
@@ -673,7 +673,12 @@ foreach ($tasks as $task) {
                 <strong><?= $progress ?> % dokončených úloh</strong>
 
                 <div class="progress-track">
-                    <div class="progress-bar" style="width: <?= $progress ?>%"></div>
+                    <progress
+                        class="team-progress-value"
+                        value="<?= (int)$progress ?>"
+                        max="100">
+                        <?= (int)$progress ?>%
+                    </progress>
                 </div>
 
                 <p class="task-meta">
@@ -683,215 +688,237 @@ foreach ($tasks as $task) {
 
             <!-- VYTVORENIE ULOHY -->
 
-            <section class="card">
+            <details class="card collapsible-section">
 
-                <h2>+ Vytvoriť novú úlohu</h2>
+                <summary class="collapsible-header">
+                    <span>Vytvoriť novú úlohu</span>
+                </summary>
 
-                <form method="POST" id="createTaskForm">
+                <div class="collapsible-content">
 
-                    <input type="hidden" name="csrf_token" value="<?= h($csrfToken) ?>">
-                    <input type="hidden" name="action" value="create_task">
-                    <input type="hidden" name="create_task_token" value="<?= h($createTaskToken) ?>">
+                    <form method="POST" id="createTaskForm">
 
-                    <div class="form-grid">
+                        <input type="hidden" name="csrf_token" value="<?= h($csrfToken) ?>">
+                        <input type="hidden" name="action" value="create_task">
+                        <input type="hidden" name="create_task_token" value="<?= h($createTaskToken) ?>">
 
-                        <div class="form-group">
-                            <label for="title">Názov úlohy *</label>
-                            <input type="text" id="title" name="title"
-                                maxlength="255" required
-                                placeholder="Zadaj názov úlohy">
+                        <div class="form-grid">
+
+                            <div class="form-group">
+                                <label for="title">Názov úlohy *</label>
+                                <input type="text" id="title" name="title"
+                                    maxlength="255" required
+                                    placeholder="Zadaj názov úlohy">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="team_id">Tím *</label>
+
+                                <select name="team_id" id="team_id" required>
+                                    <?php foreach ($teams as $team): ?>
+                                        <option value="<?= (int)$team['id'] ?>">
+                                            <?= h($team['name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="form-group full">
+                                <label for="description">Popis úlohy</label>
+                                <textarea id="description" name="description"
+                                    placeholder="Popíš zadanie úlohy..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="assigned_to">Prideliť študentovi</label>
+
+                                <select name="assigned_to" id="assigned_to">
+                                    <option value="">Bez pridelenia</option>
+
+                                    <?php foreach ($members as $member): ?>
+                                        <option
+                                            value="<?= (int)$member['id'] ?>"
+                                            data-team="<?= (int)$member['team_id'] ?>">
+                                            <?= h($member['name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="priority">Priorita</label>
+
+                                <select name="priority" id="priority">
+                                    <option value="Low">Nízka</option>
+                                    <option value="Medium" selected>Stredná</option>
+                                    <option value="High">Vysoká</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="deadline">Termín dokončenia</label>
+                                <input type="date" id="deadline" name="deadline">
+                            </div>
+
+                            <div class="form-group full">
+                                <button type="submit" class="btn" id="createTaskButton">
+                                    Vytvoriť úlohu
+                                </button>
+                            </div>
+
                         </div>
+                    </form>
 
-                        <div class="form-group">
-                            <label for="team_id">Tím *</label>
+                </div>
 
-                            <select name="team_id" id="team_id" required>
-                                <?php foreach ($teams as $team): ?>
-                                    <option value="<?= (int)$team['id'] ?>">
-                                        <?= h($team['name']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="form-group full">
-                            <label for="description">Popis úlohy</label>
-                            <textarea id="description" name="description"
-                                placeholder="Popíš zadanie úlohy..."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="assigned_to">Prideliť študentovi</label>
-
-                            <select name="assigned_to" id="assigned_to">
-                                <option value="">Bez pridelenia</option>
-
-                                <?php foreach ($members as $member): ?>
-                                    <option
-                                        value="<?= (int)$member['id'] ?>"
-                                        data-team="<?= (int)$member['team_id'] ?>">
-                                        <?= h($member['name']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="priority">Priorita</label>
-
-                            <select name="priority" id="priority">
-                                <option value="Low">Nízka</option>
-                                <option value="Medium" selected>Stredná</option>
-                                <option value="High">Vysoká</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="deadline">Termín dokončenia</label>
-                            <input type="date" id="deadline" name="deadline">
-                        </div>
-
-                        <div class="form-group full">
-                            <button type="submit" class="btn" id="createTaskButton">
-                                Vytvoriť úlohu
-                            </button>
-                        </div>
-
-                    </div>
-                </form>
-
-            </section>
+            </details>
 
             <!-- ZOZNAM ULOH -->
 
-            <section class="card">
+            <details class="card collapsible-section">
 
-                <h2>Nástenka úloh</h2>
+                <summary class="collapsible-header">
+                    <span>Nástenka úloh</span>
+                    <span class="collapsible-count">
+                        <?= count($tasks) ?> úloh
+                    </span>
+                </summary>
 
-                <?php if (empty($tasks)): ?>
+                <div class="collapsible-content">
 
-                    <div class="empty">
-                        V tvojich tímoch zatiaľ nie sú vytvorené žiadne úlohy.
-                    </div>
+                    <?php if (empty($tasks)): ?>
 
-                <?php else: ?>
+                        <div class="empty">
+                            V tvojich tímoch zatiaľ nie sú vytvorené žiadne úlohy.
+                        </div>
 
-                    <div class="task-list">
+                    <?php else: ?>
 
-                        <?php foreach ($tasks as $task): ?>
+                        <div class="task-list">
 
-                            <article class="task">
+                            <?php foreach ($tasks as $task): ?>
 
-                                <div class="task-header">
-                                    <h3><?= h($task['title']) ?></h3>
+                                <article class="task">
 
-                                    <span class="status <?= h(statusClass($task['status'])) ?>">
-                                        <?= h(statusLabel($task['status'])) ?>
-                                    </span>
-                                </div>
+                                    <div class="task-header">
+                                        <h3><?= h($task['title']) ?></h3>
 
-                                <div class="task-meta">
-                                    Tím: <?= h($task['team_name']) ?><br>
+                                        <span class="status <?= h(statusClass($task['status'])) ?>">
+                                            <?= h(statusLabel($task['status'])) ?>
+                                        </span>
+                                    </div>
 
-                                    Pridelené:
-                                    <?= h($task['assigned_name'] ?? 'Nepridelené') ?><br>
+                                    <div class="task-meta">
+                                        Tím: <?= h($task['team_name']) ?><br>
 
-                                    Priorita:
-                                    <span class="priority"><?= h($task['priority']) ?></span><br>
+                                        Pridelené:
+                                        <?= h($task['assigned_name'] ?? 'Nepridelené') ?><br>
 
-                                    Termín:
-                                    <?= $task['deadline']
-                                        ? h(date('d.m.Y', strtotime($task['deadline'])))
-                                        : 'Bez termínu' ?>
-                                </div>
+                                        Priorita:
+                                        <span class="priority"><?= h($task['priority']) ?></span><br>
 
-                                <?php if (!empty($task['description'])): ?>
-                                    <div class="task-description"><?= h($task['description']) ?></div>
-                                <?php endif; ?>
+                                        Termín:
+                                        <?= $task['deadline']
+                                            ? h(date('d.m.Y', strtotime($task['deadline'])))
+                                            : 'Bez termínu' ?>
+                                    </div>
 
-                                <!-- ZMENA STAVU -->
-
-                                <div class="task-form">
-
-                                    <form method="POST">
-
-                                        <input type="hidden" name="csrf_token" value="<?= h($csrfToken) ?>">
-                                        <input type="hidden" name="action" value="update_status">
-                                        <input type="hidden" name="task_id" value="<?= (int)$task['id'] ?>">
-
-                                        <select name="status">
-                                            <?php foreach ($statuses as $status): ?>
-                                                <option value="<?= h($status) ?>"
-                                                    <?= $task['status'] === $status ? 'selected' : '' ?>>
-                                                    <?= h(statusLabel($status)) ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-
-                                        <button class="btn" type="submit">Zmeniť stav</button>
-
-                                    </form>
-
-                                </div>
-
-                                <!-- KOMENTARE -->
-
-                                <div class="comments">
-
-                                    <div class="comments-title">Komentáre</div>
-
-                                    <?php if (empty($commentsByTask[$task['id']])): ?>
-
-                                        <div class="task-meta">Zatiaľ bez komentárov.</div>
-
-                                    <?php else: ?>
-
-                                        <?php foreach ($commentsByTask[$task['id']] as $comment): ?>
-
-                                            <div class="comment">
-                                                <strong><?= h($comment['name'] ?? 'Používateľ') ?></strong>
-                                                <br>
-                                                <?= h($comment['content']) ?>
-
-                                                <div class="activity-date">
-                                                    <?= h(date('d.m.Y H:i', strtotime($comment['created_at']))) ?>
-                                                </div>
-                                            </div>
-
-                                        <?php endforeach; ?>
-
+                                    <?php if (!empty($task['description'])): ?>
+                                        <div class="task-description"><?= h($task['description']) ?></div>
                                     <?php endif; ?>
 
-                                    <form method="POST" class="comment-form">
+                                    <!-- ZMENA STAVU -->
 
-                                        <input type="hidden" name="csrf_token" value="<?= h($csrfToken) ?>">
-                                        <input type="hidden" name="action" value="add_comment">
-                                        <input type="hidden" name="task_id" value="<?= (int)$task['id'] ?>">
+                                    <div class="task-form">
 
-                                        <input type="text" name="content" maxlength="5000"
-                                            placeholder="Napíš komentár..." required>
+                                        <form method="POST">
 
-                                        <button type="submit" class="btn">Odoslať</button>
+                                            <input type="hidden" name="csrf_token" value="<?= h($csrfToken) ?>">
+                                            <input type="hidden" name="action" value="update_status">
+                                            <input type="hidden" name="task_id" value="<?= (int)$task['id'] ?>">
 
-                                    </form>
+                                            <select name="status">
+                                                <?php foreach ($statuses as $status): ?>
+                                                    <option value="<?= h($status) ?>"
+                                                        <?= $task['status'] === $status ? 'selected' : '' ?>>
+                                                        <?= h(statusLabel($status)) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
 
-                                </div>
+                                            <button class="btn" type="submit">Zmeniť stav</button>
 
-                            </article>
+                                        </form>
 
-                        <?php endforeach; ?>
+                                    </div>
 
-                    </div>
+                                    <!-- KOMENTARE -->
 
-                <?php endif; ?>
+                                    <div class="comments">
 
-            </section>
+                                        <div class="comments-title">Komentáre</div>
 
-            <!-- AKTIVITA -->
+                                        <?php if (empty($commentsByTask[$task['id']])): ?>
 
-            <section class="card">
+                                            <div class="task-meta">Zatiaľ bez komentárov.</div>
 
-                <h2>Posledná aktivita tímov</h2>
+                                        <?php else: ?>
+
+                                            <?php foreach ($commentsByTask[$task['id']] as $comment): ?>
+
+                                                <div class="comment">
+                                                    <strong><?= h($comment['name'] ?? 'Používateľ') ?></strong>
+                                                    <br>
+                                                    <?= h($comment['content']) ?>
+
+                                                    <div class="activity-date">
+                                                        <?= h(date('d.m.Y H:i', strtotime($comment['created_at']))) ?>
+                                                    </div>
+                                                </div>
+
+                                            <?php endforeach; ?>
+
+                                        <?php endif; ?>
+
+                                        <form method="POST" class="comment-form">
+
+                                            <input type="hidden" name="csrf_token" value="<?= h($csrfToken) ?>">
+                                            <input type="hidden" name="action" value="add_comment">
+                                            <input type="hidden" name="task_id" value="<?= (int)$task['id'] ?>">
+
+                                            <input type="text" name="content" maxlength="5000"
+                                                placeholder="Napíš komentár..." required>
+
+                                            <button type="submit" class="btn">Odoslať</button>
+
+                                        </form>
+
+                                    </div>
+
+                                </article>
+
+                            <?php endforeach; ?>
+
+                        </div>
+                </div>
+
+            </details>
+        <?php endif; ?>
+
+        </section>
+
+        <!-- AKTIVITA -->
+
+        <details class="card collapsible-section">
+
+            <summary class="collapsible-header">
+                <span>Posledná aktivita tímov</span>
+                <span class="collapsible-count">
+                    <?= count($activities) ?> záznamov
+                </span>
+            </summary>
+
+            <div class="collapsible-content">
 
                 <?php if (empty($activities)): ?>
 
@@ -923,9 +950,11 @@ foreach ($tasks as $task) {
 
                 <?php endif; ?>
 
-            </section>
+            </div>
 
-        <?php endif; ?>
+        </details>
+
+    <?php endif; ?>
 
     </main>
 
@@ -984,4 +1013,3 @@ foreach ($tasks as $task) {
 </body>
 
 </html>
-```
