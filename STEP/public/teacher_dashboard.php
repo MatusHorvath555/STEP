@@ -193,11 +193,10 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             </div>
 
-            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 25px;">
+            <div class="teacher-info-grid">
+                <div class="teacher-info-item">
 
-                <div style="flex: 1; min-width: 220px; padding: 18px; border: 1px solid #e1ebeb; border-radius: 10px;">
-
-                    <p class="subtitle" style="margin-bottom: 8px;">Email</p>
+                    <p class="subtitle teacher-info-label">Email</p>
 
                     <strong>
                         <?php echo htmlspecialchars($teacher['email'], ENT_QUOTES, 'UTF-8'); ?>
@@ -205,11 +204,11 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 </div>
 
-                <div style="flex: 1; min-width: 150px; padding: 18px; border: 1px solid #e1ebeb; border-radius: 10px;">
+                <div class="teacher-info-item">
 
-                    <p class="subtitle" style="margin-bottom: 8px;">Rola</p>
+                    <p class="subtitle teacher-info-label">
 
-                    <strong>Učiteľ</strong>
+                        <strong>Učiteľ</strong>
 
                 </div>
 
@@ -222,7 +221,7 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
              STATISTIKY
         =================================== -->
 
-        <h2 style="margin-top: 30px;">Celkový prehľad</h2>
+        <h2 class="dashboard-overview-title">Celkový prehľad</h2>
 
         <div class="stats-grid">
 
