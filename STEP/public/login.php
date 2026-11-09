@@ -11,7 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST["email"] ?? "");
     $password = $_POST["password"] ?? "";
 
-    $sql = "SELECT id, name, email, password_hash, role
+    // Vyhladanie pouzivatela
+    $sql = "SELECT id, name, email, password_hash, role, is_active
             FROM users
             WHERE email = :email
             LIMIT 1";
@@ -23,66 +24,76 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    // Kontrola prihlasovacich udajov
     if ($user && password_verify($password, $user["password_hash"])) {
 
-        session_regenerate_id(true);
+        // Kontrola, ci je ucet aktivny
+        if (!$user["is_active"]) {
 
-        $_SESSION["user_id"] = $user["id"];
-        $_SESSION["name"] = $user["name"];
-        $_SESSION["role"] = $user["role"];
-
-        // Presmerovanie podľa globálnej roly
-        if ($user["role"] === "teacher") {
-
-            header("Location: teacher_dashboard.php");
-            exit();
-        } elseif ($user["role"] === "admin") {
-
-            header("Location: users.php");
-            exit();
-        } elseif ($user["role"] === "student") {
-
-            // Overíme, či je študent vedúcim aspoň jedného tímu
-            $leaderStmt = $pdo->prepare("
-                SELECT EXISTS (
-                    SELECT 1
-                    FROM team_members
-                    WHERE user_id = :user_id
-                    AND is_team_leader = TRUE
-                )
-            ");
-
-            $leaderStmt->execute([
-                "user_id" => $user["id"]
-            ]);
-
-            $isTeamLeader = $leaderStmt->fetchColumn();
-
-            if ($isTeamLeader) {
-
-                header("Location: team_leader_dashboard.php");
-                exit();
-            } else {
-
-                header("Location: dashboard.php");
-                exit();
-            }
+            $error = "Váš účet bol deaktivovaný. Kontaktujte administrátora.";
         } else {
 
-            // Neznáma rola – nepovolíme prístup
-            session_unset();
-            session_destroy();
+            // Vytvorenie novej session
+            session_regenerate_id(true);
 
-            header("Location: login.php");
-            exit();
+            $_SESSION["user_id"] = $user["id"];
+            $_SESSION["name"] = $user["name"];
+            $_SESSION["role"] = $user["role"];
+
+            // Presmerovanie podla globalnej roly
+            if ($user["role"] === "teacher") {
+
+                header("Location: teacher_dashboard.php");
+                exit();
+            } elseif ($user["role"] === "admin") {
+
+                header("Location: users.php");
+                exit();
+            } elseif ($user["role"] === "student") {
+
+                // Overime, ci je student veducim aspon jedneho timu
+                $leaderStmt = $pdo->prepare("
+                    SELECT EXISTS (
+                        SELECT 1
+                        FROM team_members
+                        WHERE user_id = :user_id
+                        AND is_team_leader = TRUE
+                    )
+                ");
+
+                $leaderStmt->execute([
+                    "user_id" => $user["id"]
+                ]);
+
+                $isTeamLeader = $leaderStmt->fetchColumn();
+
+                if ($isTeamLeader) {
+
+                    header("Location: team_leader_dashboard.php");
+                    exit();
+                } else {
+
+                    header("Location: dashboard.php");
+                    exit();
+                }
+            } else {
+
+                // Neznama rola – nepovolime pristup
+                session_unset();
+                session_destroy();
+
+                header("Location: login.php");
+                exit();
+            }
         }
     } else {
 
+        // Nespravny email alebo heslo
         $error = "Nesprávny email alebo heslo.";
     }
 }
-?>
 
+?>
 
 <!DOCTYPE html>
 <html lang="sk">
@@ -92,6 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>STEP - Prihlásenie</title>
+
     <link rel="stylesheet" href="css/premenne.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -102,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <h2>Prihlásenie</h2>
 
-        <!-- Chybová správa -->
+        <!-- Chybova sprava -->
         <?php if (!empty($error)): ?>
             <p class="alert error">
                 <?php echo htmlspecialchars($error, ENT_QUOTES, "UTF-8"); ?>

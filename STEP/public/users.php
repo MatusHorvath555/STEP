@@ -82,7 +82,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     : 'Rola sa nezmenila. Pouzivatel mozno nema upravitelnu rolu.';
             } elseif ($action === 'deactivate' || $action === 'activate') {
 
-                $isActive = ($action === 'activate');
+                // Podla akcie nastavime priamo TRUE alebo FALSE v databaze.
+                if ($action === 'deactivate') {
+                    $updateStmt = $pdo->prepare("
+            UPDATE users
+            SET is_active = FALSE
+            WHERE id = :id
+            AND role <> 'admin'
+            RETURNING id
+        ");
+                    $successMessage = 'Účet bol deaktivovaný.';
+                } else {
+                    $updateStmt = $pdo->prepare("
+            UPDATE users
+            SET is_active = TRUE
+            WHERE id = :id
+            AND role <> 'admin'
+            RETURNING id
+        ");
+                    $successMessage = 'Účet bol aktivovaný.';
+                }
+
+                $updateStmt->execute(['id' => $userId]);
+
+                if ($updateStmt->fetchColumn()) {
+                    $_SESSION['admin_message'] = $successMessage;
+                } else {
+                    $_SESSION['admin_message'] = 'Účet sa nepodarilo zmeniť. Skontroluj, či existuje a nie je administrátorský.';
+                }
 
                 $updateStmt = $pdo->prepare("
                     UPDATE users
