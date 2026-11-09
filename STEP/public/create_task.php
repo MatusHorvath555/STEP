@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -6,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-if ($_SESSION['role'] !== 'teacher') {
+if (($_SESSION['role'] ?? '') !== 'teacher') {
     header("Location: dashboard.php");
     exit();
 }
@@ -14,49 +15,71 @@ if ($_SESSION['role'] !== 'teacher') {
 require_once __DIR__ . "/../config/config.php";
 
 $message = "";
+$messageType = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $sql = "INSERT INTO tasks
-    (
-        team_id,
-        assigned_to,
-        title,
-        description,
-        status,
-        priority,
-        deadline
-    )
-    VALUES
-    (
-        :team_id,
-        :assigned_to,
-        :title,
-        :description,
-        :status,
-        :priority,
-        :deadline
-    )";
-
-    $stmt = $pdo->prepare($sql);
-
-    $stmt->execute([
-        'team_id' => $_POST['team_id'],
-        'assigned_to' => $_POST['assigned_to'],
-        'title' => $_POST['title'],
-        'description' => $_POST['description'],
-        'status' => 'To Do',
-        'priority' => $_POST['priority'],
-        'deadline' => $_POST['deadline']
-    ]);
-
-    $message = "Úloha bola vytvorená.";
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-$users = $pdo->query("SELECT * FROM users ORDER BY name")
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $submittedToken = $_POST['csrf_token'] ?? '';
+    if (!hash_equals($_SESSION['csrf_token'], $submittedToken)) {
+        die("Chyba overenia CSRF tokenu.");
+    }
+
+    $teamId = filter_input(INPUT_POST, 'team_id', FILTER_VALIDATE_INT);
+    $assignedTo = filter_input(INPUT_POST, 'assigned_to', FILTER_VALIDATE_INT);
+    $title = trim($_POST['title'] ?? '');
+    $description = trim($_POST['description'] ?? '');
+    $priority = $_POST['priority'] ?? 'Medium';
+    $deadline = $_POST['deadline'] ?? null;
+
+    if ($teamId && $assignedTo && $title !== '') {
+        $sql = "INSERT INTO tasks
+        (
+            team_id,
+            assigned_to,
+            title,
+            description,
+            status,
+            priority,
+            deadline
+        )
+        VALUES
+        (
+            :team_id,
+            :assigned_to,
+            :title,
+            :description,
+            :status,
+            :priority,
+            :deadline
+        )";
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->execute([
+            'team_id' => $teamId,
+            'assigned_to' => $assignedTo,
+            'title' => $title,
+            'description' => $description,
+            'status' => 'To Do',
+            'priority' => in_array($priority, ['Low', 'Medium', 'High'], true) ? $priority : 'Medium',
+            'deadline' => ($deadline !== '') ? $deadline : null
+        ]);
+
+        $message = "Úloha bola úspešne vytvorená.";
+        $messageType = "success";
+    } else {
+        $message = "Vyplňte povinné polia (Názov, Tím, Priradená osoba).";
+        $messageType = "error";
+    }
+}
+
+$users = $pdo->query("SELECT id, name FROM users ORDER BY name")
     ->fetchAll(PDO::FETCH_ASSOC);
 
-$teams = $pdo->query("SELECT * FROM teams ORDER BY name")
+$teams = $pdo->query("SELECT id, name FROM teams ORDER BY name")
     ->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
@@ -66,67 +89,100 @@ $teams = $pdo->query("SELECT * FROM teams ORDER BY name")
 
 <head>
     <meta charset="UTF-8">
-    <title>Vytvorenie úlohy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vytvorenie úlohy | STEP</title>
+
+    <link rel="stylesheet" href="css/premenne.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <?php require_once "navigation.php"; ?>
 
-    <h2>Nová úloha</h2>
+    <main class="container">
 
-    <?php if (!empty($message)): ?>
-        <p><?php echo $message; ?></p>
-    <?php endif; ?>
+        <div class="heading">
+            <div>
+                <h1>Vytvorenie novej úlohy</h1>
+                <p class="subtitle">Zadajte novú úlohu pre vybraný tím a priradeného člena</p>
+            </div>
+            <div class="heading-actions">
+                <a href="tasks.php" class="btn btn-secondary">
+                    ← Späť na zoznam úloh
+                </a>
+            </div>
+        </div>
 
-    <form method="POST">
+        <?php if (!empty($message)): ?>
+            <div class="message <?php echo htmlspecialchars($messageType, ENT_QUOTES, 'UTF-8'); ?>">
+                <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
+            </div>
+        <?php endif; ?>
 
-        <label>Názov úlohy:</label><br>
-        <input type="text" name="title" required><br><br>
+        <div class="card">
+            <h2>Detail úlohy</h2>
 
-        <label>Popis:</label><br>
-        <textarea name="description"></textarea><br><br>
+            <form method="POST" class="auth-form form-grid-layout">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
 
-        <label>Tím:</label><br>
-        <select name="team_id" required>
+                <div class="form-group full-width">
+                    <label for="title">Názov úlohy *</label>
+                    <input type="text" id="title" name="title" required placeholder="Zadajte názov úlohy...">
+                </div>
 
-            <?php foreach ($teams as $team): ?>
+                <div class="form-group full-width">
+                    <label for="description">Popis</label>
+                    <textarea id="description" name="description" placeholder="Zadajte podrobný popis úlohy..."></textarea>
+                </div>
 
-                <option value="<?php echo $team['id']; ?>">
-                    <?php echo htmlspecialchars($team['name']); ?>
-                </option>
+                <div class="form-group">
+                    <label for="team_id">Tím *</label>
+                    <select id="team_id" name="team_id" required>
+                        <option value="">-- Vyberte tím --</option>
+                        <?php foreach ($teams as $team): ?>
+                            <option value="<?php echo (int) $team['id']; ?>">
+                                <?php echo htmlspecialchars($team['name'], ENT_QUOTES, 'UTF-8'); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-            <?php endforeach; ?>
+                <div class="form-group">
+                    <label for="assigned_to">Priradiť používateľovi *</label>
+                    <select id="assigned_to" name="assigned_to" required>
+                        <option value="">-- Vyberte používateľa --</option>
+                        <?php foreach ($users as $user): ?>
+                            <option value="<?php echo (int) $user['id']; ?>">
+                                <?php echo htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8'); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-        </select><br><br>
+                <div class="form-group">
+                    <label for="priority">Priorita</label>
+                    <select id="priority" name="priority">
+                        <option value="Low">Low</option>
+                        <option value="Medium" selected>Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
 
-        <label>Priradiť používateľovi:</label><br>
-        <select name="assigned_to" required>
+                <div class="form-group">
+                    <label for="deadline">Deadline</label>
+                    <input type="date" id="deadline" name="deadline">
+                </div>
 
-            <?php foreach ($users as $user): ?>
+                <div class="form-actions full-width">
+                    <button type="submit" class="btn btn-full">
+                        Vytvoriť úlohu
+                    </button>
+                </div>
 
-                <option value="<?php echo $user['id']; ?>">
-                    <?php echo htmlspecialchars($user['name']); ?>
-                </option>
+            </form>
+        </div>
 
-            <?php endforeach; ?>
-
-        </select><br><br>
-
-        <label>Priorita:</label><br>
-        <select name="priority">
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-        </select><br><br>
-
-        <label>Deadline:</label><br>
-        <input type="date" name="deadline"><br><br>
-
-        <button type="submit">
-            Vytvoriť úlohu
-        </button>
-
-    </form>
+    </main>
 
 </body>
 

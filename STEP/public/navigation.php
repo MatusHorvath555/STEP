@@ -1,5 +1,4 @@
 <?php
-
 // Spoločná navigácia STEP.
 // Predpokladá, že session už bola spustená.
 
@@ -42,7 +41,6 @@ if ($role === 'teacher') {
     // Overenie, či je študent vedúcim aspoň jedného tímu
     if (!isset($pdo)) {
         require_once __DIR__ . "/../config/config.php";
-
     }
 
     $leaderStmt = $pdo->prepare("
@@ -87,19 +85,18 @@ if ($role === 'teacher') {
 
 <header class="step-navigation">
 
-<a href="<?= htmlspecialchars($homePage, ENT_QUOTES, 'UTF-8') ?>"
-   class="step-logo"
-   aria-label="STEP – domov">
-    <img src="logo.png" alt="STEP" width="50" height="40">
-</a>
+    <a href="<?= htmlspecialchars($homePage, ENT_QUOTES, 'UTF-8') ?>"
+       class="step-logo"
+       aria-label="STEP – domov">
+        <img src="logo.png" alt="STEP" width="50" height="40">
+    </a>
 
     <nav class="step-navigation-links" aria-label="Hlavná navigácia">
 
         <?php foreach ($links as $url => $label): ?>
 
-            <a
-                href="<?= htmlspecialchars($url, ENT_QUOTES, 'UTF-8') ?>"
-                class="<?= $currentPage === $url ? 'active' : '' ?>">
+            <a href="<?= htmlspecialchars($url, ENT_QUOTES, 'UTF-8') ?>"
+               class="<?= $currentPage === $url ? 'active' : '' ?>">
                 <?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?>
             </a>
 

@@ -48,158 +48,83 @@ $initials = mb_strtoupper($initials, 'UTF-8');
 <html lang="sk">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Môj profil | STEP</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f4f4f4;
-        }
-
-        .profile-container {
-            max-width: 650px;
-            margin: 30px auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-
-        .profile-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background-color: #4a90e2;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            font-weight: bold;
-            margin: 0 auto 15px;
-        }
-
-        .profile-header h2 {
-            margin-bottom: 5px;
-        }
-
-        .role {
-            color: #777;
-        }
-
-        .profile-details {
-            border-top: 1px solid #ddd;
-            padding-top: 20px;
-        }
-
-        .detail {
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .detail strong {
-            display: inline-block;
-            width: 170px;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 25px;
-            padding: 10px 18px;
-            background-color: #4a90e2;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        .back-link:hover {
-            background-color: #357abd;
-        }
-
-        .photo-note {
-            margin-top: 15px;
-            color: #888;
-            font-size: 13px;
-        }
-    </style>
-
+    <link rel="stylesheet" href="css/premenne.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <?php require_once "navigation.php"; ?>
 
-    <div class="profile-container">
+    <main class="container">
 
-        <h1>Môj profil</h1>
+        <div class="heading">
+            <div>
+                <h1>Môj profil</h1>
+                <p class="subtitle">Podrobné informácie o vašom používateľskom kontu</p>
+            </div>
+            <div>
+                <a href="teacher_dashboard.php" class="btn btn-secondary">
+                    ← Späť na dashboard
+                </a>
+            </div>
+        </div>
 
-        <div class="profile-header">
+        <div class="card profile-card-wrapper">
+            
+            <div class="profile-header-section">
+                <div class="avatar">
+                    <?php echo htmlspecialchars($initials, ENT_QUOTES, 'UTF-8'); ?>
+                </div>
 
-            <div class="avatar">
-                <?php echo htmlspecialchars($initials, ENT_QUOTES, 'UTF-8'); ?>
+                <h2>
+                    <?php echo htmlspecialchars($teacher['name'], ENT_QUOTES, 'UTF-8'); ?>
+                </h2>
+
+                <p class="profile-role-badge">
+                    Učiteľ
+                </p>
+
+                <p class="photo-note">
+                    Profilová fotografia bude dostupná v budúcej verzii.
+                </p>
             </div>
 
-            <h2>
-                <?php echo htmlspecialchars($teacher['name'], ENT_QUOTES, 'UTF-8'); ?>
-            </h2>
+            <div class="profile-details-list">
 
-            <p class="role">
-                Učiteľ
-            </p>
+                <div class="profile-row">
+                    <span class="profile-label">ID používateľa:</span>
+                    <span class="profile-value"><?php echo (int) $teacher['id']; ?></span>
+                </div>
 
-            <p class="photo-note">
-                Profilová fotografia bude dostupná v budúcej verzii.
-            </p>
+                <div class="profile-row">
+                    <span class="profile-label">Meno a priezvisko:</span>
+                    <span class="profile-value"><?php echo htmlspecialchars($teacher['name'], ENT_QUOTES, 'UTF-8'); ?></span>
+                </div>
+
+                <div class="profile-row">
+                    <span class="profile-label">Email:</span>
+                    <span class="profile-value"><?php echo htmlspecialchars($teacher['email'], ENT_QUOTES, 'UTF-8'); ?></span>
+                </div>
+
+                <div class="profile-row">
+                    <span class="profile-label">Rola:</span>
+                    <span class="profile-value">Učiteľ</span>
+                </div>
+
+                <div class="profile-row">
+                    <span class="profile-label">Dátum registrácie:</span>
+                    <span class="profile-value"><?php echo htmlspecialchars($teacher['created_at'] ?? 'Neznámy', ENT_QUOTES, 'UTF-8'); ?></span>
+                </div>
+
+            </div>
 
         </div>
 
-        <div class="profile-details">
-
-            <div class="detail">
-                <strong>ID používateľa:</strong>
-                <?php echo (int) $teacher['id']; ?>
-            </div>
-
-            <div class="detail">
-                <strong>Meno a priezvisko:</strong>
-                <?php echo htmlspecialchars($teacher['name'], ENT_QUOTES, 'UTF-8'); ?>
-            </div>
-
-            <div class="detail">
-                <strong>Email:</strong>
-                <?php echo htmlspecialchars($teacher['email'], ENT_QUOTES, 'UTF-8'); ?>
-            </div>
-
-            <div class="detail">
-                <strong>Rola:</strong>
-                Učiteľ
-            </div>
-
-            <div class="detail">
-                <strong>Dátum registrácie:</strong>
-                <?php echo htmlspecialchars($teacher['created_at'] ?? 'Neznámy', ENT_QUOTES, 'UTF-8'); ?>
-            </div>
-
-        </div>
-
-        <a href="teacher_dashboard.php" class="back-link">
-            Späť na dashboard
-        </a>
-
-    </div>
+    </main>
 
 </body>
 

@@ -6,13 +6,18 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
-require_once __DIR__ . "/../config/config.php";
 
+require_once __DIR__ . "/../config/config.php";
 
 $taskId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 if (!$taskId) {
     die("Neplatné ID úlohy.");
+}
+
+// Inicializácia CSRF tokenu
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
 $stmt = $pdo->prepare("
@@ -33,87 +38,109 @@ if (!$task) {
     die("Úloha neexistuje alebo k nej nemáte prístup.");
 }
 
+$message = "";
+$messageType = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $submittedToken = $_POST['csrf_token'] ?? '';
+    if (!hash_equals($_SESSION['csrf_token'], $submittedToken)) {
+        die("Chyba overenia CSRF tokenu.");
+    }
 
-    $status = $_POST['status'];
-
-    // Kontrola povolených stavov
+    $status = $_POST['status'] ?? '';
     $allowedStatuses = ['To Do', 'In Progress', 'Done'];
 
     if (!in_array($status, $allowedStatuses, true)) {
-        die("Neplatný stav úlohy.");
+        $message = "Neplatný stav úlohy.";
+        $messageType = "error";
+    } else {
+        $update = $pdo->prepare("
+            UPDATE tasks
+            SET status = :status
+            WHERE id = :id
+            AND assigned_to = :user_id
+        ");
+
+        $update->execute([
+            'status' => $status,
+            'id' => $taskId,
+            'user_id' => $_SESSION['user_id']
+        ]);
+
+        header("Location: my_tasks.php");
+        exit();
     }
-
-    $update = $pdo->prepare("
-        UPDATE tasks
-        SET status = :status
-        WHERE id = :id
-        AND assigned_to = :user_id
-    ");
-
-    $update->execute([
-        'status' => $status,
-        'id' => $taskId,
-        'user_id' => $_SESSION['user_id']
-    ]);
-
-    header("Location: my_tasks.php");
-    exit();
 }
 
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="sk">
 
 <head>
     <meta charset="UTF-8">
-    <title>Zmena stavu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zmena stavu úlohy | STEP</title>
+
+    <link rel="stylesheet" href="css/premenne.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <h2>Zmena stavu úlohy</h2>
+    <?php require_once "navigation.php"; ?>
 
-    <p>
-        Úloha:
-        <strong><?php echo htmlspecialchars($task['title']); ?></strong>
-    </p>
+    <main class="container">
 
-    <form method="POST">
+        <div class="heading">
+            <div>
+                <h1>Zmena stavu úlohy</h1>
+                <p class="subtitle">Aktualizujte aktuálny stav riešenia tejto úlohy</p>
+            </div>
+            <div>
+                <a href="my_tasks.php" class="btn btn-secondary">
+                    ← Späť na moje úlohy
+                </a>
+            </div>
+        </div>
 
-        <label>Status:</label>
+        <?php if (!empty($message)): ?>
+            <div class="message <?php echo htmlspecialchars($messageType, ENT_QUOTES, 'UTF-8'); ?>">
+                <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
+            </div>
+        <?php endif; ?>
 
-        <select name="status">
+        <div class="card profile-card-wrapper">
+            <h2>Úloha: <?php echo htmlspecialchars($task['title'], ENT_QUOTES, 'UTF-8'); ?></h2>
 
-            <option value="To Do"
-                <?php if ($task['status'] == "To Do") echo "selected"; ?>>
-                To Do
-            </option>
+            <form method="POST" class="auth-form">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
 
-            <option value="In Progress"
-                <?php if ($task['status'] == "In Progress") echo "selected"; ?>>
-                In Progress
-            </option>
+                <div class="form-group">
+                    <label for="status">Status úlohy</label>
+                    <select id="status" name="status">
+                        <option value="To Do" <?php if ($task['status'] == "To Do") echo "selected"; ?>>
+                            To Do
+                        </option>
+                        <option value="In Progress" <?php if ($task['status'] == "In Progress") echo "selected"; ?>>
+                            In Progress
+                        </option>
+                        <option value="Done" <?php if ($task['status'] == "Done") echo "selected"; ?>>
+                            Done
+                        </option>
+                    </select>
+                </div>
 
-            <option value="Done"
-                <?php if ($task['status'] == "Done") echo "selected"; ?>>
-                Done
-            </option>
+                <div class="form-actions-spacing">
+                    <button type="submit" class="btn btn-full">
+                        Uložiť zmeny
+                    </button>
+                </div>
 
-        </select>
+            </form>
+        </div>
 
-        <br><br>
-
-        <button type="submit">
-            Uložiť
-        </button>
-
-    </form>
-
-    <p>
-        <a href="my_tasks.php">Späť na moje úlohy</a>
-    </p>
+    </main>
 
 </body>
 

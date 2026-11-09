@@ -33,81 +33,105 @@ if (!$user) {
     exit();
 }
 
+// Generovanie iniciálok pre avatar
+$nameParts = preg_split('/\s+/', trim($user['name']));
+$initials = '';
+
+foreach ($nameParts as $part) {
+    if ($part !== '') {
+        $initials .= mb_substr($part, 0, 1, 'UTF-8');
+    }
+}
+$initials = mb_strtoupper($initials, 'UTF-8');
+
 ?>
 
 <!DOCTYPE html>
 <html lang="sk">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Môj profil | STEP</title>
 
-    <title>Môj profil</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="css/premenne.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <?php require_once "navigation.php"; ?>
 
-    <div class="container mt-4">
+    <main class="container">
 
-        <h1>Môj profil</h1>
+        <div class="heading">
+            <div>
+                <h1>Môj profil</h1>
+                <p class="subtitle">Informácie o vašom používateľskom kontu</p>
+            </div>
+            <div class="heading-actions">
+                <a href="dashboard.php" class="btn btn-secondary">
+                    ← Späť na dashboard
+                </a>
+            </div>
+        </div>
 
-        <a href="dashboard.php" class="btn btn-secondary mb-3">
-            Dashboard
-        </a>
+        <div class="card profile-card-wrapper">
+            
+            <div class="profile-header-section">
+                <div class="avatar">
+                    <?php echo htmlspecialchars($initials, ENT_QUOTES, 'UTF-8'); ?>
+                </div>
 
-        <div class="card">
+                <h2>
+                    <?php echo htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8'); ?>
+                </h2>
 
-            <div class="card-header">
-                Informácie o používateľovi
+                <p class="profile-role-badge">
+                    <?php echo htmlspecialchars(ucfirst($user['role']), ENT_QUOTES, 'UTF-8'); ?>
+                </p>
             </div>
 
-            <div class="card-body">
+            <div class="profile-details-list">
 
-                <p>
-                    <strong>ID:</strong>
-                    <?php echo htmlspecialchars((string)$user['id']); ?>
-                </p>
+                <div class="profile-row">
+                    <span class="profile-label">ID používateľa:</span>
+                    <span class="profile-value"><?php echo (int) $user['id']; ?></span>
+                </div>
 
-                <p>
-                    <strong>Meno:</strong>
-                    <?php echo htmlspecialchars($user['name']); ?>
-                </p>
+                <div class="profile-row">
+                    <span class="profile-label">Meno a priezvisko:</span>
+                    <span class="profile-value"><?php echo htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8'); ?></span>
+                </div>
 
-                <p>
-                    <strong>Email:</strong>
-                    <?php echo htmlspecialchars($user['email']); ?>
-                </p>
+                <div class="profile-row">
+                    <span class="profile-label">Email:</span>
+                    <span class="profile-value"><?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></span>
+                </div>
 
-                <p>
-                    <strong>Rola:</strong>
-                    <?php echo htmlspecialchars($user['role']); ?>
-                </p>
+                <div class="profile-row">
+                    <span class="profile-label">Rola:</span>
+                    <span class="profile-value"><?php echo htmlspecialchars($user['role'], ENT_QUOTES, 'UTF-8'); ?></span>
+                </div>
 
-                <p>
-                    <strong>Registrovaný od:</strong>
-                    <?php echo htmlspecialchars($user['created_at'] ?? 'Neznáme'); ?>
-                </p>
+                <div class="profile-row">
+                    <span class="profile-label">Registrovaný od:</span>
+                    <span class="profile-value"><?php echo htmlspecialchars($user['created_at'] ?? 'Neznáme', ENT_QUOTES, 'UTF-8'); ?></span>
+                </div>
 
+            </div>
+
+            <div class="profile-actions-footer">
+                <a href="change_password.php" class="btn btn-secondary">
+                    Zmeniť heslo
+                </a>
+                <a href="index.php" class="btn btn-secondary">
+                    Domovská stránka
+                </a>
             </div>
 
         </div>
 
-        <br>
-
-        <a href="change_password.php" class="btn btn-warning">
-            Zmeniť heslo
-        </a>
-
-
-        <a href="index.php" class="btn btn-warning">
-            Domovská stránka
-        </a>
-
-    </div>
+    </main>
 
 </body>
 
