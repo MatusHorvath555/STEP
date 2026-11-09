@@ -166,7 +166,13 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <p class="subtitle">Zatiaľ nebol vytvorený žiadny tím.</p>
             <?php else: ?>
                 <div class="table-responsive" style="border: 1px solid #e1ebeb; border-radius: 10px;">
-                    <table class="step-table">
+                    <table class="step-table" style="width: 100%; table-layout: fixed;">
+                        <colgroup>
+                            <col style="width: 10%;">
+                            <col style="width: 40%;">
+                            <col style="width: 20%;">
+                            <col style="width: 30%;">
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th class="col-id">ID</th>

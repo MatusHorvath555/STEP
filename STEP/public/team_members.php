@@ -362,19 +362,22 @@ $members = $pdo->query("
 
         </div>
 
-        <!-- Karta s tabuľkou členov (cez celú šírku) -->
-        <div class="card-table-wrapper">
+        <!-- Karta so zoznamom členov (rovnaká štruktúra ako karta formulára) -->
+        <div class="card">
             <h2>Zoznam členov tímov</h2>
 
             <?php if (empty($members)): ?>
-                <div class="card-empty-box">
-                    <div class="empty">
-                        Zatiaľ žiadne tímy nemajú priradených študentov.
-                    </div>
-                </div>
+                <p class="subtitle">Zatiaľ žiadne tímy nemajú priradených študentov.</p>
             <?php else: ?>
-                <div class="table-responsive">
-                    <table class="step-table">
+                <div class="table-responsive" style="border: 1px solid #e1ebeb; border-radius: 10px;">
+                    <table class="step-table" style="width: 100%; table-layout: fixed;">
+                        <colgroup>
+                            <col style="width: 20%;">
+                            <col style="width: 22%;">
+                            <col style="width: 26%;">
+                            <col style="width: 14%;">
+                            <col style="width: 18%;">
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th>Tím</th>
