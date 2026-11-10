@@ -1,6 +1,6 @@
-/* =====================================================
+/* 
    1. ZAKLADNE NASTAVENIA
-===================================================== */
+ */
 
 * {
     box-sizing: border-box;
@@ -29,9 +29,9 @@ body {
     );
 }
 
-/* =====================================================
+/* 
    2. HLAVNÝ KONTAJNER A NADPISY (Jednotné pre celú app)
-===================================================== */
+ */
 
 .container {
     display: flex;
@@ -75,9 +75,9 @@ main.container .role-label {
     letter-spacing: 0.5px;
 }
 
-/* =====================================================
+/* 
    3. SPRÁVY – ÚSPECH, CHYBA, INFO
-===================================================== */
+*/
 
 .alert,
 main.container .message {
@@ -110,9 +110,9 @@ main.container .message.info {
     border: 1px solid #c8e3e7;
 }
 
-/* =====================================================
+/* 
    4. PRIHLASOVACIA / REGISTRAČNÁ KARTA
-===================================================== */
+*/
 
 .login-container {
     width: calc(100% - 32px);
@@ -137,9 +137,9 @@ main.container .message.info {
     text-align: center;
 }
 
-/* =====================================================
+/* 
    5. FORMULÁRE A VSTUPY
-===================================================== */
+ */
 
 .auth-form {
     display: flex;
@@ -222,9 +222,9 @@ main.container .form-group textarea:focus {
     box-shadow: 0 0 0 3px rgba(0, 141, 163, 0.12);
 }
 
-/* =====================================================
+/* 
    6. CHECKBOX A TLAČIDLÁ
-===================================================== */
+ */
 
 .form-checkbox-group {
     display: flex;
@@ -281,9 +281,9 @@ main.container .btn:hover {
     background-color: var(--farba-primarna);
 }
 
-/* =====================================================
+/* 
    7. ODKAZY POD FORMULÁROM
-===================================================== */
+*/
 
 .auth-links {
     display: flex;
@@ -305,9 +305,9 @@ main.container .btn:hover {
     text-decoration: underline;
 }
 
-/* =====================================================
+/* 
    8. KARTY A USER INFO (Dashboard / Učiteľ / Študent)
-===================================================== */
+ */
 
 .card,
 main.container .card,
@@ -399,9 +399,9 @@ main.container .card,
     font-weight: 700;
 }
 
-/* =====================================================
-   9. PROFESIONÁLNE TABUĽKY (students.php, team_members.php atď.)
-===================================================== */
+/* 
+   9. TABUĽKY (students.php, team_members.php )
+ */
 
 .card-table-wrapper {
     background: var(--farba-karta);
@@ -431,12 +431,12 @@ main.container .card,
 .step-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px; /* Upravené z 20px na prehľadnú veľkosť */
+    font-size: 14px; 
     text-align: left;
 }
 
 .step-table th {
-    padding: 16px 26px; /* Vyvážený padding namiesto príliš veľkých 30px */
+    padding: 16px 26px; 
     background-color: #f2f7f7;
     color: var(--farba-primarna);
     border-top: 1px solid #e1ebeb;
@@ -484,9 +484,9 @@ main.container .card,
     white-space: nowrap;
 }
 
-/* =====================================================
+/* 
    10. HLAVNÁ NAVIGÁCIA STEP
-===================================================== */
+ */
 
 .step-navigation {
     display: flex;
@@ -585,9 +585,9 @@ main.container .card,
     color: #FFFFFF;
 }
 
-/* =====================================================
-   11. RESPONSIVITA (Media Queries)
-===================================================== */
+/* 
+   11. RESPONSIVITA 
+ */
 
 @media (max-width: 1050px) {
     .step-navigation {
@@ -660,9 +660,9 @@ main.container .card,
         margin-left: 0;
     }
 }
-/* =====================================================
+/* 
    KANBAN NÁSTENKA – ŠTÝLY
-===================================================== */
+ */
 
 .kanban-board {
     display: grid;
@@ -746,9 +746,9 @@ main.container .card,
         grid-template-columns: 1fr;
     }
 }
-/* =====================================================
-   FORMULÁROVÉ GRIDY A AKCIE (Pre create_task.php atď.)
-===================================================== */
+/* 
+   FORMULÁROVÉ GRIDY A AKCIE (create_task.php )
+ */
 
 .heading-actions {
     display: flex;
@@ -785,9 +785,6 @@ main.container .card,
         grid-column: auto;
     }
 }
-/* =====================================================
-   DOPLNKY PRE TABUĽKU ÚLOH (tasks.php)
-===================================================== */
 
 .step-table th.col-action,
 .step-table td.col-action {
@@ -800,9 +797,9 @@ main.container .card,
     min-height: 32px;
 }
 
-/* =====================================================
-   PROFIL POUŽÍVATEĽA (teacher_profile.php atď.)
-===================================================== */
+/* 
+   PROFIL POUŽÍVATEĽA (teacher_profile.php )
+*/
 
 .profile-card-wrapper {
     max-width: 700px;
@@ -869,9 +866,9 @@ main.container .card,
 .profile-value {
     color: var(--farba-text);
 }
-/* =====================================================
+/* 
    DOPLNKY PRE FORMULÁR ZMENY HESLA (change_password.php)
-===================================================== */
+ */
 
 .checkbox-spacing-sm {
     margin-top: -5px;
@@ -891,9 +888,9 @@ main.container .card,
 .form-actions-spacing {
     margin-top: 15px;
 }
-/* =====================================================
+/* 
    DOPLNKY PRE PROFILOVÉ AKCIE (profile.php)
-===================================================== */
+ */
 
 .profile-actions-footer {
     display: flex;
@@ -903,9 +900,9 @@ main.container .card,
     border-top: 1px solid #edf1f1;
     flex-wrap: wrap;
 }
-/* =====================================================
+/*
    DOPLNKY PRE DETAIL ÚLOHY (task_detail.php)
-===================================================== */
+ */
 
 .task-description-box {
     white-space: pre-wrap;
@@ -951,13 +948,9 @@ main.container .card,
     font-size: 13px;
 }
 
-
-
-
-
-/* =====================================================
+/* 
    TEACHER DASHBOARD – SAMOSTATNE STYLY
-===================================================== */
+ */
 
 /* PREHLADOVE STATISTIKY */
 
@@ -1105,9 +1098,9 @@ main.container .card,
 }
 
 
-/* =====================================================
+/* 
    ZOZNAM ULOH UCITELA
-===================================================== */
+ */
 
 .teacher-tasks-page {
     max-width: 1200px;
@@ -1151,11 +1144,9 @@ main.container .card,
 .tasks-table th:nth-child(7) { width: 12%; }
 .tasks-table th:nth-child(8) { width: 10%; }
 
-
-
-/* =====================================================
+/* 
    ZOZNAM STUDENTOV UCITELA
-===================================================== */
+ */
 
 .teacher-students-page {
     max-width: 1200px;
@@ -1206,9 +1197,9 @@ main.container .card,
     overflow-wrap: anywhere;
 }
 
-/* =====================================================
+/* 
    SPRAVA TIMOV UCITELA
-===================================================== */
+ */
 
 .teacher-teams-page {
     max-width: 1200px;
@@ -1282,9 +1273,9 @@ main.container .card,
     overflow-wrap: anywhere;
 }
 
-/* =====================================================
+/* 
    DOPLNKOVE STYLY TEACHER DASHBOARDU
-===================================================== */
+ */
 
 .teacher-info-grid {
     display: flex;
@@ -1310,9 +1301,9 @@ main.container .card,
 }
 
 
-/* =====================================================
+/* 
    TEAM LEADER DASHBOARD
-===================================================== */
+ */
 
 .team-leader-dashboard {
     max-width: 1200px;
@@ -1531,4 +1522,168 @@ main.container .card,
     .team-leader-dashboard .stats {
         grid-template-columns: 1fr;
     }
+}
+/* 
+   ÚVODNÁ STRÁNKA (index.php) 
+ */
+
+.index-container-wrapper {
+    max-width: 750px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.index-hero-card {
+    text-align: center;
+    padding: 50px 40px;
+}
+
+.site-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.index-logo-wrapper {
+    width: 65px;
+    height: 65px;
+    background: #e0f2ed;
+    color: var(--farba-primarna);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px auto;
+    box-shadow: 0 4px 10px rgba(12, 80, 89, 0.1);
+}
+
+.index-logo-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.site-logo-text {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--farba-primarna);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.index-badge {
+    display: inline-block;
+    padding: 5px 14px;
+    background: #f0f7f7;
+    color: var(--farba-primarna);
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.index-lead {
+    color: var(--farba-text);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 35px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.index-actions-grid {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 35px;
+}
+
+.index-info-box {
+    background: #f4f8f8;
+    border-left: 4px solid var(--farba-primarna);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    text-align: left;
+    font-size: 14px;
+    color: var(--farba-text-tlmeny);
+}
+
+.index-info-box strong {
+    color: var(--farba-primarna);
+}
+
+.site-footer {
+    text-align: center;
+    padding: 25px;
+    color: var(--farba-text-tlmeny);
+    font-size: 13px;
+}
+
+.site-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logo-link {
+    display: inline-block;
+    line-height: 0;
+    text-decoration: none;
+}
+
+.custom-logo {
+    max-height: 150px; 
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* 
+   DOPLNKY PRE TABUĽKY V SYSTEMÉ STEP
+*/
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--farba-okraj, #e2e7e7);
+}
+
+.styled-table th {
+    background-color: var(--farba-primarna, #0c5059);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #fafcfc;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    background: #e0f2ed;
+    color: var(--farba-primarna, #0c5059);
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
 }

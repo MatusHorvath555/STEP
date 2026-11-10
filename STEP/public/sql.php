@@ -1,4 +1,5 @@
 
+
 <?php
 
 session_start();
@@ -9,11 +10,11 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 if ($_SESSION['role'] !== 'teacher') {
-    die("Prístup zamietnutý.");
+    http_response_code(403);
+    exit("Prístup zamietnutý.");
 }
 
 require_once __DIR__ . "/../config/config.php";
-
 
 $stmt = $pdo->query("
     SELECT
@@ -35,66 +36,72 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="sk">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoznam používateľov | STEP</title>
 
-  <meta charset="UTF-8">
-
-  <title>Zoznam používateľov</title>
-
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet">
-
+    <link rel="stylesheet" href="css/premenne.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-  <div class="container mt-4">
+    <?php require_once "navigation.php"; ?>
 
-    <h2>Zoznam používateľov</h2>
+    <main class="container">
 
-    <table class="table table-striped table-bordered">
+        <div class="heading">
+            <div>
+                <h1>Zoznam používateľov (Študenti)</h1>
+                <p class="subtitle">Prehľad všetkých registrovaných študentov v systéme</p>
+            </div>
+            <div>
+                <a href="teacher_dashboard.php" class="btn btn-secondary">
+                    ← Späť na Dashboard
+                </a>
+            </div>
+        </div>
 
-      <thead class="table-dark">
+        <div class="card">
+            <?php if (empty($users)): ?>
+                <div class="empty">
+                    V systéme zatiaľ nie sú žiadni zaregistrovaní študenti.
+                </div>
+            <?php else: ?>
+                <div class="table-responsive">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Meno</th>
+                                <th>Email</th>
+                                <th>Rola</th>
+                                <th>Vytvorený</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($users as $user): ?>
+                                <tr>
+                                    <td><?php echo (int) $user['id']; ?></td>
+                                    <td><strong><?php echo htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8'); ?></strong></td>
+                                    <td><?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td>
+                                        <span class="role-badge"><?php echo htmlspecialchars($user['role'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                    </td>
+                                    <td><?php echo htmlspecialchars($user['created_at'] ?? 'Neznáme', ENT_QUOTES, 'UTF-8'); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endif; ?>
+        </div>
 
-        <tr>
-          <th>ID</th>
-          <th>Meno</th>
-          <th>Email</th>
-          <th>Rola</th>
-          <th>Vytvorený</th>
-        </tr>
+    </main>
 
-      </thead>
-
-      <tbody>
-
-        <?php foreach ($users as $user): ?>
-
-          <tr>
-
-            <td><?php echo (int)$user['id']; ?></td>
-
-            <td><?php echo htmlspecialchars($user['name']); ?></td>
-
-            <td><?php echo htmlspecialchars($user['email']); ?></td>
-
-            <td><?php echo htmlspecialchars($user['role']); ?></td>
-
-            <td><?php echo htmlspecialchars($user['created_at'] ?? 'Neznáme'); ?></td>
-
-          </tr>
-
-        <?php endforeach; ?>
-
-      </tbody>
-
-    </table>
-
-    <a href="public/teacher_dashboard.php" class="btn btn-primary">
-      Späť na Dashboard
-    </a>
-
-  </div>
+    <footer class="site-footer">
+        STEP – Tímový projekt
+    </footer>
 
 </body>
 
