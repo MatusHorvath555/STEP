@@ -13,6 +13,7 @@ if (($_SESSION['role'] ?? '') !== 'teacher') {
 }
 
 require_once __DIR__ . "/../config/config.php";
+require_once __DIR__ . "/webhook.php";
 
 $message = "";
 $messageType = "";
@@ -67,6 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'priority' => in_array($priority, ['Low', 'Medium', 'High'], true) ? $priority : 'Medium',
             'deadline' => ($deadline !== '') ? $deadline : null
         ]);
+
+        oznamNovuUlohu($title);
 
         $message = "Úloha bola úspešne vytvorená.";
         $messageType = "success";

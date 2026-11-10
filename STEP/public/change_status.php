@@ -8,6 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require_once __DIR__ . "/../config/config.php";
+require_once __DIR__ . "/webhook.php";
 
 $taskId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
@@ -66,6 +67,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'id' => $taskId,
             'user_id' => $_SESSION['user_id']
         ]);
+
+        // len pri skutočnej zmene na Done, nie keď už hotovú úlohu uloží znova
+        if ($status === 'Done' && $task['status'] !== 'Done') {
+            oznamHotovuUlohu($task['title']);
+        }
 
         header("Location: my_tasks.php");
         exit();

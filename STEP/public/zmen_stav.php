@@ -77,4 +77,14 @@ $activity->execute([
 
 $pdo->commit();
 
+// Notifikácia do Discordu, keď sa úloha presunie do "Done"
+if ($status === 'Done') {
+    require_once __DIR__ . '/webhook.php';
+
+    $nazov = $pdo->prepare("SELECT title FROM tasks WHERE id = :id");
+    $nazov->execute(['id' => $taskId]);
+
+    oznamHotovuUlohu($nazov->fetchColumn());
+}
+
 http_response_code(204);

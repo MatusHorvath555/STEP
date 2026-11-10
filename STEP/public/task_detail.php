@@ -176,6 +176,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
 
                 $pdo->commit();
+
+                if ($status === 'Done') {
+                    require_once __DIR__ . '/webhook.php';
+                    oznamHotovuUlohu($task['title']);
+                }
             }
 
             $message = "Stav úlohy bol úspešne aktualizovaný.";

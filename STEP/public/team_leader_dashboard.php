@@ -281,6 +281,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $pdo->commit();
 
+            require_once __DIR__ . '/webhook.php';
+            oznamNovuUlohu($title);
+
             $message = "Úloha bola úspešne vytvorená.";
             $messageType = 'success';
         } elseif ($action === 'update_status') {
@@ -334,6 +337,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
 
                 $pdo->commit();
+
+                if ($newStatus === 'Done') {
+                    require_once __DIR__ . '/webhook.php';
+                    oznamHotovuUlohu($task['title']);
+                }
             }
 
             $message = "Stav úlohy bol aktualizovaný.";
