@@ -64,7 +64,7 @@ $initials = mb_strtoupper($initials, 'UTF-8');
         <div class="heading">
             <div>
                 <h1>Môj profil</h1>
-                <p class="subtitle">Podrobné informácie o vašom používateľskom kontu</p>
+                <p class="subtitle">Podrobné informácie o vašom používateľskom konte</p>
             </div>
             <div>
                 <a href="teacher_dashboard.php" class="btn btn-secondary">
@@ -74,7 +74,7 @@ $initials = mb_strtoupper($initials, 'UTF-8');
         </div>
 
         <div class="card profile-card-wrapper">
-            
+
             <div class="profile-header-section">
                 <div class="avatar">
                     <?php echo htmlspecialchars($initials, ENT_QUOTES, 'UTF-8'); ?>
