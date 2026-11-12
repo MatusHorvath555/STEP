@@ -599,7 +599,6 @@ foreach ($tasks as $task) {
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-
 <body>
 
     <?php require_once "navigation.php"; ?>
@@ -647,9 +646,9 @@ foreach ($tasks as $task) {
                 <?php endforeach; ?>
             </section>
 
-            <!-- STATISTIKY -->
+            <!-- STATISTIKY (Zmenené zo section na div, aby validátor neprotestoval) -->
 
-            <section class="stats">
+            <div class="stats">
 
                 <div class="stat">
                     <div class="stat-number teal"><?= $totalTasks ?></div>
@@ -671,7 +670,7 @@ foreach ($tasks as $task) {
                     <div class="stat-label">Dokončené</div>
                 </div>
 
-            </section>
+            </div>
 
             <!-- CELKOVY POSTUP -->
 
@@ -723,6 +722,7 @@ foreach ($tasks as $task) {
                                 <label for="team_id">Tím *</label>
 
                                 <select name="team_id" id="team_id" required>
+                                    <option value="" disabled selected>-- Vyberte tím --</option>
                                     <?php foreach ($teams as $team): ?>
                                         <option value="<?= (int)$team['id'] ?>">
                                             <?= h($team['name']) ?>
@@ -908,61 +908,61 @@ foreach ($tasks as $task) {
                             <?php endforeach; ?>
 
                         </div>
+
+                    <?php endif; ?>
+
                 </div>
 
             </details>
-        <?php endif; ?>
 
-        </section>
+            <!-- AKTIVITA -->
 
-        <!-- AKTIVITA -->
+            <details class="card collapsible-section">
 
-        <details class="card collapsible-section">
+                <summary class="collapsible-header">
+                    <span>Posledná aktivita tímov</span>
+                    <span class="collapsible-count">
+                        <?= count($activities) ?> záznamov
+                    </span>
+                </summary>
 
-            <summary class="collapsible-header">
-                <span>Posledná aktivita tímov</span>
-                <span class="collapsible-count">
-                    <?= count($activities) ?> záznamov
-                </span>
-            </summary>
+                <div class="collapsible-content">
 
-            <div class="collapsible-content">
+                    <?php if (empty($activities)): ?>
 
-                <?php if (empty($activities)): ?>
+                        <div class="empty">Zatiaľ neevidujeme žiadnu aktivitu.</div>
 
-                    <div class="empty">Zatiaľ neevidujeme žiadnu aktivitu.</div>
+                    <?php else: ?>
 
-                <?php else: ?>
+                        <?php foreach ($activities as $activity): ?>
 
-                    <?php foreach ($activities as $activity): ?>
+                            <div class="activity-item">
 
-                        <div class="activity-item">
+                                <strong><?= h($activity['user_name'] ?? 'Používateľ') ?></strong>
+                                <?= h($activity['action']) ?>
 
-                            <strong><?= h($activity['user_name'] ?? 'Používateľ') ?></strong>
-                            <?= h($activity['action']) ?>
+                                <br>
 
-                            <br>
+                                <span class="task-meta">
+                                    Úloha: <?= h($activity['task_title']) ?>
+                                    · Tím: <?= h($activity['team_name']) ?>
+                                </span>
 
-                            <span class="task-meta">
-                                Úloha: <?= h($activity['task_title']) ?>
-                                · Tím: <?= h($activity['team_name']) ?>
-                            </span>
+                                <div class="activity-date">
+                                    <?= h(date('d.m.Y H:i', strtotime($activity['created_at']))) ?>
+                                </div>
 
-                            <div class="activity-date">
-                                <?= h(date('d.m.Y H:i', strtotime($activity['created_at']))) ?>
                             </div>
 
-                        </div>
+                        <?php endforeach; ?>
 
-                    <?php endforeach; ?>
+                    <?php endif; ?>
 
-                <?php endif; ?>
+                </div>
 
-            </div>
+            </details>
 
-        </details>
-
-    <?php endif; ?>
+        <?php endif; ?>
 
     </main>
 
