@@ -2,12 +2,16 @@
 
 // webhook.php – pošle správu do Discordu cez webhook
 
-// Discord → Server Settings → Integrations → Webhooks → Copy Webhook URL
-const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1569706693565227019/ycXklfVWVZ65Oeqc1O9O26nLkfolF3OdfWhwvAn5onM-JYUsep3VSC0aOucmAEhISpEM';
-
 function posliNaDiscord(string $sprava): void
 {
-    $ch = curl_init(DISCORD_WEBHOOK_URL);
+    // URL je v súbore mimo gitu – repozitár je verejný a s URL by mohol do kanála písať ktokoľvek
+    $subor = __DIR__ . '/../config/discord_webhook.txt';
+    $url = is_file($subor) ? trim(file_get_contents($subor)) : '';
+    if ($url === '') {
+        return; // bez súboru appka funguje ďalej, len bez notifikácií
+    }
+
+    $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_POST => true,
         CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
