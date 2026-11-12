@@ -84,6 +84,8 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <?php else: ?>
 
+            <h2>Zoznam priradených úloh</h2>
+
             <div class="task-list">
 
                 <?php foreach ($tasks as $task): ?>
