@@ -3,7 +3,7 @@
 session_start();
 require_once __DIR__ . "/../config/config.php";
 
-// Docasny nahlad povoleny iba na localhoste.
+// Dočasný náhľad povolený iba na localhoste.
 $allowedHosts = ['localhost', '127.0.0.1', '::1'];
 $currentHost = $_SERVER['HTTP_HOST'] ?? '';
 $currentHost = explode(':', $currentHost)[0];
@@ -12,26 +12,26 @@ $isLocalhost = in_array($currentHost, $allowedHosts, true);
 
 $isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 
-// Mimo localhostu je pristup povoleny iba administratorovi.
+// Mimo localhostu je prístup povolený iba administrátorovi.
 if (!$isAdmin && !$isLocalhost) {
     http_response_code(403);
-    exit('Pristup zamietnuty. Tato stranka je urcena iba pre administratora.');
+    exit('Prístup zamietnutý. Táto stránka je určená iba pre administrátora.');
 }
 
 $previewMode = !$isAdmin;
 
-// Ochrana formularov proti CSRF
+// Ochrana formulárov proti CSRF
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Spracovanie administracnych zmien
+// Spracovanie administračných zmien
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // V rezime nahladu nie su zmeny povolene
+    // V režime náhľadu nie sú zmeny povolené
     if (!$isAdmin) {
         http_response_code(403);
-        exit('Na tuto akciu nemas opravnenie.');
+        exit('Na túto akciu nemáš oprávnenie.');
     }
 
     // Kontrola CSRF tokenu
@@ -40,19 +40,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
     ) {
         http_response_code(403);
-        exit('Neplatna poziadavka.');
+        exit('Neplatná požiadavka.');
     }
 
     $action = $_POST['action'] ?? '';
     $userId = filter_var($_POST['user_id'] ?? null, FILTER_VALIDATE_INT);
 
-    // Predpokladame, ze ID prihlaseneho pouzivatela je ulozene v session
+    // Predpokladáme, že ID prihláseného používateľa je uložené v session
     $currentUserId = $_SESSION['user_id'] ?? null;
 
     if (!$userId || !$currentUserId) {
-        $_SESSION['admin_message'] = 'Nepodarilo sa overit pouzivatela.';
+        $_SESSION['admin_message'] = 'Nepodarilo sa overiť používateľa.';
     } elseif ($userId === (int)$currentUserId) {
-        $_SESSION['admin_message'] = 'Vlastny ucet nemozes upravovat ani deaktivovat.';
+        $_SESSION['admin_message'] = 'Vlastný účet nemôžeš upravovať ani deaktivovať.';
     } else {
         try {
 
@@ -60,9 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $newRole = $_POST['new_role'] ?? '';
 
-                // Cez tuto stranku menime iba roly student a teacher
+                // Cez túto stránku meníme iba roly student a teacher
                 if (!in_array($newRole, ['student', 'teacher'], true)) {
-                    throw new Exception('Neplatna rola.');
+                    throw new Exception('Neplatná rola.');
                 }
 
                 $updateStmt = $pdo->prepare("
@@ -78,28 +78,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
 
                 $_SESSION['admin_message'] = $updateStmt->rowCount() > 0
-                    ? 'Rola pouzivatela bola uspesne zmenena.'
-                    : 'Rola sa nezmenila. Pouzivatel mozno nema upravitelnu rolu.';
+                    ? 'Rola používateľa bola úspešne zmenená.'
+                    : 'Rola sa nezmenila. Používateľ možno nemá upraviteľnú rolu.';
+
             } elseif ($action === 'deactivate' || $action === 'activate') {
 
-                // Podla akcie nastavime priamo TRUE alebo FALSE v databaze.
                 if ($action === 'deactivate') {
                     $updateStmt = $pdo->prepare("
-            UPDATE users
-            SET is_active = FALSE
-            WHERE id = :id
-            AND role <> 'admin'
-            RETURNING id
-        ");
+                        UPDATE users
+                        SET is_active = FALSE
+                        WHERE id = :id
+                        AND role <> 'admin'
+                        RETURNING id
+                    ");
                     $successMessage = 'Účet bol deaktivovaný.';
                 } else {
                     $updateStmt = $pdo->prepare("
-            UPDATE users
-            SET is_active = TRUE
-            WHERE id = :id
-            AND role <> 'admin'
-            RETURNING id
-        ");
+                        UPDATE users
+                        SET is_active = TRUE
+                        WHERE id = :id
+                        AND role <> 'admin'
+                        RETURNING id
+                    ");
                     $successMessage = 'Účet bol aktivovaný.';
                 }
 
@@ -111,26 +111,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['admin_message'] = 'Účet sa nepodarilo zmeniť. Skontroluj, či existuje a nie je administrátorský.';
                 }
 
-                $updateStmt = $pdo->prepare("
-                    UPDATE users
-                    SET is_active = :is_active
-                    WHERE id = :id
-                    AND role <> 'admin'
-                ");
-
-                $updateStmt->execute([
-                    'is_active' => $isActive,
-                    'id' => $userId
-                ]);
-
-                $_SESSION['admin_message'] = $updateStmt->rowCount() > 0
-                    ? ($isActive ? 'Ucet bol aktivovany.' : 'Ucet bol deaktivovany.')
-                    : 'Stav uctu sa nezmenil.';
             } else {
-                $_SESSION['admin_message'] = 'Neznama akcia.';
+                $_SESSION['admin_message'] = 'Neznáma akcia.';
             }
+
         } catch (Exception $e) {
-            $_SESSION['admin_message'] = 'Zmenu sa nepodarilo vykonat: ' . $e->getMessage();
+            $_SESSION['admin_message'] = 'Zmenu sa nepodarilo vykonať: ' . $e->getMessage();
         }
     }
 
@@ -138,11 +124,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Sprava po vykonani akcie
+// Správa po vykonaní akcie
 $adminMessage = $_SESSION['admin_message'] ?? '';
 unset($_SESSION['admin_message']);
 
-// Vyhladavanie a filtrovanie
+// Vyhľadávanie a filtrovanie
 $search = trim($_GET['search'] ?? '');
 $selectedRole = $_GET['role'] ?? '';
 
@@ -152,7 +138,7 @@ if (!in_array($selectedRole, $allowedRoles, true)) {
     $selectedRole = '';
 }
 
-// Statistiky
+// Štatistiky
 $statsStmt = $pdo->query("
     SELECT
         COUNT(*) AS total,
@@ -164,7 +150,7 @@ $statsStmt = $pdo->query("
 
 $stats = $statsStmt->fetch(PDO::FETCH_ASSOC);
 
-// Pocet vsetkych registrovanych pouzivatelov
+// Počet všetkých registrovaných používateľov
 $totalUsers = (int) $stats['total'];
 
 // Zostavenie SQL podmienok
@@ -197,13 +183,13 @@ $stmt->execute($params);
 
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Pomocna funkcia na bezpecny vypis
+// Pomocná funkcia na bezpečný výpis
 function e($value)
 {
     return htmlspecialchars((string)($value ?? ''), ENT_QUOTES, 'UTF-8');
 }
 
-// Preklad roli
+// Preklad rolí
 function roleLabel($role)
 {
     $roles = [
@@ -236,8 +222,7 @@ function roleClass($role)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>| Správa používateľov</title>
+    <title>STEP | Správa používateľov</title>
 
     <link rel="stylesheet" href="css/premenne.css">
     <link rel="stylesheet" href="css/style.css">
@@ -246,7 +231,7 @@ function roleClass($role)
 
 <body class="admin-users-page">
 
-    <header>
+    <header class="step-navigation">
         <a href="dashboard.php" class="step-logo" aria-label="STEP – domov">
             <img src="logo.png" alt="STEP" width="50" height="40">
         </a>
@@ -286,9 +271,9 @@ function roleClass($role)
             </div>
         <?php endif; ?>
 
-        <!-- STATISTIKY -->
+        <!-- ŠTATISTIKY -->
 
-        <section class="stats">
+        <div class="stats">
 
             <div class="stat-card">
                 <div class="stat-number teal">
@@ -318,11 +303,11 @@ function roleClass($role)
                 <div class="stat-label">Administrátori</div>
             </div>
 
-        </section>
+        </div>
 
-        <!-- VYHLADAVANIE A FILTROVANIE -->
+        <!-- VYHĽADÁVANIE A FILTROVANIE -->
 
-        <section class="filter-card">
+        <div class="filter-card">
 
             <div class="filter-title">
                 Vyhľadávanie a filtrovanie používateľov
@@ -360,17 +345,17 @@ function roleClass($role)
                     </option>
                 </select>
 
-                <button type="submit">Filtrovať</button>
+                <button type="submit" class="btn">Filtrovať</button>
 
                 <a href="users.php" class="reset-button">Resetovať</a>
 
             </form>
 
-        </section>
+        </div>
 
-        <!-- TABULKA POUZIVATELOV -->
+        <!-- TABUĽKA POUŽÍVATEĽOV -->
 
-        <section class="table-card">
+        <div class="table-card">
 
             <div class="table-heading">
                 <h2>Zoznam používateľov</h2>
@@ -384,7 +369,6 @@ function roleClass($role)
             <div class="table-wrapper">
 
                 <table>
-
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -512,12 +496,11 @@ function roleClass($role)
                         <?php endif; ?>
 
                     </tbody>
-
                 </table>
 
             </div>
 
-        </section>
+        </div>
 
     </main>
 
