@@ -97,7 +97,7 @@ main.container .sucty th {
 main.container .sucty td {
     text-align: right;
 }
-/* Odznak priority – triedu high/medium/low má karta (article.karta) */
+/* Odznak priority – triedu high/medium/low má karta (div.karta) */
 main.container .karta .priorita {
     display: inline-block;
     margin-top: 4px;
@@ -130,4 +130,70 @@ main.container .karta.low .priorita {
     main.container .stlpce {
         grid-template-columns: 1fr;
     }
+}
+
+/* Tlačidlá Upraviť / Zmazať na karte (vidí ich len vedúci tímu) */
+main.container .karta-akcie {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+main.container .karta-akcie button {
+    padding: 2px 8px;
+    border: 1px solid var(--farba-primarna);
+    border-radius: var(--zaoblenie-tlacidlo);
+    background: var(--farba-karta);
+    color: var(--farba-primarna);
+    font-size: var(--velkost-text);
+    cursor: pointer;
+}
+
+/* Okná na úpravu a zmazanie karty (<dialog>) */
+main.container .modal {
+    margin: auto;   /* style.css nuluje okraje všetkým prvkom – bez tohto by okno nebolo v strede */
+    width: min(420px, calc(100% - 32px));
+    padding: 20px;
+    border: none;
+    border-radius: var(--zaoblenie-karta);
+    box-shadow: var(--tien-karta);
+}
+
+main.container .modal::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+main.container .modal label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: var(--velkost-text);
+    color: var(--farba-text);
+}
+
+main.container .modal input,
+main.container .modal select,
+main.container .modal textarea {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+    padding: 6px 8px;
+    border: 1px solid var(--farba-text-tlmeny);
+    border-radius: var(--zaoblenie-tlacidlo);
+    font: inherit;
+}
+
+main.container .modal-chyba {
+    min-height: 1em;
+    color: var(--farba-pozor);
+}
+
+main.container .modal-tlacidla {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+main.container .modal .btn-zmazat,
+main.container .modal .btn-zmazat:hover {
+    background: var(--farba-pozor);
 }

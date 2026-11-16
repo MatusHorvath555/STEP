@@ -39,7 +39,7 @@ if (!$team) {
 
 // Úlohy tímu aj s menom priradeného člena, najbližší termín prvý
 $stmt = $pdo->prepare("
-    SELECT t.id, t.title, t.status, t.priority, t.deadline, u.name AS assigned_name
+    SELECT t.id, t.title, t.description, t.status, t.priority, t.deadline, t.assigned_to, u.name AS assigned_name
     FROM tasks t
     LEFT JOIN users u ON u.id = t.assigned_to
     WHERE t.team_id = :team_id
@@ -64,7 +64,7 @@ if ($total > 0) {
 
 // Členovia tímu, vedúci ako prvý
 $stmt = $pdo->prepare("
-    SELECT u.name, tm.is_team_leader
+    SELECT u.id, u.name, tm.is_team_leader
     FROM team_members tm
     INNER JOIN users u ON u.id = tm.user_id
     WHERE tm.team_id = :team_id
@@ -72,6 +72,20 @@ $stmt = $pdo->prepare("
 ");
 $stmt->execute(['team_id' => $team['id']]);
 $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Je prihlásený používateľ vedúci tímu? Iba on smie karty upravovať a mazať.
+$stmt = $pdo->prepare("
+    SELECT 1
+    FROM team_members
+    WHERE team_id = :team_id
+      AND user_id = :user_id
+      AND is_team_leader = TRUE
+");
+$stmt->execute([
+    'team_id' => $team['id'],
+    'user_id' => $userId
+]);
+$isLeader = (bool) $stmt->fetchColumn();
 
 $teachers = $pdo->query("SELECT name FROM users WHERE role = 'teacher' ORDER BY name")->fetchAll(PDO::FETCH_COLUMN);
 
@@ -95,7 +109,7 @@ $teachers = $pdo->query("SELECT name FROM users WHERE role = 'teacher' ORDER BY 
             <main class="container">
 
         <!-- Dlaždice hore – rovnaké triedy ako v Paneli vedúceho, takže majú hotový štýl -->
-        <section class="stats">
+        <div class="stats">
             <div class="stat">
                 <div class="stat-number teal"><?= (int) $team['id'] ?></div>
                 <div class="stat-label">Číslo tímu</div>
@@ -113,7 +127,7 @@ $teachers = $pdo->query("SELECT name FROM users WHERE role = 'teacher' ORDER BY 
                 <div class="stat-number green"><?= $counts['Done'] ?? 0 ?></div>
                 <div class="stat-label">Done</div>
             </div>
-        </section>
+        </div>
 
         <!-- Nástenka -->
         <section class="card">
@@ -132,12 +146,26 @@ $teachers = $pdo->query("SELECT name FROM users WHERE role = 'teacher' ORDER BY 
                                 <?php foreach ($tasks as $task): ?>
                                     <?php if ($task['status'] !== $status) continue; ?>
 
-                                    <article class="karta <?= h(strtolower($task['priority'])) ?>" data-id="<?= (int) $task['id'] ?>">
+                                    <!-- data-* = údaje karty, ktorými js/kanban.js vyplní okno Upraviť -->
+                                    <div class="karta <?= h(strtolower($task['priority'])) ?>"
+                                        data-id="<?= (int) $task['id'] ?>"
+                                        data-title="<?= h($task['title']) ?>"
+                                        data-description="<?= h($task['description']) ?>"
+                                        data-assigned="<?= h($task['assigned_to']) ?>"
+                                        data-deadline="<?= h($task['deadline']) ?>"
+                                        data-priority="<?= h($task['priority']) ?>">
                                         <a href="task_detail.php?id=<?= (int) $task['id'] ?>"><?= h($task['title']) ?></a>
                                         <p><?= $task['deadline'] ? h(date('d.m.Y', strtotime($task['deadline']))) : 'Bez termínu' ?></p>
                                         <p><?= h($task['assigned_name'] ?? 'Nepridelené') ?></p>
                                         <p class="priorita">Priorita: <?= h($task['priority']) ?></p>
-                                    </article>
+
+                                        <?php if ($isLeader): ?>
+                                            <div class="karta-akcie">
+                                                <button type="button" class="karta-uprav">Upraviť</button>
+                                                <button type="button" class="karta-zmaz">Zmazať</button>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
                                 <?php endforeach; ?>
                             </div>
                         </section>
@@ -182,6 +210,69 @@ $teachers = $pdo->query("SELECT name FROM users WHERE role = 'teacher' ORDER BY 
 
             </div>
         </section>
+
+        <?php if ($isLeader): ?>
+            <!-- Okno na úpravu karty – otvára a odosiela ho js/kanban.js -->
+            <dialog id="dialogUprav" class="modal">
+                <form id="formUprav">
+                    <h2>Upraviť úlohu</h2>
+                    <input type="hidden" name="id">
+
+                    <label>Názov
+                        <input type="text" name="title" maxlength="200" required>
+                    </label>
+
+                    <label>Popis
+                        <textarea name="description" rows="3"></textarea>
+                    </label>
+
+                    <label>Priradený člen
+                        <select name="assigned_to">
+                            <option value="">Nepridelené</option>
+                            <?php foreach ($members as $member): ?>
+                                <option value="<?= (int) $member['id'] ?>"><?= h($member['name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+
+                    <label>Termín
+                        <input type="date" name="deadline">
+                    </label>
+
+                    <label>Priorita
+                        <select name="priority">
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </label>
+
+                    <p class="modal-chyba" role="alert"></p>
+
+                    <div class="modal-tlacidla">
+                        <button type="button" class="btn btn-secondary" data-zavriet>Zrušiť</button>
+                        <button type="submit" class="btn">Uložiť</button>
+                    </div>
+                </form>
+            </dialog>
+
+            <!-- Potvrdenie zmazania – vlastné okno namiesto confirm() -->
+            <dialog id="dialogZmaz" class="modal">
+                <form id="formZmaz">
+                    <h2>Zmazať úlohu?</h2>
+                    <input type="hidden" name="id">
+
+                    <p>Úloha <strong class="modal-nazov"></strong> sa natrvalo zmaže aj s komentármi a históriou aktivity.</p>
+
+                    <p class="modal-chyba" role="alert"></p>
+
+                    <div class="modal-tlacidla">
+                        <button type="button" class="btn btn-secondary" data-zavriet>Zrušiť</button>
+                        <button type="submit" class="btn btn-zmazat">Zmazať</button>
+                    </div>
+                </form>
+            </dialog>
+        <?php endif; ?>
     </main>
 
 
