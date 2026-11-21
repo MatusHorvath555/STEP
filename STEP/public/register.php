@@ -1,4 +1,3 @@
-
 <?php
 
 require_once __DIR__ . "/../config/config.php";
@@ -12,18 +11,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
     $password = $_POST["password"];
     $confirmPassword = $_POST["confirm_password"];
+    // Rozdelenie mena a priezviska
+    $nameParts = preg_split('/\s+/', $name);
 
-    // Kontrola, či sa heslá zhodujú
-    if ($password !== $confirmPassword) {
+    // Kontrola mena a priezviska
+    if (count($nameParts) < 2) {
+
+        $message = "Zadajte meno aj priezvisko.";
+        $messageType = "error";
+
+        // Kontrola formátu emailu
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+        $message = "Zadajte platnú emailovú adresu.";
+        $messageType = "error";
+
+        // Kontrola, či sa heslá zhodujú
+    } elseif ($password !== $confirmPassword) {
 
         $message = "Zadané heslá sa nezhodujú.";
         $messageType = "error";
+    } elseif (strlen($password) < 12) {
 
-    } elseif (strlen($password) < 8) {
-
-        $message = "Heslo musí mať aspoň 8 znakov.";
+        $message = "Heslo musí mať aspoň 12 znakov.";
         $messageType = "error";
+    } elseif (!preg_match('/\p{Lu}/u', $password)) {
 
+        $message = "Heslo musí obsahovať aspoň jedno veľké písmeno.";
+        $messageType = "error";
+    } elseif (!preg_match('/\p{Ll}/u', $password)) {
+
+        $message = "Heslo musí obsahovať aspoň jedno malé písmeno.";
+        $messageType = "error";
+    } elseif (!preg_match('/\p{N}/u', $password)) {
+
+        $message = "Heslo musí obsahovať aspoň jednu číslicu.";
+        $messageType = "error";
     } else {
 
         // Kontrola existujúceho emailu
@@ -41,7 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $message = "Používateľ s týmto emailom už existuje.";
             $messageType = "error";
-
         } else {
 
             // Zahashovanie hesla
@@ -78,57 +100,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="sk">
 
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>STEP - Registrácia</title>
     <!-- Pripojenie CSS premenných a hlavného štýlu -->
-<link rel="stylesheet" href="css/premenne.css">
-<link rel="stylesheet" href="css/style.css">  
+    <link rel="stylesheet" href="css/premenne.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<main class="login-container">
+    <main class="login-container">
         <h2>Registrácia používateľa</h2>
 
         <?php if ($message): ?>
-            <p class="alert">
+            <p class="alert <?php echo $messageType; ?>">
                 <?php echo htmlspecialchars($message); ?>
             </p>
         <?php endif; ?>
 
         <form method="POST" class="auth-form">
 
-    <section class="form-row">
-        <label for="name">Meno a priezvisko:</label>
-        <input type="text" id="name" name="name" required>
-    </section>
+            <section class="form-row">
+                <label for="name">Meno a priezvisko:</label>
+                <input type="text" id="name" name="name" required>
+            </section>
 
-    <section class="form-row">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-    </section>
+            <section class="form-row">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </section>
 
-    <section class="form-row">
-        <label for="password">Heslo:</label>
-        <input type="password" id="password" name="password" required>
-    </section>
+            <section class="form-row">
+                <label for="password">Heslo:</label>
+                <input type="password" id="password" name="password" required>
+            </section>
 
-    <section class="form-row">
-        <label for="confirm_password">Potvrdenie hesla:</label>
-        <input type="password" id="confirm_password"
-               name="confirm_password" required>
-    </section>
+            <section class="form-row">
+                <label for="confirm_password">Potvrdenie hesla:</label>
+                <input type="password" id="confirm_password"
+                    name="confirm_password" required>
+            </section>
 
-    <section class="form-checkbox-group">
-        <input type="checkbox" id="show-pass" onclick="togglePassword()">
-        <label for="show-pass">Zobraziť heslá</label>
-    </section>
+            <section class="form-checkbox-group">
+                <input type="checkbox" id="show-pass" onclick="togglePassword()">
+                <label for="show-pass">Zobraziť heslá</label>
+            </section>
 
-    <button type="submit" class="btn-submit">
-        Registrovať
-    </button>
+            <button type="submit" class="btn-submit">
+                Registrovať
+            </button>
 
-</form>
+        </form>
         <nav class="auth-links">
             <a href="login.php">Už máte účet? Prihláste sa tu.</a>
             <a href="index.php">Späť na úvodnú stránku</a>
@@ -147,4 +169,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
 
 </body>
+
 </html>
