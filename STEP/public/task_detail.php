@@ -186,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message = "Stav úlohy bol úspešne aktualizovaný.";
             $messageType = 'success';
 
-        // Pridanie komentára
+            // Pridanie komentára
         } elseif (isset($_POST['add_comment'])) {
 
             $content = $_POST['content'] ?? '';
@@ -197,8 +197,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $content = trim($content);
 
-            if ($content === '' || mb_strlen($content, 'UTF-8') > 5000) {
-                throw new Exception("Komentár je povinný a môže mať maximálne 5000 znakov.");
+            if ($content === '') {
+                throw new Exception("Komentár nemôže byť prázdny.");
+            }
+
+            if (mb_strlen($content, 'UTF-8') > 1000) {
+                throw new Exception("Komentár môže obsahovať maximálne 1 000 znakov.");
             }
 
             $pdo->beginTransaction();
@@ -355,11 +359,11 @@ if ($role === 'teacher') {
 
             <p>
                 <strong>Stav:</strong>
-                <?php 
-                    $statusClass = 'todo';
-                    $st = $task['status'];
-                    if ($st === 'In Progress') $statusClass = 'progress';
-                    if ($st === 'Done') $statusClass = 'done';
+                <?php
+                $statusClass = 'todo';
+                $st = $task['status'];
+                if ($st === 'In Progress') $statusClass = 'progress';
+                if ($st === 'Done') $statusClass = 'done';
                 ?>
                 <span class="status <?= $statusClass ?>">
                     <?= h($st) ?>
@@ -440,7 +444,7 @@ if ($role === 'teacher') {
                     <textarea
                         id="content"
                         name="content"
-                        maxlength="5000"
+                        maxlength="1000"
                         placeholder="Napíš komentár..."
                         required></textarea>
                 </div>
