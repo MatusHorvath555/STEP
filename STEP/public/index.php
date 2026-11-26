@@ -19,7 +19,7 @@ session_start();
     <main class="container index-container-wrapper">
 
         <div class="card index-hero-card">
-            
+
             <!-- Čistý obal iba s reálnym logom -->
             <div class="site-logo">
                 <a href="index.php" class="logo-link">
@@ -30,7 +30,7 @@ session_start();
             <span class="index-badge">Tímový projekt & Task Manager</span>
 
             <p class="index-lead">
-                Moderná aplikácia na efektívnu správu projektov a úloh. 
+                Moderná aplikácia na efektívnu správu projektov a úloh.
                 Vytvárajte tímy, prideľujte zodpovednosti a sledujte priebeh práce v reálnom čase.
             </p>
 
@@ -41,7 +41,7 @@ session_start();
                     <a href="login.php" class="btn">Prihlásenie</a>
                     <a href="register.php" class="btn btn-secondary">Registrácia</a>
                 <?php endif; ?>
-                <a href="teams.php" class="btn btn-secondary">Zoznam tímov</a>
+
             </div>
 
             <div class="index-info-box">
